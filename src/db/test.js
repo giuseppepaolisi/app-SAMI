@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const connection = require('./config/db_connection');
+const connection = require('../confing/db_connection');
 
 app.get('/', (req, res) => {
-  connection.query('SELECT * FROM macchine', (err, results) => {
+  connection.query('SELECT * FROM fisiopatie', (err, results) => {
     if (err) throw err;
     console.log('I risultati della query sono:', results);
-    res.send(results);
+    //res.send(results);
   });
 });
 
