@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
@@ -17,9 +17,11 @@
     "mongoose": "^7.2.2",
     "mongose": "^0.0.2-security",
     "morgan": "~1.9.1",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.2.4",
-    "startbootstrap-sb-admin-2": "^4.1.4",
+    "startbootstrap-sb-admin-2": "^3.3.7",
     "subproject": "file:./db"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
+    "nodemon": "^1.14.9"
   }
 }

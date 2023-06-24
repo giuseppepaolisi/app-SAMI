@@ -2,13 +2,14 @@ var express = require('express');
 var router = express.Router();
 const User = require("./../db/user.js");
 const mongoose = require('mongoose');
+const { verifyToken, signToken, deleteToken } = require('../middleware/user-auth');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', verifyToken, function(req, res, next) {
   res.render('index', { title: 'Users' });
 });
 
-router.get('/lista', async function(req, res, next) {
+router.get('/lista', verifyToken, async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   console.log("uri: "+ uri);
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
