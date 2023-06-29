@@ -1,5 +1,5 @@
 const User = require('../db/user');
-const { verifyToken, signToken, deleteToken } = require('../middleware/user-auth');
+const { signToken, deleteToken } = require('../middleware/user-auth');
 const mongoose = require('mongoose');
 //const bcrypt = require('bcrypt');
 
@@ -43,8 +43,9 @@ authController.login = async (req, res) => {
       return res.render('login', { error: 'Username o password non validi' });
     }
 
+    console.log("\nE' admin: " + user.admin);
     // Autenticazione riuscita, impostiamo una sessione
-    signToken(req, res, () => {
+    signToken(req, res, user.admin, () => {
       // Reindirizzamento alla pagina principale o ad un'altra pagina dopo il login
       console.log('login effettuato');
       res.redirect('/users/lista');

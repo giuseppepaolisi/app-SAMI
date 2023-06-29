@@ -2,10 +2,10 @@ var express = require('express');
 var router = express.Router();
 const User = require("./../db/user.js");
 const mongoose = require('mongoose');
-const { verifyToken, signToken, deleteToken } = require('../middleware/user-auth');
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 /* GET users listing. */
-router.get('/', verifyToken, function(req, res, next) {
+router.get('/', isAdmin, function(req, res, next) {
   res.render('index', { title: 'Users' });
 });
 

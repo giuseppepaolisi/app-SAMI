@@ -17,9 +17,45 @@ function verifyToken(req,res,next) {
     }
 }
 
+//verifica che l'utente è loggato ed è un dipendente
+function isEmployee(req,res,next) {
+    const token = req.cookies.token;
+    const options = { expiresIn: '100s', algorithm: 'RS256' };
+    if (!token) return res.status(200).redirect('/login'); //nessun token foornito dal client
+    try {
+        const pub_key = fs.readFileSync('rsa.public');
+        req.user = jwt.verify(token, pub_key, options);
+        if(!req.user.isAdmin) {
+            next();
+        } else {
+            return res.status(200).redirect('/login');
+        }
+    } catch (err) {
+        return res.status(200).redirect('/login');//Il token non è valido oppure è scaduto
+    }
+}
+
+//verifica che l'utente è loggato ed è un admin
+function isAdmin(req,res,next) {
+    const token = req.cookies.token;
+    const options = { expiresIn: '100s', algorithm: 'RS256' };
+    if (!token) return res.status(200).redirect('/login'); //nessun token foornito dal client
+    try {
+        const pub_key = fs.readFileSync('rsa.public');
+        req.user = jwt.verify(token, pub_key, options);
+        if(req.user.isAdmin) {
+            next();
+        } else {
+            return res.status(200).redirect('/login');
+        }
+    } catch (err) {
+        return res.status(200).redirect('/login');//Il token non è valido oppure è scaduto
+    }
+}
+
 //genera il token
-function signToken(req,res,next) {
-    const payload = { user: req.body.username, isAdmin: false, isLogged: true };
+function signToken(req, res, admin, next) {
+    const payload = { user: req.body.username, isAdmin: admin, isLogged: true };
     const cookieSetting = {
         expires: new Date(Date.now() + 1e5),
         httpOnly: true,
@@ -45,6 +81,8 @@ function deleteToken(req,res,next) {
 
 module.exports = {
     verifyToken,
+    isAdmin,
+    isEmployee,
     signToken,
     deleteToken
 }
