@@ -15,9 +15,5 @@ router.post('/', (req, res) => {
 
 });
 
-router.get('/logout', (res, req) => {
-  console.log('Logout!');
-  Auth.logout(req, res);
-});
 
 module.exports = router;

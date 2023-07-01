@@ -64,13 +64,5 @@ router.post('/addUser', async function(req, res, next) {
 
 });
 
-router.get('/reparti', (req, res) => {
-  res.render('dipendente/reparti.ejs');
-});
-
-router.get('/macchine/:reparto/', (req, res) => {
-  res.render('dipendente/macchine.ejs');
-});
-
 
 module.exports = router;

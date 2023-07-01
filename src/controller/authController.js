@@ -48,7 +48,11 @@ authController.login = async (req, res) => {
     signToken(req, res, user.admin, () => {
       // Reindirizzamento alla pagina principale o ad un'altra pagina dopo il login
       console.log('login effettuato');
-      res.redirect('/users/lista');
+      if(user.admin){
+        res.redirect('/users/lista');//pagina utente dell'admin
+      } else {
+        res.redirect('/reparti');//pagina iniziale dipendente
+      }
     });
 
     
