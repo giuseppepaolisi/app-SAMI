@@ -30,7 +30,7 @@ router.get('/reparto/:reparto/', (req, res) => {
     
 });
 
-router.get('/macchine/:reparto:tipo/', (req, res) => {
+router.get('/macchine/:reparto/:tipo/', (req, res) => {
     console.log("\n\n" + req.params.reparto + "\n"+ req.params.tipo);
     switch(req.params.tipo) {
         case "pocket":
