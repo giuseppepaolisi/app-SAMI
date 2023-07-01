@@ -16,10 +16,10 @@ router.get('/reparto/:reparto/', (req, res) => {
     console.log("\n\n" + req.params.reparto);
     switch(req.params.reparto) {
         case "produzione":
-            res.render('dipendente/reparti2.ejs', {reparto: "Produzione"});
+            res.render('dipendente/reparti2.ejs', {reparto: "produzione"});
             break;
         case "assemblaggio":
-            res.render('dipendente/reparti2.ejs', {reparto: "Assemblaggio"});
+            res.render('dipendente/reparti2.ejs', {reparto: "pssemblaggio"});
             break;
         case "imballaggio":
             res.render('dipendente/macchine.ejs', {reparto: "imballaggio"});//porta a macchine
@@ -42,7 +42,6 @@ router.get('/macchine/:reparto/:tipo/', (req, res) => {
         default:
             break; //errore
     }
-    res.render('dipendente/macchine.ejs', {});
   });
 
 
