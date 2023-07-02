@@ -1,6 +1,10 @@
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+    <button onclick="goBack()" class="btn btn-primary">
+        <i class="fas fa-arrow-left"></i>
+      </button>      
+
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
 
@@ -62,3 +66,9 @@ aria-hidden="true">
     </div>
 </div>
 </div>
+
+<script>
+    function goBack() {
+        history.back();
+    }
+</script>
