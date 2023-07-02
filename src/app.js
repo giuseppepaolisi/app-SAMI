@@ -8,6 +8,7 @@ require('dotenv').config({path: path.resolve(__dirname,'./env/developement.env')
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
+const insertRouter = require('./routes/insert');
 const logoutRouter = require('./routes/logout');
 const employeeRouter = require('./routes/employee');
 
@@ -26,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/insert', insertRouter);
 app.use('/logout', logoutRouter);
 app.use('/', employeeRouter);
 

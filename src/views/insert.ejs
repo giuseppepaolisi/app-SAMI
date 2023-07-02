@@ -35,35 +35,111 @@
 				<form class="login100-form validate-form" method="post" action="/insert">
 					
 					<span class="login100-form-title p-b-26">
-						Benvenuto
-						<h4><%if( error !== '') {
-							%><%= error %><%
-						} %></h4>
+						Macchina 0
 					</span>
+                    <!--Invia data e ora attuale-->
+                    <div>
+                        <%let date = new Date().toLocaleDateString('it-IT', { weekday:"long", year:"numeric", month:"short", day:"numeric"})  %>
+                    <%let hour = new Date().toLocaleTimeString('it-IT')  %>
+                    <h5><%= date %>, <%= hour %></h5>
+                    <br>
+                    </div>
+                    
+                    <input type="hidden" id="dateTime" name="dateTime" value="mettiValoreConQualcheFunzione">
 					
 					<div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="username">
-						<span class="focus-input100" data-placeholder="Utente"></span>
+						<input class="input100" type="text" name="prodFilo">
+						<span class="focus-input100" data-placeholder="Produttore Filo"></span>
 					</div>
+                     <!--Assemblaggio-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="misuraFilo">
+						<span class="focus-input100" data-placeholder="Misura Filo (cm x cm)"></span>
+					</div>
+                    <!--Assemblaggio-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="fileMolle">
+						<span class="focus-input100" data-placeholder="file (cm x cm)"></span>
+					</div>
+                    <!--Assemblaggio-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="qtaMolle">
+						<span class="focus-input100" data-placeholder="Quantità"></span>
+					</div>
+                    <!--Produzione Vecchia-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="giriMolla" min="1" max="10" step=1>
+						<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
+					</div>
+                    <!--Produzione Vecchia e Nuova-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="diamFilo" min="1" max="2" step=0.01>
+						<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
+					</div>
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="portata" min="200" max="2000" step=1>
+						<span class="focus-input100" data-placeholder="Portata (gr)"></span>
+					</div>
+                    <!--Produzione Nuova-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="peso" min="0" max="100" step=1>
+						<span class="focus-input100" data-placeholder="Peso (gr)"></span>
+					</div>
+                    
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="nMolleProd" min="0" max="9999999" step=1>
+						<span class="focus-input100" data-placeholder="Numero Molle Prodotte"></span>
+					</div>
+                    <!--Ore standard/Ore prodotte-->
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="oreLav" min="1" max="12" step=1 >
+						<span class="focus-input100" data-placeholder="Ore Lavorate"></span>
+					</div>
+                    <div class="wrap-input100 validate-input">
+						<input class="input100" type="number" name="oreFermo" min="1" max="12" step=1 >
+						<span class="focus-input100" data-placeholder="Ore Fermo"></span>
+					</div>
+                    
 
-					<div class="wrap-input100 validate-input" data-validate="Enter password">
+                  <!--  <div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="prodFilo">
+						<span class="focus-input100" data-placeholder="Produttore Filo"></span>
+					</div>-->
+
+					<!--<div class="wrap-input100 validate-input" data-validate="Enter password">
 						<span class="btn-show-pass">
 							<i class="zmdi zmdi-eye"></i>
 						</span>
 						<input class="input100" type="password" name="password">
 						<span class="focus-input100" data-placeholder="Password"></span>
-					</div>
+					</div> -->
 
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
 							<div class="login100-form-bgbtn"></div>
-							<button type="submit" class="login100-form-btn">
+							<button onclick="myFunction()" type="submit" class="login100-form-btn">
 								Invia 
 							</button>
-						</div>
-					</div>
 
-					<div class="text-center p-t-115">
+                            <script>
+                                function myFunction() {
+                                  var txt;
+                                  if (confirm("Invia Molleggi")) {
+                                    txt = "Molleggi inviati oggi ";
+                                  } else {
+                                    txt = "Non hai inviato i molleggi!";
+                                  }
+                                  document.getElementById("demo").innerHTML = txt;
+                                }
+                                </script>
+                                
+						</div>
+                        <p id="demo"></p>
+					</div>
+                    
+                   
+
+				<!--	<div class="text-center p-t-115">
 						<span class="txt1">
 							Problemi con l'account?
 						</span>
@@ -71,8 +147,12 @@
 						<a class="txt2" href="#">
 							Clicca qui
 						</a>
-					</div>
-				</form>
+					</div> -->
+
+                    
+
+				</form>                 
+            
 			</div>
 		</div>
 	</div>
