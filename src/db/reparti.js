@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const repartiSchema = new mongoose.Schema({
     tipo: String,
+    reparto: String,
     fornitore: String,
     diametro: Number,
     portata: Number,

@@ -8,6 +8,7 @@ const repartiController = {}; //consente di esportare le funzioni
 repartiController.insertMolleggi = (req, res) => {
     const data = {
         tipo: req.body.tipo,
+        reparto: req.body.reparto,
         fornitore: req.body.prodfilo,
         diametro: parseFloat(req.body.diamFilo),
         portata: parseFloat(req.body.portata),
