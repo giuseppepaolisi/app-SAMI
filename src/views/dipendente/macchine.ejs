@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
 
@@ -51,11 +51,14 @@
                             link = 'inserisci/' + reparto;
                         } else {
                             link = 'inserisci/' + reparto +"/" + tipo;
-                        }                             %>
-
+                        }                             
+                        const base_link = link;
+                        %>
+                        
                         <!-- -->
                         <% for(let i = 0; i < macchine.length; i++) {
                             const m = macchine[i];
+                            link = base_link;
                             link = link + "/" + m.macchina;
                         %>
                         <div class="col-xl-3 col-md-6 mb-4" onclick="redirectToPage('<%= link %>')">

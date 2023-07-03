@@ -1,182 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
 	<title>Insert</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+	<link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
 <!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="css/util.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
 <!--===============================================================================================-->
+
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body>
+<body id="page-top">
 
-    <div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="post" action="/insert">
-					
-					<span class="login100-form-title p-b-26">
-						Macchina 0
-					</span>
-                    <!--Invia data e ora attuale-->
-                    <div>
-                        <%let date = new Date().toLocaleDateString('it-IT', { weekday:"long", year:"numeric", month:"short", day:"numeric"})  %>
-                    <%let hour = new Date().toLocaleTimeString('it-IT')  %>
-                    <h5><%= date %>, <%= hour %></h5>
-                    <br>
-                    </div>
-                    
-                    <input type="hidden" id="dateTime" name="dateTime" value="mettiValoreConQualcheFunzione">
-					
-					<div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="prodFilo">
-						<span class="focus-input100" data-placeholder="Produttore Filo"></span>
-					</div>
-                     <!--Assemblaggio-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="misuraFilo">
-						<span class="focus-input100" data-placeholder="Misura Filo (cm x cm)"></span>
-					</div>
-                    <!--Assemblaggio-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="fileMolle">
-						<span class="focus-input100" data-placeholder="file (cm x cm)"></span>
-					</div>
-                    <!--Assemblaggio-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="qtaMolle">
-						<span class="focus-input100" data-placeholder="Quantità"></span>
-					</div>
-                    <!--Produzione Vecchia-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="giriMolla" min="1" max="10" step=1>
-						<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
-					</div>
-                    <!--Produzione Vecchia e Nuova-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="diamFilo" min="1" max="2" step=0.01>
-						<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
-					</div>
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="portata" min="200" max="2000" step=1>
-						<span class="focus-input100" data-placeholder="Portata (gr)"></span>
-					</div>
-                    <!--Produzione Nuova-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="peso" min="0" max="100" step=1>
-						<span class="focus-input100" data-placeholder="Peso (gr)"></span>
-					</div>
-                    
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="nMolleProd" min="0" max="9999999" step=1>
-						<span class="focus-input100" data-placeholder="Numero Molle Prodotte"></span>
-					</div>
-                    <!--Ore standard/Ore prodotte-->
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="oreLav" min="1" max="12" step=1 >
-						<span class="focus-input100" data-placeholder="Ore Lavorate"></span>
-					</div>
-                    <div class="wrap-input100 validate-input">
-						<input class="input100" type="number" name="oreFermo" min="1" max="12" step=1 >
-						<span class="focus-input100" data-placeholder="Ore Fermo"></span>
-					</div>
-                    
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-                  <!--  <div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="prodFilo">
-						<span class="focus-input100" data-placeholder="Produttore Filo"></span>
-					</div>-->
 
-					<!--<div class="wrap-input100 validate-input" data-validate="Enter password">
-						<span class="btn-show-pass">
-							<i class="zmdi zmdi-eye"></i>
-						</span>
-						<input class="input100" type="password" name="password">
-						<span class="focus-input100" data-placeholder="Password"></span>
-					</div> -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-					<div class="container-login100-form-btn">
-						<div class="wrap-login100-form-btn">
-							<div class="login100-form-bgbtn"></div>
-							<button onclick="myFunction()" type="submit" class="login100-form-btn">
-								Invia 
-							</button>
+            <!-- Main Content -->
+            <div id="content">
 
-                            <script>
-                                function myFunction() {
-                                  var txt;
-                                  if (confirm("Invia Molleggi")) {
-                                    txt = "Molleggi inviati oggi ";
-                                  } else {
-                                    txt = "Non hai inviato i molleggi!";
-                                  }
-                                  document.getElementById("demo").innerHTML = txt;
-                                }
-                                </script>
-                                
+                <!-- top bar-->
+                <%- include('components/topbarEmployee.ejs') %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+
+					<div class="limiter">
+						<div class="container-login100">
+							<div class="wrap-login100">
+								<form class="login100-form validate-form" method="post" action="/insert">
+									
+									<span class="login100-form-title p-b-26">
+										<%= macchina %>
+									</span>
+									<!--Invia data e ora attuale-->
+									<div>
+										<%let date = new Date().toLocaleDateString('it-IT', { weekday:"long", year:"numeric", month:"short", day:"numeric"})  %>
+									<%let hour = new Date().toLocaleTimeString('it-IT')  %>
+									<h5><%= date %>, <%= hour %></h5>
+									<br>
+									</div>
+									
+									<input type="hidden" id="dateTime" name="dateTime" value="mettiValoreConQualcheFunzione">
+									
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="text" name="prodFilo">
+										<span class="focus-input100" data-placeholder="Produttore Filo"></span>
+									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="text" name="misuraFilo">
+										<span class="focus-input100" data-placeholder="Misura Filo (cm x cm)"></span>
+									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="text" name="fileMolle">
+										<span class="focus-input100" data-placeholder="file (cm x cm)"></span>
+									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="qtaMolle">
+										<span class="focus-input100" data-placeholder="Quantità"></span>
+									</div>
+									<!--Produzione Vecchia-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="giriMolla" min="1" max="10" step=1>
+										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
+									</div>
+									<!--Produzione Vecchia e Nuova-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="diamFilo" min="1" max="2" step=0.01>
+										<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
+									</div>
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="portata" min="200" max="2000" step=1>
+										<span class="focus-input100" data-placeholder="Portata (gr)"></span>
+									</div>
+									<!--Produzione Nuova-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="peso" min="0" max="100" step=1>
+										<span class="focus-input100" data-placeholder="Peso (gr)"></span>
+									</div>
+									
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="nMolleProd" min="0" max="9999999" step=1>
+										<span class="focus-input100" data-placeholder="Numero Molle Prodotte"></span>
+									</div>
+									<!--Ore standard/Ore prodotte-->
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="oreLav" min="1" max="12" step=1 >
+										<span class="focus-input100" data-placeholder="Ore Lavorate"></span>
+									</div>
+									<div class="wrap-input100 validate-input">
+										<input class="input100" type="number" name="oreFermo" min="1" max="12" step=1 >
+										<span class="focus-input100" data-placeholder="Ore Fermo"></span>
+									</div>
+									
+
+								<!--  <div class="wrap-input100 validate-input">
+										<input class="input100" type="text" name="prodFilo">
+										<span class="focus-input100" data-placeholder="Produttore Filo"></span>
+									</div>-->
+
+									<!--<div class="wrap-input100 validate-input" data-validate="Enter password">
+										<span class="btn-show-pass">
+											<i class="zmdi zmdi-eye"></i>
+										</span>
+										<input class="input100" type="password" name="password">
+										<span class="focus-input100" data-placeholder="Password"></span>
+									</div> -->
+
+									<div class="container-login100-form-btn">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<button onclick="myFunction()" type="submit" class="login100-form-btn">
+												Invia 
+											</button>
+
+											<script>
+												function myFunction() {
+												var txt;
+												if (confirm("Invia Molleggi")) {
+													txt = "Molleggi inviati oggi ";
+												} else {
+													txt = "Non hai inviato i molleggi!";
+												}
+												document.getElementById("demo").innerHTML = txt;
+												}
+												</script>
+												
+										</div>
+										<p id="demo"></p>
+									</div>
+									
+								
+
+								<!--	<div class="text-center p-t-115">
+										<span class="txt1">
+											Problemi con l'account?
+										</span>
+
+										<a class="txt2" href="#">
+											Clicca qui
+										</a>
+									</div> -->
+
+									
+
+								</form>                 
+							
+							</div>
 						</div>
-                        <p id="demo"></p>
 					</div>
-                    
-                   
+					
 
-				<!--	<div class="text-center p-t-115">
-						<span class="txt1">
-							Problemi con l'account?
-						</span>
 
-						<a class="txt2" href="#">
-							Clicca qui
-						</a>
-					</div> -->
-
-                    
-
-				</form>                 
-            
+					<div id="dropDownSelect1"></div>
 			</div>
 		</div>
 	</div>
 	
+<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/js/main.js"></script>
 
 
-	<div id="dropDownSelect1"></div>
-	
-<!--===============================================================================================-->
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/daterangepicker/moment.min.js"></script>
-	<script src="vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="js/main.js"></script>
+	<!-- Bootstrap core JavaScript-->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 </html>
