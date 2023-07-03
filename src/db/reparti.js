@@ -6,10 +6,12 @@ const repartiSchema = new mongoose.Schema({
     diametro: Number,
     portata: Number,
     peso: Number,
-    data_ora: Date,
+    data: Date,
+    ora: Date,
     macchina: String,
     quantita: Number, //molle prodotte, ecc..
     h_lavorate: Number,
+    h_fermo: Number,
     user: String,
     diametro_filo: Number,
     diametro_molla: Number,

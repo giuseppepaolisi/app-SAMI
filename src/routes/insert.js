@@ -1,20 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const Auth = require('../controller/authController');
+const verifyToken = require('../middleware/user-auth');
+const repartiController = require('../controller/repartiController');
 
-/* GET insert page. */
-router.get('/', function(req, res, next) {
-
-  res.render('insert');
+router.get('/insert', (req, res) => {
+  res.render('insert.ejs');
 });
 
 /* POST send data to db*/
-router.post('/', (req, res) => {
-  console.log('inizio insert');
-
-
-  
-
+router.post('/insert', (req, res) => {
+  console.log('inizio insert POST');
+  console.log(req.body.time);
+  repartiController.insertMolleggi(req, res);
 });
 
 

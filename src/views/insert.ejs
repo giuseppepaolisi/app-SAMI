@@ -62,6 +62,9 @@
 									
 									<span class="login100-form-title p-b-26">
 										<%= macchina %>
+										<input type="hidden" name="macchina" value="<%= macchina %>">
+										<input type="hidden" name="reparto" value="<%= reparto %>">
+										<input type="hidden" name="tipo" value="<%= typeof tipo !== 'undefined' ? tipo : '' %>">
 									</span>
 									<!--Invia data e ora attuale-->
 									<div>
@@ -71,7 +74,8 @@
 									<br>
 									</div>
 									
-									<input type="hidden" id="dateTime" name="dateTime" value="mettiValoreConQualcheFunzione">
+									<input type="hidden" id="date" name="date" value="<%= new Date().toLocaleDateString('it-IT', {year:"numeric", month:"numeric", day:"numeric"}) %>">
+									<input type="hidden" id="time" name="time" value="<%= hour %>">
 									
 									<div class="wrap-input100 validate-input">
 										<input class="input100" type="text" name="prodFilo">

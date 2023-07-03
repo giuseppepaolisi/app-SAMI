@@ -5,12 +5,12 @@ const {verifyToken} = require('../middleware/user-auth');
 
 
 //permette di visualizzare la lista di reparti disponibili
-router.get('/reparti', verifyToken, (req, res) => {
+router.get('/reparti', (req, res) => {
   res.render('dipendente/reparti.ejs');
 });
 
 //permette di selezionare il reparto di riferimento
-router.get('/reparto/:reparto/', verifyToken, (req, res) => {
+router.get('/reparto/:reparto/', (req, res) => {
     console.log("\n\n" + req.params.reparto);
     switch(req.params.reparto) {
         case "produzione":
@@ -30,25 +30,25 @@ router.get('/reparto/:reparto/', verifyToken, (req, res) => {
 });
 
 //permette di visualizzare la lista di macchine dopo aver selezionato reparto e tipologia di molla
-router.get('/macchine/:reparto/:tipo/', verifyToken, (req, res) => {
+router.get('/macchine/:reparto/:tipo/', (req, res) => {
     console.log("\n\nMACCHINE");
     employee.getMacchine(req, res);
   });
 
   //permette di visualizzare la lista di macchine dopo aver selezionato il reparto assemblaggio
-  router.get('/macchine/:reparto/', verifyToken, (req, res) => {
+  router.get('/macchine/:reparto/', (req, res) => {
     console.log("\n\nMACCHINE");
     employee.getMacchine(req, res);
   });
 
   //permette di visualizzare il form di inserimento dopo aver selezionato reparto, tipo molla e macchina
-  router.get('/inserisci/:reparto/:tipo/:macchina', verifyToken, (req, res) => {
+  router.get('/inserisci/:reparto/:tipo/:macchina', (req, res) => {
     console.log("\n\nInserisci " + req.params.reparto + "\n"+ req.params.tipo + "\n" + req.params.macchina);
     res.render('insert.ejs', {reparto : req.params.reparto, tipo: req.params.tipo, macchina:req.params.macchina});
   });
 
   //permette di visualizzare il form di inserimento dopo aver selezionato reparto e macchina
-  router.get('/inserisci/:reparto/:macchina', verifyToken, (req, res) => {
+  router.get('/inserisci/:reparto/:macchina', (req, res) => {
     console.log("\n\nInserisci " + req.params.reparto);
     res.render('insert.ejs', {reparto : req.params.reparto, macchina:req.params.macchina});
   });
