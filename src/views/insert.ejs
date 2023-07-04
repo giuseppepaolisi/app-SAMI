@@ -222,25 +222,112 @@
     <script src="/js/sb-admin-2.min.js"></script>
 
 </body>
-<style>
-
+<style> 
 div[name="prodFilo"]{
 	display:none;
 }
+div[name="misuraFilo"]{
+	display:none;
+}
+div[name="fileMolle"]{
+	display:none;
+}
+div[name="qtaMolle"]{
+	display:none;
+}
+div[name="giriMolla"]{
+	display:none;
+}
+div[name="diamFilo"]{
+	display:none;
+}
+div[name="portata"]{
+	display:none;
+}
+div[name="peso"]{
+	display:none;
+}
+div[name="nMolleProd"]{
+	display:none;
+}
+
+div[name="oreLav"]{
+	display:none;
+}
+div[name="oreFermo"]{
+	display:none;
+}
+
+
+
 
 </style>
 
 <script>
 	var reparto = "<%= reparto %>"; // La tua variabile con il valore desiderato
-	var tipo = "<%= tipo %>"; // La tua variabile con il valore desiderato
+	var tipo = "<%= typeof tipo !== 'undefined' ? tipo : '' %>"; // La tua variabile con il valore desiderato
 
 
-var myInput = document.querySelector('div[name="prodFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var prodFilo = document.querySelector('div[name="prodFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var misuraFilo = document.querySelector('div[name="misuraFilo"]'); // Seleziona l'elemento input con l'attributo "misuraFilo" specifico
+var fileMolle = document.querySelector('div[name="fileMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var qtaMolle = document.querySelector('div[name="qtaMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var giriMolla = document.querySelector('div[name="giriMolla"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var diamFilo = document.querySelector('div[name="diamFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var portata = document.querySelector('div[name="portata"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var peso = document.querySelector('div[name="peso"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var nMolleProd = document.querySelector('div[name="nMolleProd"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var oreLav = document.querySelector('div[name="oreLav"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+
 
 if (reparto==="produzione" && tipo ==="pocket") {
-  myInput.style.display = 'block'; // Mostra l'input se la variabile è vera
-} else {
-  myInput.style.display = 'none'; // Nascondi l'input se la variabile è falsa
+  prodFilo.style.display = 'block'; 
+  diamFilo.style.display = 'block'; 
+  peso.style.display = 'block'; 
+  nMolleProd.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+  portata.style.display = 'block';
+} else if(reparto==="produzione" && tipo ==="bonnel"){
+  prodFilo.style.display = 'block'; 
+  diamFilo.style.display = 'block'; 
+  portata.style.display = 'block';
+  giriMolla.style.display = 'block';
+  nMolleProd.style.display = 'block'
+  oreLav.style.display = 'block';
+
+} else if(reparto==="assemblaggio" && tipo ==="pocket"){
+  prodFilo.style.display = 'block'; 
+  misuraFilo.style.display = 'block'; 
+  fileMolle.style.display = 'block'; 
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+
+
+} else if(reparto==="assemblaggio" && tipo ==="bonnel"){
+  prodFilo.style.display = 'block'; 
+  misuraFilo.style.display = 'block'; 
+  fileMolle.style.display = 'block'; 
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+  
+ } else if(reparto==="imballaggio"&& tipo ===""){
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  
+ }else {
+  prodFilo.style.display = 'none'; // Nascondi l'input se la variabile è falsa
+  misuraFilo.style.display = 'none';
+  fileMolle.style.display = 'none';
+  qtaMolle.style.display = 'none';
+  giriMolla.style.display = 'none';
+  diamFilo.style.display = 'none';
+  peso.style.display = 'none';
+  nMolleProd.style.display = 'none';
+  oreLav.style.display = 'none';
+  oreFermo.style.display = 'none';
 }
 </script>
 
