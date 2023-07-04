@@ -31,7 +31,7 @@ createData = (postData, token) => {
     if(checkData(postData.diamFilo)) data.diametro_filo = parseFloat(postData.diamFilo);
     if(checkData(postData.diamFilo)) data.diametro_molla = parseFloat(postData.diamFilo);
     if(checkData(postData.giriMolla)) data.giri_molla = parseInt(postData.giriMolla);
-    if(checkData(postData.fileMolle)) data.file = parseInt(postData.fileMolle);
+    if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
     console.log(data);
 
     return data;
