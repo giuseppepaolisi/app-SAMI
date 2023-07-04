@@ -18,7 +18,7 @@ const repartiSchema = new mongoose.Schema({
     giri_molla: Number,
     cliente: String,
     misura: Number,
-    file: Number,
+    file: String,
 });
 
 const Reparti = mongoose.model('Reparti', repartiSchema);
