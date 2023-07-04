@@ -8,7 +8,6 @@ const repartiSchema = new mongoose.Schema({
     portata: Number,
     peso: Number,
     data: Date,
-    ora: Date,
     macchina: String,
     quantita: Number, //molle prodotte, ecc..
     h_lavorate: Number,

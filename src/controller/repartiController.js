@@ -1,34 +1,47 @@
 const Reparti = require('../db/reparti');
 const mongoose = require('mongoose');
-const moment = require('moment');
-require('moment/locale/it'); // Imposta la localizzazione italiana per Moment.js
+const {getData} = require('../middleware/user-auth');
 
 const repartiController = {}; //consente di esportare le funzioni
 
+checkData = (data) => {
+    if(data === '' || typeof data === 'undefined')
+        return false;
+    else
+        return true;
+};
+
+createData = (postData, token) => {
+    let data = {};
+    if(checkData(postData.tipo)) data.tipo = postData.tipo;
+    if(checkData(postData.reparto)) data.reparto = postData.reparto;
+    if(checkData(postData.prodfilo)) data.fornitore = postData.prodfilo;
+    if(checkData(postData.diamFilo)) data.diametro = parseFloat(postData.diamFilo);
+    if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
+    if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
+    data.date = new Date();
+    if(checkData(postData.macchina)) data.macchina = postData.macchina;
+    if(checkData(postData.qtaMolle)) data.quantita = parseInt(postData.qtaMolle);
+    if(checkData(postData.oreLav)) data.h_lavorate = parseInt(postData.oreLav);
+    if(checkData(postData.oreFermo)) data.h_fermo = parseInt(postData.oreFermo);
+
+    console.log('user: ' + token.user);
+    data.user = token.user;
+    
+    if(checkData(postData.diamFilo)) data.diametro_filo = parseFloat(postData.diamFilo);
+    if(checkData(postData.diamFilo)) data.diametro_molla = parseFloat(postData.diamFilo);
+    if(checkData(postData.giriMolla)) data.giri_molla = parseInt(postData.giriMolla);
+    if(checkData(postData.fileMolle)) data.file = parseInt(postData.fileMolle);
+    console.log(data);
+
+    return data;
+};
+
 repartiController.insertMolleggi = (req, res) => {
-    const data = {
-        tipo: req.body.tipo,
-        reparto: req.body.reparto,
-        fornitore: req.body.prodfilo,
-        diametro: parseFloat(req.body.diamFilo),
-        portata: parseFloat(req.body.portata),
-        peso: parseFloat(req.body.peso),
-        data: moment(req.body.date, 'DD-MM-YYYY').toDate(),
-        ora: moment(req.body.time, 'HH:mm').toDate(),
-        macchina: req.body.macchina,
-        quantita: parseInt(req.body.qtaMolle),
-        h_lavorate: parseInt(req.body.oreLav),
-        h_fermo: parseInt(req.body.oreFermo),
-        user: 'rcastagna',
-        diametro_filo: parseFloat(req.body.diamFilo),
-        diametro_molla: parseFloat(req.body.diamFilo),
-        giri_molla: parseInt(req.body.giriMolla),
-        file: parseInt(req.body.fileMolle)
-    };
     try {
         const uri = process.env.DB_URI || "";
         mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const molleggi = new Reparti(data);
+        const molleggi = new Reparti(createData(req.body, getData(req.cookies.token)));
         molleggi.save();
     } catch (error) {
         console.error("errore "+error);

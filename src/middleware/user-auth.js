@@ -79,10 +79,22 @@ function deleteToken(req,res,next) {
     next();
 }
 
+function getData(token) {
+    try {
+      const pub_key = fs.readFileSync('rsa.public');
+      const decoded = jwt.verify(token, pub_key);
+      return decoded;
+    } catch (err) {
+      console.error('Errore durante la decodifica del token:', err);
+      return null;
+    }
+}
+
 module.exports = {
     verifyToken,
     isAdmin,
     isEmployee,
     signToken,
-    deleteToken
+    deleteToken,
+    getData
 }
