@@ -57,7 +57,7 @@ function isAdmin(req,res,next) {
 function signToken(req, res, user, next) {
     const payload = { user: req.body.username, isAdmin: user.admin, isLogged: true };
     const cookieSetting = {
-        expires: new Date(Date.now() + 1e5),
+        expires: new Date(Date.now() + 2*60*60*1000),
         httpOnly: true,
         secure: false
     };
