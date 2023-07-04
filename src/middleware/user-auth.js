@@ -54,8 +54,8 @@ function isAdmin(req,res,next) {
 }
 
 //genera il token
-function signToken(req, res, admin, next) {
-    const payload = { user: req.body.username, isAdmin: admin, isLogged: true };
+function signToken(req, res, user, next) {
+    const payload = { user: req.body.username, isAdmin: user.admin, isLogged: true };
     const cookieSetting = {
         expires: new Date(Date.now() + 1e5),
         httpOnly: true,
@@ -64,6 +64,8 @@ function signToken(req, res, admin, next) {
     const prv_key = fs.readFileSync('rsa.private');
     const token = jwt.sign(payload, prv_key, options);
     res.cookie('token', token, cookieSetting);
+    res.cookie('nome', user.nome, cookieSetting);
+    res.cookie('cognome', user.cognome, cookieSetting);
     next();
 }
 

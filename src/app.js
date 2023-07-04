@@ -27,6 +27,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//permette di inviare username al client
+app.use(function(req, res, next) {
+  res.locals.nomeUtente = req.cookies.nome || '';
+  next();
+});
+
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);

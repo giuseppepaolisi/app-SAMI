@@ -45,7 +45,7 @@ authController.login = async (req, res) => {
 
     console.log("\nE' admin: " + user.admin);
     // Autenticazione riuscita, impostiamo una sessione
-    signToken(req, res, user.admin, () => {
+    signToken(req, res, user, () => {
       // Reindirizzamento alla pagina principale o ad un'altra pagina dopo il login
       console.log('login effettuato');
       if(user.admin){
