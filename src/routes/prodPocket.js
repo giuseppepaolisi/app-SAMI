@@ -19,12 +19,24 @@ router.get('/', function(req, res, next) {
 });*/
 
 /* GET tables. */
-router.get('/prodPocket/:reparto/:tipo', async function(req, res, next) {
+router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
   const reparto = req.params.reparto;
   const tipo = req.params.tipo;
+  
+  //setta la query
+  if(reparto === "imballaggio") {
+    parametri = {
+        reparto: reparto
+      };
+  } else {
+    parametri = {
+        reparto: reparto,
+        tipo: tipo
+      };
+  }
   
   const list = await Reparti.find({tipo:tipo, reparto:reparto}).exec();
     //if (err) {
