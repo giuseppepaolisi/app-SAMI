@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "axios": "^1.4.0",
     "body-parser": "^1.20.2",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -14,15 +15,17 @@
     "express": "^4.18.2",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
+    "moment": "^2.29.4",
     "mongodb": "^5.5.0",
     "mongoose": "^7.2.2",
     "mongose": "^0.0.2-security",
     "morgan": "~1.9.1",
+    "puppeteer": "^20.8.2",
     "startbootstrap-sb-admin-2": "^3.3.7",
     "subproject": "file:./db"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.3",
-    "nodemon": "^1.14.9"
+    "nodemon": "^3.0.1"
   }
 }

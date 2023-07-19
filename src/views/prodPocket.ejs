@@ -59,7 +59,9 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    
                                     <thead>
+                                                                
                                         <tr>
                                             <% for(item in aheader) { %> 
                                                 <th> <%=aheader[item] %> </th>  %>
@@ -82,10 +84,14 @@
                                                     <td><%= values[i] %></td>
                                                     <%}%>
                                                 </tr>
+                                            
                                             <%});%> 
                                        
                                         
                                     </tbody>
+                                    <!-- Pulsante "Scarica PDF" -->
+                                    <button class="btn btn-outline-danger " data-id="<%= item._id %>"><i class="fa fa-download"></i> Scarica PDF</button>
+                                    <br><br>
                                 </table>
                             </div>
                         </div>

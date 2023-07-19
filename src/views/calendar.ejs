@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario</title>
+  <style>
+    /* Aggiungi il CSS per lo stile del calendario qui */
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .day {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calendario</h1>
+  <table>
+    <tr>
+      <th>Giorno della settimana</th>
+      <th>Giorno del mese</th>
+    </tr>
+    <% daysInMonth.forEach(day => { %>
+      <tr>
+        <td><%= day.dayOfWeek %></td>
+        <td class="day"><%= day.dayOfMonth %></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>

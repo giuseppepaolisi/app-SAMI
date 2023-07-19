@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
 });*/
 
 /* GET tables. */
-router.get('/', async function(req, res, next) {
+router.get('/dipendenti', async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -33,7 +33,8 @@ router.get('/', async function(req, res, next) {
 
 });
 
-router.post('/addUser', async function(req, res, next) {
+
+/*router.post('/addUser', async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -58,11 +59,11 @@ router.post('/addUser', async function(req, res, next) {
 
   //await utente.save();
 
-  /*res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});*/
+  /*res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});
 
   
 
-});
+}); */
 
 
 module.exports = router;

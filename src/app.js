@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+//const moment = require('moment');
 const logger = require('morgan');
 require('dotenv').config({path: path.resolve(__dirname,'./env/developement.env')});
 const bodyParser = require('body-parser');
@@ -13,6 +14,8 @@ const insertRouter = require('./routes/insert');
 const logoutRouter = require('./routes/logout');
 const employeeRouter = require('./routes/employee');
 const prodPocketRouter = require('./routes/prodPocket');
+const calendarRouter = require('./routes/calendario');
+
 
 const app = express();
 
@@ -42,6 +45,9 @@ app.use('/', insertRouter);
 app.use('/logout', logoutRouter);
 app.use('/', employeeRouter);
 app.use('/', prodPocketRouter);
+app.use('/dipendenti', prodPocketRouter);
+//app.use('/calendario', calendarRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
