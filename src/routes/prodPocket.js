@@ -39,13 +39,9 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
       };
   }
   
-  const list = await Reparti.find({tipo:tipo, reparto:reparto}).exec();
-    //if (err) {
-  //    console.error(err);
-  //    return;
- //   }
+  const list = await Reparti.find(parametri).exec();
   
-    if (list.length>0) {
+    if (list.length > 0) {
       //const list = await Reparti.find({tipo:'Produzione', reparto:'produzione'}).exec(); 
       const aheader = ['tipo', 'reparto', 'diametro', 'portata','peso', 'data','ora','macchina', 'quantita','h_lavorate','h_fermo', 'user', 'diamtero_filo','diamtero_molla','giri_molla','file', '_id'];
       /*const aheader = "nome";*/
