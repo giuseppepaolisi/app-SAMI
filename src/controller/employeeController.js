@@ -39,7 +39,7 @@ employeeController.addEmployee = async (req, res, next) => {
 
     await utente.save();
 
-    res.render('tables', { title: 'Dipendenti'});
+    res.redirect('/dipendenti');
 };
 
 module.exports = employeeController;

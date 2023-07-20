@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', usersRouter);
 app.use('/login', loginRouter);
 app.use('/', insertRouter);
 app.use('/logout', logoutRouter);
