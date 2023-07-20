@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const User = require("./../db/user.js");
-const mongoose = require('mongoose');
+const employee = require('../controller/employeeController');
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 /* GET users listing. */
@@ -10,13 +9,12 @@ router.get('/', isAdmin, function(req, res, next) {
 });
 
 router.get('/lista', verifyToken, async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  console.log("uri: "+ uri);
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  employee.getEmployees(req, res,next);
+});
 
-  console.log("\n\nLista");
-  console.log(await User.find({}).exec());
-  res.render('index', { title: 'Lista' });
+router.post('/addUser', async (req, res, next) => {
+  employee.addEmployee(req, res, next);
+
 });
 
 module.exports = router;

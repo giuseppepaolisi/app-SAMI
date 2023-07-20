@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const employee = require('../controller/employeeController');
+const macchine = require('../controller/macchineController');
 const {isEmployee} = require('../middleware/user-auth');
 
 
@@ -32,13 +32,13 @@ router.get('/reparto/:reparto/', isEmployee,(req, res) => {
 //permette di visualizzare la lista di macchine dopo aver selezionato reparto e tipologia di molla
 router.get('/macchine/:reparto/:tipo/', isEmployee, (req, res) => {
     console.log("\n\nMACCHINE");
-    employee.getMacchine(req, res);
+    macchine.getMacchine(req, res);
   });
 
   //permette di visualizzare la lista di macchine dopo aver selezionato il reparto assemblaggio
   router.get('/macchine/:reparto/', isEmployee, (req, res) => {
     console.log("\n\nMACCHINE");
-    employee.getMacchine(req, res);
+    macchine.getMacchine(req, res);
   });
 
   //permette di visualizzare il form di inserimento dopo aver selezionato reparto, tipo molla e macchina

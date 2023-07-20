@@ -61,36 +61,6 @@ router.get('/', async function(req, res, next) {
 });
 
 
-/*router.post('/addUser', async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
-  const nome = req.body.nome;
-  const cognome = req.body.cognome;
-  const user = req.body.user;
-  const password = req.body.password;
-
-
-
-  console.log("WEEEEEEEEEEEEEE ", req.bodyparse);
-
-  const utente = new User({
-    nome: nome,
-    cognome: cognome,
-    user:user,
-    password:password,
-    admin : false
-
-  });
-
-  //await utente.save();
-
-  /*res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});
-
-  
-
-}); */
 
 // Definisci la funzione per ottenere i giorni di tutti i mesi dell'anno corrente
 function getAllMonths() {
