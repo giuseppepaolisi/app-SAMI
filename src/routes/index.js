@@ -29,6 +29,13 @@ router.get('/calendario', async function(req, res, next) {
   res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario' });
 });
 
+router.get('/addUser', async function(req, res, next) {
+
+
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('addUser');
+});
+
 
 
 
