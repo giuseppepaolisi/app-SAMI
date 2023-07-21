@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     cognome: String,
     user: String,
     password: String,
-    admin: Boolean
+    admin: Boolean,
+    deleted: Boolean //false non è cancellato true è stato cancellato
 });
 
 const User = mongoose.model('User', userSchema);

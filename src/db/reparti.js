@@ -19,6 +19,7 @@ const repartiSchema = new mongoose.Schema({
     cliente: String,
     misura: Number,
     file: String,
+    deleted: Boolean
 });
 
 const Reparti = mongoose.model('Reparti', repartiSchema);

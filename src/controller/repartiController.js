@@ -32,6 +32,7 @@ createData = (postData, token) => {
     if(checkData(postData.diamFilo)) data.diametro_molla = parseFloat(postData.diamFilo);
     if(checkData(postData.giriMolla)) data.giri_molla = parseInt(postData.giriMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
+    data.deleted = 0;
     console.log(data);
 
     return data;

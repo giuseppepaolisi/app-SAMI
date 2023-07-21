@@ -9,7 +9,7 @@ employeeController.getEmployees = async (req, res, next) => {
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
     console.log("\n\nLista");
-    console.log(await User.find({}).exec());
+    console.log(await User.find({deleted: 0}).exec());
     res.render('index', { title: 'Lista' });
 };
 
@@ -33,7 +33,8 @@ employeeController.addEmployee = async (req, res, next) => {
         cognome: cognome,
         user:user,
         password:password,
-        admin : isAdmin
+        admin : isAdmin,
+        deleted : 0
 
     });
 

@@ -28,14 +28,17 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
   
   //setta la query
   if(reparto === "imballaggio") {
+    //deleted: 0
     parametri = {
-        reparto: reparto
+        reparto: reparto,
+        deleted: 0
       };
       tipo = "";
   } else {
     parametri = {
         reparto: reparto,
-        tipo: tipo
+        tipo: tipo,
+        deleted: 0
       };
   }
   
@@ -47,7 +50,7 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
       /*const aheader = "nome";*/
 
       //prende gli header della prima occorrenza nel db ed elimina alcuni di loro.
-      const keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto'].includes(key));
+      const keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted'].includes(key));
 
       console.log(keys); 
       console.log(list[0]);
@@ -56,6 +59,30 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
     
     }
 
+});
+
+router.delete('/eliminaMisura/:id', async (req, res, next) => {
+  const elementId = req.params.id;
+  console.log(elementId);
+  // Verifica se l'ID è vuoto o nullo
+  if (!elementId || elementId === "null") {
+    return res.status(400).json({ message: "ID elemento non valido" });
+  }
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const flag = {
+    deleted : 1
+  };
+  Reparti.findByIdAndUpdate(elementId, flag, { new: true, runValidators: true })
+    .then((flag) => {
+      if(flag) {
+        console.log('Elemento aggiornato:', flag);
+      } else {
+        console.log('Elemento non trovato.');
+      }
+    }).catch((errore) => {
+      console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+    });
 });
 
 
