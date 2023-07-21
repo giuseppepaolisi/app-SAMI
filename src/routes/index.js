@@ -36,6 +36,18 @@ router.get('/addUser', async function(req, res, next) {
   res.render('addUser');
 });
 
+router.get('/addFerie', async function(req, res, next) {
+  const options = [
+  { value: 'opzione1', label: 'Opzione 1' },
+  { value: 'opzione2', label: 'Opzione 2' },
+  { value: 'opzione3', label: 'Opzione 3' },
+  // Aggiungi altre opzioni se necessario
+];
+
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('addFerie', {options});
+});
+
 
 
 
