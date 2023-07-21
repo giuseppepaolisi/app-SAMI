@@ -77,11 +77,13 @@ router.delete('/eliminaMisura/:id', async (req, res, next) => {
     .then((flag) => {
       if(flag) {
         console.log('Elemento aggiornato:', flag);
+        res.json({ message: "Elemento eliminato con successo" });
       } else {
         console.log('Elemento non trovato.');
       }
     }).catch((errore) => {
       console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+      res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
     });
 });
 

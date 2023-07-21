@@ -82,12 +82,12 @@
                                         
                                             <% list.forEach(element => { 
                                                 const values = aheader.map(aheader => element[aheader]);%>
-                                                <tr>
+                                                <tr data-id="<%= values[0] %>">
                                                     <%for(let i = 1; i < values.length; i++) {%>
                                                     <td><%= values[i] %></td>
                                                     <%}%>
                                                     <td>
-                                                        <button class="btn btn-danger btn-circle delete-btn" id="<%= values[0] %>">
+                                                        <button class="btn btn-danger btn-circle delete-btn" data-id="<%= values[0] %>">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </td>
@@ -136,7 +136,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Clicca su "Annulla" per annullare l</div>
+                    <div class="modal-body">Clicca su "Annulla" per annullare l'operazione</div>
                     <!-- Modifica il tuo modal con l'attributo data-id sul pulsante di conferma -->
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
@@ -173,59 +173,54 @@
     <script src="/js/demo/datatables-demo.js"></script>
     <!-- Aggiorna lo script per gestire il clic sul pulsante di eliminazione -->
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function () {
         const deleteButtons = document.querySelectorAll(".delete-btn");
         const deleteModal = document.getElementById("deleteModal");
         const deleteModalBody = deleteModal.querySelector(".modal-body");
         const deleteConfirmButton = deleteModal.querySelector(".delete-confirm-btn");
-
+    
         deleteButtons.forEach((button) => {
         button.addEventListener("click", function () {
             const elementId = button.getAttribute("data-id");
             const elementRow = button.closest("tr"); // Trova la riga corrispondente all'elemento
-
-            // Ottieni i dati dell'elemento dalla riga
-            const nome = elementRow.querySelector("td:nth-child(1)").innerText;
-            const cognome = elementRow.querySelector("td:nth-child(2)").innerText;
-            const user = elementRow.querySelector("td:nth-child(3)").innerText;
-            const password = elementRow.querySelector("td:nth-child(4)").innerText;
-
-            // Popola il modal con i dati dell'elemento
-            deleteModalBody.innerHTML = `Vuoi eliminare l'utente:<br>Nome: ${nome}<br>Cognome: ${cognome}<br>User: ${user}<br>Password: ${password}`;
-
+    
             // Aggiungi l'ID dell'elemento al pulsante di conferma
             deleteConfirmButton.setAttribute("data-id", elementId);
-
+    
             // Mostra il modal
             $('#deleteModal').modal('show');
         });
         });
-
+    
         // Gestisci il clic sul pulsante di conferma dell'eliminazione
         deleteConfirmButton.addEventListener("click", function () {
         const elementId = deleteConfirmButton.getAttribute("data-id");
-
-        // Qui puoi aggiungere la logica per inviare la richiesta di eliminazione al server
-        // Utilizzando fetch o altre API per comunicare con il server Express
-
-        // Esempio di utilizzo di fetch:
-        fetch(`/api/elementi/${elementId}`, {
+    
+        // Eliminazione sul server
+        fetch(`/eliminaMisura/${elementId}`, {
             method: "DELETE",
         })
             .then((response) => response.json())
             .then((data) => {
-            // Gestisci la risposta del server come desideri
-            console.log(data);
-            // Aggiorna la tabella o effettua altre operazioni necessarie
+            if (data.message === "Elemento eliminato con successo") {
+                // Rimuovi la riga corrispondente dell'elemento dalla tabella
+                const elementRow = document.querySelector(`tr[data-id="${elementId}"]`);
+                if (elementRow) {
+                elementRow.remove();
+                console.log('Elemento eliminato dalla tabella.');
+                }
+            } else {
+                console.error('Errore durante l\'eliminazione:', data.message);
+            }
             })
             .catch((error) => {
             console.error("Errore durante l'eliminazione:", error);
             });
-
+    
         // Nascondi il modal dopo aver completato l'eliminazione
         $('#deleteModal').modal('hide');
         });
-
+    
     });
     </script>
 
