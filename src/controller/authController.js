@@ -13,7 +13,7 @@ authController.showLoginForm = (req, res) => {
     try {
         const pub_key = fs.readFileSync('rsa.public');
         req.user = jwt.verify(token, pub_key, options);
-        res.redirect('/users/lista');
+        res.redirect('/');
     } catch (err) {
         return res.status(200).render('login', {error :''});//Il token non è valido oppure è scaduto
     }
@@ -49,7 +49,7 @@ authController.login = async (req, res) => {
       // Reindirizzamento alla pagina principale o ad un'altra pagina dopo il login
       console.log('login effettuato');
       if(user.admin){
-        res.redirect('/users/lista');//pagina utente dell'admin
+        res.redirect('/');//pagina utente dell'admin
       } else {
         res.redirect('/reparti');//pagina iniziale dipendente
       }

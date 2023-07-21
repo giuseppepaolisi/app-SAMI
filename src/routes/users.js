@@ -5,12 +5,12 @@ const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/
 
 /* GET users listing. */
 router.get('/', isAdmin, function(req, res, next) {
-  res.render('index', { title: 'Users' });
+  res.render('index');
 });
 
 router.get('/lista', verifyToken, async function(req, res, next) {
   employee.getEmployees(req, res,next);
-});
+}); 
 
 router.post('/addUser', async (req, res, next) => {
   employee.addEmployee(req, res, next);
