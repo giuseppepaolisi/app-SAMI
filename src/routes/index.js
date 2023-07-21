@@ -54,17 +54,7 @@ router.get('/dipendenti', async function(req, res, next) {
 });
 
 router.get('/', async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  const list = await User.find({deleted:0}).exec(); 
-  const aheader = ['nome', 'cognome', 'user', 'password'];
-  /*const aheader = "nome";*/
-
-  res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});
-
-  
-
+  res.render('index');
 });
 
 

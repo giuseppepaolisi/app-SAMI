@@ -7,12 +7,12 @@ const User = require("./../db/user.js");
 
 /* GET users listing. */
 router.get('/', isAdmin, function(req, res, next) {
-  res.render('index', { title: 'Users' });
+  res.render('index');
 });
 
 router.get('/lista', async function(req, res, next) {
   employee.getEmployees(req, res,next);
-});
+}); 
 
 router.post('/addUser', async (req, res, next) => {
   employee.addEmployee(req, res, next);
