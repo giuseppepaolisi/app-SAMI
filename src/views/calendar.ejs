@@ -48,6 +48,7 @@
                   <h1>Calendario <%= year %></h1>
             
                   <button class="btn btn-primary" id="mostraFormLink">Aggiungi Permesso</button>
+                  <button class="btn btn-primary" id="apriPaginaButton">Mostra Permessi e Ferie</button>
                   <br> <br> <br>
                   <% months.forEach(month => { %>
                     <div class="month">
@@ -143,6 +144,19 @@
           }
         });
       </script>
+
+<script>
+  // Funzione che verrà eseguita quando il pulsante viene cliccato
+  function apriPagina() {
+      // Specifica l'URL della pagina che desideri aprire
+      var url = "/showFerie"; // Sostituisci con l'URL desiderato
+
+      // Apre la pagina nel browser
+      window.location.href = url;  }
+
+  // Aggiunge un event listener al pulsante per ascoltare il click
+  document.getElementById("apriPaginaButton").addEventListener("click", apriPagina);
+</script>
       
 
     <style>#iframeContainer {

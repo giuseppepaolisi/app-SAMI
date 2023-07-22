@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
 const mongoose = require("mongoose");
+const User = require ("./../db/user.js");
+const Ferie = require ("./../db/ferie.js");
+const ferie = require('../controller/ferieController');
 
-const User = require ("./../db/user.js")
 
 const bodyparse = require("body-parser");
 
@@ -19,6 +20,7 @@ router.get('/', function(req, res, next) {
 });*/
 
 /* GET tables. */
+
 
 
 router.get('/calendario', async function(req, res, next) {
@@ -85,6 +87,10 @@ router.get('/addFerie', async function(req, res, next) {
   res.render('addFerie', {options:options});
 });
 
+router.post('/addFerie', async function(req, res, next) {
+  ferie.addFerie(req, res, next);
+});
+
 
 
 
@@ -97,6 +103,20 @@ router.get('/dipendenti', async function(req, res, next) {
   /*const aheader = "nome";*/
 
   res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});
+
+  
+
+});
+
+router.get('/showFerie', async function(req, res, next) {
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  const list = await Ferie.find({deleted: 0}).exec(); 
+  const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia'];
+  /*const aheader = "nome";*/
+
+  res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list});
 
   
 
