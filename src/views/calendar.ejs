@@ -46,6 +46,9 @@
                 <div class="container-fluid">
 
                   <h1>Calendario <%= year %></h1>
+            
+                  <button class="btn btn-primary" id="mostraFormLink">Aggiungi Permesso</button>
+                  <br> <br> <br>
                   <% months.forEach(month => { %>
                     <div class="month">
                       <div class="month-header"><h3><%= month.month %></h3> </div>
@@ -54,14 +57,18 @@
                           <th>Giorno della settimana &nbsp; &nbsp;</th>
                           <th>Giorno del mese  &nbsp; &nbsp;</th>
                           <th>Permessi e Ferie</th>
+
+                  
                         </tr>
                         <% month.daysInMonth.forEach(day => { %> 
                           <tr> 
                             <td><%= day.dayOfWeek %></td>
                             <td class="day">
-                                <a id="mostraFormLink" href="/"><%= day.dayOfMonth %></a>
+                                <p ><%= day.dayOfMonth %></p>
                               </td>
                               <td> X</td>
+                      
+          
                           </tr>
                         <% }) %>
                       </table>

@@ -36,16 +36,53 @@ router.get('/addUser', async function(req, res, next) {
   res.render('addUser');
 });
 
-router.get('/addFerie', async function(req, res, next) {
-  const options = [
-  { value: 'opzione1', label: 'Opzione 1' },
-  { value: 'opzione2', label: 'Opzione 2' },
-  { value: 'opzione3', label: 'Opzione 3' },
-  // Aggiungi altre opzioni se necessario
-];
+router.get('/editUser/:id', async function(req, res, next) {
+
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const user = await User.find({_id: req.params.id}).exec(); 
+
+  console.log(user.nome + "ECCOMIIIII");
 
   // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
-  res.render('addFerie', {options});
+  res.render('editUser', {user:user[0]});
+});
+
+router.post('/editUser/:id', async function(req, res, next) {
+
+  const elementId = req.params.id;
+  console.log(elementId);
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const editingUser = {
+      nome : req.body.nome,
+      cognome : req.body.cognome,
+      user : req.body.user,
+      password : req.body.password
+    };
+    User.findByIdAndUpdate(elementId, editingUser, { new: true, runValidators: true })
+      .then((editingUser) => {
+        if(editingUser) {
+          console.log('Elemento aggiornato:', editingUser);
+          res.redirect('/dipendenti');
+        } else {
+          console.log('Elemento non trovato.');
+        }
+      }).catch((errore) => {
+        console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+        //res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+      });
+
+});
+
+router.get('/addFerie', async function(req, res, next) {
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const options = await User.find({deleted: 0}).exec(); 
+  // Aggiungi altre opzioni se necessario
+
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('addFerie', {options:options});
 });
 
 
