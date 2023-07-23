@@ -4,8 +4,10 @@ var router = express.Router();
 const mongoose = require("mongoose");
 
 const Reparti = require ("./../db/reparti.js")
+const User = require ("./../db/user.js")
 
 const bodyparse = require("body-parser");
+const repartiController = require("../controller/repartiController");
 
 
 
@@ -85,6 +87,25 @@ router.delete('/eliminaMisura/:id', async (req, res, next) => {
       console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
       res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
     });
+});
+
+router.get('/editMolleggio/:id', async (req, res, next) => {
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const molleggio = await Reparti.find({_id: req.params.id}).exec(); 
+  const users = await User.find({deleted:0}).exec(); 
+
+  console.log(req.params.id);
+  console.log(molleggio[0]);
+  console.log(molleggio[0].macchina);
+
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users, users});
+});
+
+router.post('/editMolleggio/:id', (req, res, next) => {
+  console.log(req.params.id);
+  repartiController.modificaMolleggio(req, res, next);
 });
 
 

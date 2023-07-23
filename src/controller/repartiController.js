@@ -52,5 +52,28 @@ repartiController.insertMolleggi = (req, res) => {
     res.render("dipendente/postInsert.ejs");
 };
 
+repartiController.modificaMolleggio = (req, res, next ) => {
+    const elementId = req.params.id;
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const data = createData(req.body, req.body);
+    Reparti.findByIdAndUpdate(elementId, data, { new: true, runValidators: true })
+    .then((data) => {
+        if(data) {
+            console.log('Elemento aggiornato:', data);
+            if(typeof data.tipo === undefined){
+                res.redirect("/prodPocket/" + data.reparto);
+            } else {
+                res.redirect("/prodPocket/" + data.reparto + "/" + data.tipo);
+            }
+        } else {
+        console.log('Elemento non trovato.');
+        }
+    }).catch((errore) => {
+        console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+        res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+    });
+};
+
 
   module.exports = repartiController;

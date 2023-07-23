@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Modifica Molleggio</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
+<!--===============================================================================================-->
+
+<!-- Custom fonts for this template-->
+<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+<link
+	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+	rel="stylesheet">
+
+<!-- Custom styles for this template-->
+<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- top bar-->
+                <%- include('components/topbarEmployee.ejs') %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+
+					<div class="limiter">
+						<div class="container-login100">
+							<div class="wrap-login100">
+								<form class="login100-form" method="post" action="/editMolleggio/<%= molleggio._id %>">
+									
+									<span class="login100-form-title p-b-26">
+										<%= macchina %>
+										<input type="hidden" name="macchina" value="<%= macchina %>">
+										<input type="hidden" name="reparto" value="<%= reparto %>">
+										<input type="hidden" name="tipo" value="<%= typeof tipo !== 'undefined' ? tipo : '' %>">
+									</span>
+									<!--Invia data e ora attuale-->
+									<div>
+									<h5><%= molleggio.ora %></h5>
+									<br>
+									</div>
+									
+									<input type="hidden" id="date" name="date" value="">
+									<input type="hidden" id="time" name="time" value="">
+									
+									<div class="wrap-input100 validate-input" name="prodFilo">
+										<label>Produttore filo</label>
+										<input class="input100" type="text" name="prodFilo" value="<%= molleggio.fornitore%>">
+									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input" name="misuraFilo">
+										<label>Misura filo</label>
+										<input class="input100" type="text" name="misuraFilo" value="<%= molleggio.diametro%>">									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input" name="fileMolle" >
+										<label>File molle</label>
+										<input class="input100" type="text" name="fileMolle" value="<%= molleggio.file%>">
+									</div>
+									<!--Assemblaggio-->
+									<div class="wrap-input100 validate-input" name="qtaMolle">
+										<label>Quantita molle</label>
+										<input class="input100" type="number" name="qtaMolle" value="<%= molleggio.quantita%>">
+									</div>
+									<!--Produzione Vecchia-->
+									<div class="wrap-input100 validate-input" name="giriMolla">
+										<label>Giri molla</label>
+										<input class="input100" type="number" name="giriMolla" min="1" max="10" step=1 value="<%= molleggio.giri_molla%>">
+									</div>
+									<!--Produzione Vecchia e Nuova-->
+									<div class="wrap-input100 validate-input" name="diamFilo">
+										<label>Diametro filo</label>
+										<input class="input100" type="number" name="diamFilo" min="1" max="2" step=0.01 value="<%= molleggio.diametro_filo%>">									
+									</div>
+									<div class="wrap-input100 validate-input" name="portata">
+										<label>Portata</label>
+										<input class="input100" type="number" name="portata" min="200" max="2000" step=1 value="<%= molleggio.portata%>">									
+									</div>
+									<!--Produzione Nuova-->
+									<div class="wrap-input100 validate-input" name="peso">
+										<label>Peso</label>
+										<input class="input100" type="number" name="peso" min="0" max="100" step=1 value="<%= molleggio.peso%>">									
+									</div>
+									
+									<div class="wrap-input100 validate-input" name="nMolleProd">
+										<label>Numero di molle prodotte</label>
+										<input class="input100" type="number" name="nMolleProd" min="0" max="999999999" step=1 value="<%= molleggio.quantita%>">									
+									</div>
+									<!--Ore standard/Ore prodotte-->
+									<div class="wrap-input100 validate-input"  name="oreLav">
+										<label>Ore lavorate</label>
+										<input class="input100" type="number" name="oreLav" min="1" max="12" step=1 value="<%= molleggio.h_lavorate%>">									
+									</div>
+									<div class="wrap-input100 validate-input" name="oreFermo">
+										<label>Ore fermo</label>
+										<input class="input100" type="number" name="oreFermo" min="1" max="12" step=1 value="<%= molleggio.h_fermo%>">									
+									</div>
+									<div class="wrap-input100 validate-input" name="user">
+										<label>Utente</label>
+										<select name="user" class="input100">
+										<% 
+										users.forEach(item => {
+											if(item.user === molleggio.user) {
+												%>
+												<option value="<%= item.user%>" selected><%= item.nome + " " + item.cognome%></option>
+												<%
+											} else {
+												%>
+												<option value="<%= item.user%>"><%= item.nome + " " + item.cognome%></option>
+												<%
+											}
+										});
+										 %>
+										</select>								
+									</div>
+
+								<!--  <div class="wrap-input100 validate-input">
+										<input class="input100" type="text" name="prodFilo">
+										<span class="focus-input100" data-placeholder="Produttore Filo"></span>
+									</div>-->
+
+									<!--<div class="wrap-input100 validate-input" data-validate="Enter password">
+										<span class="btn-show-pass">
+											<i class="zmdi zmdi-eye"></i>
+										</span>
+										<input class="input100" type="password" name="password">
+										<span class="focus-input100" data-placeholder="Password"></span>
+									</div> -->
+
+									<div class="container-login100-form-btn">
+										<div class="wrap-login100-form-btn">
+											<div class="login100-form-bgbtn"></div>
+											<button onclick="myFunction()" type="submit" class="login100-form-btn">
+												Invia 
+											</button>
+
+											<script>
+												function myFunction() {
+												var txt;
+												if (confirm("Invia Molleggi")) {
+													txt = "Molleggi inviati oggi ";
+												} else {
+													txt = "Non hai inviato i molleggi!";
+												}
+												document.getElementById("demo").innerHTML = txt;
+												}
+												</script>
+												
+										</div>
+										<p id="demo"></p>
+									</div>
+									
+								
+
+								<!--	<div class="text-center p-t-115">
+										<span class="txt1">
+											Problemi con l'account?
+										</span>
+
+										<a class="txt2" href="#">
+											Clicca qui
+										</a>
+									</div> -->
+
+									
+
+								</form>                 
+							
+							</div>
+						</div>
+					</div>
+					
+
+
+					<div id="dropDownSelect1"></div>
+			</div>
+		</div>
+	</div>
+	
+<!--===============================================================================================-->
+	<script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/bootstrap/js/popper.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/daterangepicker/moment.min.js"></script>
+	<script src="/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="/js/main.js"></script>
+
+
+	<!-- Bootstrap core JavaScript-->
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+<style> 
+div[name="prodFilo"]{
+	display:none;
+}
+div[name="misuraFilo"]{
+	display:none;
+}
+div[name="fileMolle"]{
+	display:none;
+}
+div[name="qtaMolle"]{
+	display:none;
+}
+div[name="giriMolla"]{
+	display:none;
+}
+div[name="diamFilo"]{
+	display:none;
+}
+div[name="portata"]{
+	display:none;
+}
+div[name="peso"]{
+	display:none;
+}
+div[name="nMolleProd"]{
+	display:none;
+}
+
+div[name="oreLav"]{
+	display:none;
+}
+div[name="oreFermo"]{
+	display:none;
+}
+
+
+
+
+</style>
+
+<script>
+	var reparto = "<%= reparto %>"; // La tua variabile con il valore desiderato
+	var tipo = "<%= typeof tipo !== 'undefined' ? tipo : '' %>"; // La tua variabile con il valore desiderato
+
+
+var prodFilo = document.querySelector('div[name="prodFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var misuraFilo = document.querySelector('div[name="misuraFilo"]'); // Seleziona l'elemento input con l'attributo "misuraFilo" specifico
+var fileMolle = document.querySelector('div[name="fileMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var qtaMolle = document.querySelector('div[name="qtaMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var giriMolla = document.querySelector('div[name="giriMolla"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var diamFilo = document.querySelector('div[name="diamFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var portata = document.querySelector('div[name="portata"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var peso = document.querySelector('div[name="peso"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var nMolleProd = document.querySelector('div[name="nMolleProd"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var oreLav = document.querySelector('div[name="oreLav"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+
+
+if (reparto==="produzione" && tipo ==="pocket") {
+  prodFilo.style.display = 'block'; 
+  diamFilo.style.display = 'block'; 
+  peso.style.display = 'block'; 
+  nMolleProd.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+  portata.style.display = 'block';
+} else if(reparto==="produzione" && tipo ==="bonnel"){
+  prodFilo.style.display = 'block'; 
+  diamFilo.style.display = 'block'; 
+  portata.style.display = 'block';
+  giriMolla.style.display = 'block';
+  nMolleProd.style.display = 'block'
+  oreLav.style.display = 'block';
+
+} else if(reparto==="assemblaggio" && tipo ==="pocket"){
+  prodFilo.style.display = 'block'; 
+  misuraFilo.style.display = 'block'; 
+  fileMolle.style.display = 'block'; 
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+
+
+} else if(reparto==="assemblaggio" && tipo ==="bonnel"){
+  prodFilo.style.display = 'block'; 
+  misuraFilo.style.display = 'block'; 
+  fileMolle.style.display = 'block'; 
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  oreFermo.style.display = 'block'; 
+  
+ } else if(reparto==="imballaggio"&& tipo ===""){
+  qtaMolle.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
+  
+ }else {
+  prodFilo.style.display = 'none'; // Nascondi l'input se la variabile è falsa
+  misuraFilo.style.display = 'none';
+  fileMolle.style.display = 'none';
+  qtaMolle.style.display = 'none';
+  giriMolla.style.display = 'none';
+  diamFilo.style.display = 'none';
+  peso.style.display = 'none';
+  nMolleProd.style.display = 'none';
+  oreLav.style.display = 'none';
+  oreFermo.style.display = 'none';
+}
+</script>
+
+</html>
