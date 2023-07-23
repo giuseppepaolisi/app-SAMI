@@ -1,30 +1,83 @@
-//const puppeteer = require('puppeteer');
-//const axios = require('axios');
+const express = require("express");
+const router = express.Router();
+//const PDFDocument = require("pdfkit");
+const fs = require("fs");
+const mongoose = require("mongoose");
+const Reparti = require ("./../db/reparti");
+const PDFDocument = require('pdfkit-table');
 
-(async () => {
+router.get("/download-pdf/:reparto/:tipo?", async (req, res) => {
   try {
-    const browser = await puppeteer.launch({ headless: 'new' });
-    const page = await browser.newPage();
-    //await page.setContent('<html><body><h1>Hello World</h1></body></html>'); // Inserisci qui il tuo HTML con la tabella
-    const url = '/prodPocket/produzione/pocket';
-    
-    //Scarico contenuto html
-    const response = await axios.get(url);
-    const htmlContent = response.data;
+    // Recupera i dati dei documenti dal database
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    // Imposta il contenuto HTML nella pagina
-    await page.setContent(htmlContent);
+    const reparto = req.params.reparto;
+    let tipo = req.params.tipo;
+    let parametri = {};
 
-    await page.emulateMediaType('screen'); 
+    // Imposta i parametri di query in base al reparto e tipo
+    if (reparto === "imballaggio") {
+      //deleted: 0
+      parametri = {
+        reparto: reparto,
+        deleted: 0
+      };
+      tipo = "";
+    } else {
+      parametri = {
+        reparto: reparto,
+        tipo: tipo,
+        deleted: 0
+      };
+    }
 
-    
-    // Modifica il percorso e il nome del file PDF come desideri
-    await page.pdf({ path: 'output1.pdf', format: 'A4', printBackground: true });
+    const list = await Reparti.find(parametri).exec();
 
-    await browser.close();
+    // Crea un nuovo documento PDF
+    const doc = new PDFDocument();
 
-    console.log('PDF generato correttamente.');
-  } catch (error) {
-    console.error('Si è verificato un errore:', error);
+    // Aggiungi il titolo della tabella
+    doc.fontSize(16).text("Tabella " + reparto + " " + tipo, { align: "center" });
+
+    // Header della tabella
+    const tableHeaders = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted', '_id'].includes(key));
+
+    // Dimensioni delle colonne della tabella
+    const options = {
+      fitColumns: true
+    };
+    // Imposta l'opzione divider per disegnare le linee verticali tra le celle con una larghezza di 1 e un'opacità di 0.5
+    const divider = {
+      vertical: {
+        width: 1,
+        opacity: 0.5,
+        color: 'black'
+      }
+    };
+
+    // Crea la tabella
+    doc.table({
+      headers: tableHeaders,
+      rows: list.map(docItem => tableHeaders.map(header => docItem[header])),
+      options: options,
+      divider: divider
+    });
+
+
+    doc.end();
+
+    // Imposta l'header della risposta con il tipo di contenuto e il nome del file
+    res.header('Content-Type', 'application/pdf');
+    res.header('Content-Disposition', 'attachment; filename=example.pdf');
+
+    // Invia il documento PDF come risposta al client
+    doc.pipe(res);
+  } catch (err) {
+    console.error("Errore durante la creazione e il download del PDF:", err);
+    res.status(500).send("Errore durante la creazione del PDF.");
   }
-})();
+});
+
+
+module.exports = router;

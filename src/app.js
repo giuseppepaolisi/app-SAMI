@@ -14,6 +14,7 @@ const insertRouter = require('./routes/insert');
 const logoutRouter = require('./routes/logout');
 const employeeRouter = require('./routes/employee');
 const prodPocketRouter = require('./routes/prodPocket');
+const pdfGen = require('./routes/pdfGenerator');
 //const calendarRouter = require('./routes/calendario');
 
 
@@ -46,6 +47,7 @@ app.use('/logout', logoutRouter);
 app.use('/', employeeRouter);
 app.use('/', prodPocketRouter);
 app.use('/dipendenti', prodPocketRouter);
+app.use('/', pdfGen);
 //app.use('/calendario', calendarRouter);
 
 
