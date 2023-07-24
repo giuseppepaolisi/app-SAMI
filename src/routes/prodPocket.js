@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const moment = require('moment');
 
 const mongoose = require("mongoose");
 
@@ -57,7 +58,7 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
       console.log(keys); 
       console.log(list[0]);
     
-      res.render('prodPocket', { title:reparto + " " +tipo,aheader:keys,list:list, reparto:reparto, tipo:tipo});
+      res.render('prodPocket', { title:reparto + " " +tipo,aheader:keys,list:list, reparto:reparto, tipo:tipo, moment: moment});
     
     }
 
@@ -97,10 +98,10 @@ router.get('/editMolleggio/:id', async (req, res, next) => {
 
   console.log(req.params.id);
   console.log(molleggio[0]);
-  console.log(molleggio[0].macchina);
+  console.log(molleggio[0].data);
 
   // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
-  res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users, users});
+  res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users, users, moment: moment});
 });
 
 router.post('/editMolleggio/:id', (req, res, next) => {

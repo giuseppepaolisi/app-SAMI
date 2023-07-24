@@ -19,7 +19,7 @@ createData = (postData, token) => {
     if(checkData(postData.diamFilo)) data.diametro = parseFloat(postData.diamFilo);
     if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
-    data.date = new Date();
+    data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
     if(checkData(postData.qtaMolle)) data.quantita = parseInt(postData.qtaMolle);
     if(checkData(postData.oreLav)) data.h_lavorate = parseInt(postData.oreLav);
