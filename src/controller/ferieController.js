@@ -1,4 +1,5 @@
 const Ferie = require("../db/ferie.js");
+const User = require("../db/user");
 const mongoose = require('mongoose');
 
 const ferieController = {};
@@ -16,9 +17,10 @@ ferieController.getFerie = async (req, res, next) => {
 ferieController.addFerie= async (req, res, next) => {
     const uri = process.env.DB_URI || "";
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const user = await User.find({user:req.body.opzione}).exec();
 
-    const nome = req.body.opzione;
-    const cognome = req.body.opzione;
+    const nome = user[0].nome;
+    const cognome = user[0].cognome;
     const dataInizio = req.body.dataInizio;
     const dataFine = req.body.dataFine;
     const tipologia = req.body.isFerie;

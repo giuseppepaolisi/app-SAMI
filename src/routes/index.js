@@ -72,7 +72,7 @@ router.get('/showFerie', async function(req, res, next) {
   const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia'];
   /*const aheader = "nome";*/
 
-  res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list});
+  res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list, moment:moment});
 
   
 
