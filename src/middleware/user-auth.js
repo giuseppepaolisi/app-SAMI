@@ -57,17 +57,21 @@ function isAdmin(req,res,next) {
 function signToken(req, res, user, next) {
     const payload = { user: req.body.username, isAdmin: user.admin, isLogged: true };
     const cookieSetting = {
-        expires: new Date(Date.now() + 2*60*60*1000),
+        expires: new Date(Date.now() + (2*60*60*1000)),
         httpOnly: true,
         secure: false
     };
     const prv_key = fs.readFileSync('rsa.private');
+    // Aggiungi l'opzione expiresIn per impostare il tempo di scadenza del token a 2 ore
+    // Aggiungi l'opzione algorithm per specificare l'algoritmo di firma RSA
+    const options = { expiresIn: "2h", algorithm: "RS256" };
     const token = jwt.sign(payload, prv_key, options);
     res.cookie('token', token, cookieSetting);
     res.cookie('nome', user.nome, cookieSetting);
     res.cookie('cognome', user.cognome, cookieSetting);
     next();
 }
+
 
 //elimina il token
 function deleteToken(req,res,next) {
