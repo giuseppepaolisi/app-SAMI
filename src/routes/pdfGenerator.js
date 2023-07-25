@@ -5,6 +5,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const Reparti = require ("./../db/reparti");
 const PDFDocument = require('pdfkit-table');
+const moment = require('moment');
 
 router.get("/download-pdf/:reparto/:tipo?", async (req, res) => {
   try {
@@ -59,7 +60,14 @@ router.get("/download-pdf/:reparto/:tipo?", async (req, res) => {
     // Crea la tabella
     doc.table({
       headers: tableHeaders,
-      rows: list.map(docItem => tableHeaders.map(header => docItem[header])),
+      rows: list.map(docItem => tableHeaders.map(header => {
+        // Formatta la data nel formato "gg/mm/aaaa HH:MM"
+        if (header === 'data') {
+          return moment(docItem[header]).format('DD/MM/YYYY HH:mm');
+        } else {
+          return docItem[header];
+        }
+      })),
       options: options,
       divider: divider
     });
