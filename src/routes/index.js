@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const User = require ("./../db/user.js");
 const Ferie = require ("./../db/ferie.js");
 const ferie = require('../controller/ferieController');
+const repartiController = require('../controller/repartiController');
 
 
 const bodyparse = require("body-parser");
@@ -79,7 +80,13 @@ router.get('/showFerie', async function(req, res, next) {
 });
 
 router.get('/', async function(req, res, next) {
-  res.render('index');
+  const totalMolleMese = await repartiController.getTotal("produzione", "pocket", "m");
+  console.log(totalMolleMese);
+
+  const totalMolleGiorno = await repartiController.getTotal("produzione", "pocket", "g");
+  console.log(totalMolleGiorno);
+
+  res.render('index', {totG: totalMolleGiorno, totM: totalMolleMese});
 });
 
 
