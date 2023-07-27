@@ -1,7 +1,11 @@
+const mongoose = require("mongoose");
+
+const Cliente = require ("./../db/cliente.js");
 const express = require('express');
 const router = express.Router();
 const macchine = require('../controller/macchineController');
 const {isEmployee} = require('../middleware/user-auth');
+
 
 
 //permette di visualizzare la lista di reparti disponibili
@@ -42,15 +46,23 @@ router.get('/macchine/:reparto/:tipo/', isEmployee, (req, res) => {
   });
 
   //permette di visualizzare il form di inserimento dopo aver selezionato reparto, tipo molla e macchina
-  router.get('/inserisci/:reparto/:tipo/:macchina', isEmployee, (req, res) => {
+  router.get('/inserisci/:reparto/:tipo/:macchina', isEmployee, async (req, res) => {
     console.log("\n\nInserisci " + req.params.reparto + "\n"+ req.params.tipo + "\n" + req.params.macchina);
-    res.render('insert.ejs', {reparto : req.params.reparto, tipo: req.params.tipo, macchina:req.params.macchina});
+    let options="not data";
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    options = await Cliente.find({deleted: 0}).exec(); 
+    res.render('insert.ejs', {reparto : req.params.reparto, tipo: req.params.tipo, macchina:req.params.macchina, options:options});
   });
 
   //permette di visualizzare il form di inserimento dopo aver selezionato reparto e macchina
-  router.get('/inserisci/:reparto/:macchina', isEmployee,(req, res) => {
+  router.get('/inserisci/:reparto/:macchina', isEmployee, async (req, res) => {
     console.log("\n\nInserisci " + req.params.reparto);
-    res.render('insert.ejs', {reparto : req.params.reparto, macchina:req.params.macchina});
+    let options="not data";
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    options = await Cliente.find({deleted: 0}).exec(); 
+    res.render('insert.ejs', {reparto : req.params.reparto, macchina:req.params.macchina, options:options});
   });
 
 

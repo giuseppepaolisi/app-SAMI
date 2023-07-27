@@ -76,15 +76,38 @@
 									
 									<input type="hidden" id="date" name="date" value="<%= new Date().toLocaleDateString('it-IT', {year:"numeric", month:"numeric", day:"numeric"}) %>">
 									<input type="hidden" id="time" name="time" value="<%= hour %>">
-									
+									<!--Invia data e ora attuale
 									<div class="wrap-input100 validate-input" name="prodFilo">
 										<input class="input100" type="text" name="prodFilo">
 										<span class="focus-input100" data-placeholder="Produttore Filo" name="prodFilo"></span>
-									</div>
+									</div>-->
+
+									<div name="prodFilo">
+										<label for="opzioni" name="prodFilo">Seleziona un Produttore Filo: </label>
+										<select class="custom-select" id="opzioni" name="prodFilo">
+											<option selected value=""> Cerca Produttore </option>
+
+										  <% options.forEach(function(option) { %>
+										  <option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
+										  <% }); %>
+										</select>
+									  </div>
+									
+									  <div name="cliente">
+										<label for="opzioni" name="cliente">Seleziona un Cliente: </label>
+										<select class="custom-select" id="opzioni" name="cliente">
+											<option selected value=""> Cerca Cliente </option>
+										  <% options.forEach(function(option) { %>
+											<option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
+										  <% }); %>
+										</select>
+									  </div>
+									 
+									  <!--cliente
 									<div class="wrap-input100 validate-input" name="cliente">
 										<input class="input100" type="text" name="cliente">
 										<span class="focus-input100" data-placeholder="Cliente" name="cliente"></span>
-									</div>
+									</div>-->
 									
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="misuraFilo">

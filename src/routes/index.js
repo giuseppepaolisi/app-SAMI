@@ -3,9 +3,12 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const User = require ("./../db/user.js");
 const Ferie = require ("./../db/ferie.js");
+const Cliente = require ("./../db/cliente.js");
 const ferie = require('../controller/ferieController');
+const cliente = require('../controller/clienteController');
 const repartiController = require('../controller/repartiController');
 const macchineController = require('../controller/macchineController');
+
 
 
 const bodyparse = require("body-parser");
@@ -44,19 +47,37 @@ router.post('/addMacchina', (req, res, next) => {
   macchineController.addMacchine(req, res, next);
 });
 
-
+ // Aggiugni Ferie
 router.get('/addFerie', async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const options = await User.find({deleted: 0}).exec(); 
-  // Aggiungi altre opzioni se necessario
-
-  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
   res.render('addFerie', {options:options});
 });
 
 router.post('/addFerie', async function(req, res, next) {
   ferie.addFerie(req, res, next);
+});
+
+// Aggiungi Cliente
+router.post('/addCliente', async function(req, res, next) {
+  cliente.addCliente(req, res, next);
+});
+
+router.get('/addCliente', async function(req, res, next) {
+  res.render('addCliente');
+});
+
+router.get('/showCliente', async function(req, res, next) {
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  const list = await Cliente.find({deleted: 0}).exec(); 
+  const aheader = ['ragioneSociale', 'tipologia'];
+  /*const aheader = "nome";*/
+
+  res.render('tableCliente', { title: 'Cliente',aheader:aheader,list:list, moment:moment});
+
 });
 
 
@@ -85,8 +106,6 @@ router.get('/showFerie', async function(req, res, next) {
   /*const aheader = "nome";*/
 
   res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list, moment:moment});
-
-  
 
 });
 

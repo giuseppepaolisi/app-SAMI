@@ -75,6 +75,8 @@ repartiController.insertMolleggi = async (req, res) => {
         return res.redirect('/reparti'); //errore
       }
     res.status(200);
+    
+
     res.render("dipendente/postInsert.ejs");
 };
 

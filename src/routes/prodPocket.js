@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 
 const Reparti = require ("./../db/reparti.js");
 const User = require ("./../db/user.js");
+const Cliente = require ("./../db/cliente.js");
+
 
 const bodyparse = require("body-parser");
 const repartiController = require("../controller/repartiController");
@@ -57,7 +59,8 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
 
       console.log(keys); 
       console.log(list[0]);
-    
+     
+
       res.render('prodPocket', { title:reparto + " " +tipo,aheader:keys,list:list, reparto:reparto, tipo:tipo, moment: moment});
     
     }
