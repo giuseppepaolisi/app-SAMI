@@ -5,7 +5,8 @@ const macchineSchema = new mongoose.Schema({
     macchina: String,
     reparto: String,
     tipo: String,
-    ore: Number
+    ore: Number,
+    deleted: Boolean
 });
 
 const Macchine = mongoose.model('Macchine', macchineSchema);
