@@ -44,9 +44,9 @@ macchineController.getMacchine = async (req, res) => {
     let query = {};
     
     if(typeof tipo === 'undefined') {
-        query = {reparto: reparto};
+        query = {reparto: reparto, deleted: false};
     } else if(checkTipo(tipo)) {
-        query = {reparto: reparto, tipo: tipo};
+        query = {reparto: reparto, tipo: tipo, deleted: false};
     } else {
         console.log('else');
         return res.redirect('/reparti'); //link manomesso
@@ -64,18 +64,36 @@ macchineController.getMacchine = async (req, res) => {
       if(reparto === "imballaggio") {
         parametri = {
             reparto: reparto,
-            macchine: macchine};
+            macchine: macchine
+        };
       } else {
         parametri = {
             reparto: reparto,
             tipo: tipo,
-            macchine: macchine};
+            macchine: macchine
+        };
       }
       res.render('dipendente/macchine.ejs', parametri);
     } catch (error) {
       console.error("errore "+error);
       return res.redirect('/reparti'); //errore
     }
+  };
+
+  //restituisce tutte le macchine presenti nel sistema
+  macchineController.getAll = async (req, res, next) => {
+    try {
+        // Cerca le macchine nel database
+        const uri = process.env.DB_URI || "";
+        mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const macchine = await Macchine.find({deleted:false}); 
+        const aheader = ["macchina", "reparto", "tipo", "ore"];
+        
+        res.render('tableMacchine.ejs', {list:macchine, aheader:aheader});
+      } catch (error) {
+        console.error("errore "+error);
+        return res.redirect('/'); //errore
+      }
   };
 
   module.exports = macchineController;

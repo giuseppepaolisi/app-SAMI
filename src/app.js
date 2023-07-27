@@ -15,6 +15,7 @@ const logoutRouter = require('./routes/logout');
 const employeeRouter = require('./routes/reparto');
 const prodPocketRouter = require('./routes/prodPocket');
 const pdfGen = require('./routes/pdfGenerator');
+const macchine = require('./routes/macchine');
 //const calendarRouter = require('./routes/calendario');
 
 
@@ -48,6 +49,7 @@ app.use('/', employeeRouter);
 app.use('/', prodPocketRouter);
 app.use('/dipendenti', prodPocketRouter);
 app.use('/', pdfGen);
+app.use('/', macchine);
 //app.use('/calendario', calendarRouter);
 
 
