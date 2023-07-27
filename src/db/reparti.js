@@ -1,25 +1,29 @@
 const mongoose = require('mongoose');
 
 const repartiSchema = new mongoose.Schema({
+
     tipo: String,
     reparto: String,
-    fornitore: String,
-    diametro: Number,
+    prodFilo: String,
+    cliente : String,
+    misuraFilo: String,
+    fileMolle: String,
+    qtaMolle: Number,
+    giriMolla: Number,
+    diamFilo: Number,
     portata: Number,
     peso: Number,
-    data: Date,
-    macchina: String,
-    quantita: Number, //molle prodotte, ecc..
-    h_lavorate: Number,
-    h_fermo: Number,
+    quantita: Number, //nMolleProdotte
+    oreLav: Number,
+    oreFermo: Number,
+    cambiMacchina: Number,
+    
     user: String,
-    diametro_filo: Number,
-    diametro_molla: Number,
-    giri_molla: Number,
-    cliente: String,
-    misura: Number,
-    file: String,
+    data: Date,
+
     deleted: Boolean
+
+
 });
 
 const Reparti = mongoose.model('Reparti', repartiSchema);

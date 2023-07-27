@@ -15,23 +15,25 @@ createData = (postData, token) => {
     let data = {};
     if(checkData(postData.tipo)) data.tipo = postData.tipo;
     if(checkData(postData.reparto)) data.reparto = postData.reparto;
-    if(checkData(postData.prodfilo)) data.fornitore = postData.prodfilo;
-    if(checkData(postData.diamFilo)) data.diametro = parseFloat(postData.diamFilo);
+    if(checkData(postData.prodfilo)) data.prodfilo = postData.prodfilo;
+    if(checkData(postData.cliente)) data.cliente = postData.cliente;
+
+    if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
     if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
     data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
     if(checkData(postData.qtaMolle)) data.quantita = parseInt(postData.qtaMolle);
     if(checkData(postData.nMolleProd)) data.quantita = parseInt(postData.nMolleProd);
-    if(checkData(postData.oreLav)) data.h_lavorate = parseInt(postData.oreLav);
+    if(checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
+    if(checkData(postData.cambiMacchina)) data.cambiMacchina = parseInt(postData.cambiMacchina);
+    
     //if(checkData(postData.oreFermo)) data.h_fermo = parseInt(postData.oreFermo);
 
     console.log('user: ' + token.user);
     data.user = token.user;
     
-    if(checkData(postData.diamFilo)) data.diametro_filo = parseFloat(postData.diamFilo);
-    if(checkData(postData.diamFilo)) data.diametro_molla = parseFloat(postData.diamFilo);
-    if(checkData(postData.giriMolla)) data.giri_molla = parseInt(postData.giriMolla);
+    if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
     data.deleted = 0;
     console.log(data);
