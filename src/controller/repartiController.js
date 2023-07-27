@@ -34,15 +34,17 @@ createData =async (postData, token) => {
     if(checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
     if(checkData(postData.cambiMacchina)) data.cambiMacchina = parseInt(postData.cambiMacchina);
 
-    //CALCOLO ORE FERMO
-    const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
-    console.log("RETRIVEEEEE: " + retrive);
-    console.log("ORE LAVORATEEEE: " + data.oreLav);
-    const oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
+    if(data.reparto==="produzione" && data.tipo==="pocket"){
+        //CALCOLO ORE FERMO
+         const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
+        console.log("RETRIVEEEEE: " + retrive);
+        console.log("ORE LAVORATEEEE: " + data.oreLav);
+        const oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
 
-    console.log("ORE FERMOOOOOO: " + oreFermo);
+        console.log("ORE FERMOOOOOO: " + oreFermo);
 
-    data.oreFermo=oreFermo;
+        data.oreFermo=oreFermo;
+    }
     
     //if(checkData(postData.oreFermo)) data.oreFermo = parseInt(postData.oreFermo);
 
@@ -60,11 +62,11 @@ createData =async (postData, token) => {
     return data;
 };
 
-repartiController.insertMolleggi = (req, res) => {
+repartiController.insertMolleggi = async (req, res) => {
     try {
         const uri = process.env.DB_URI || "";
         mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const creati= createData(req.body, getData(req.cookies.token))
+        const creati= await createData(req.body, getData(req.cookies.token));
         console.log("DATI CREATI PER INSERIMENTO: " + creati);
         const molleggi = new Reparti(creati);
         molleggi.save();
