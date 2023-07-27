@@ -23,7 +23,7 @@ createData = (postData, token) => {
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
     if(checkData(postData.qtaMolle)) data.quantita = parseInt(postData.qtaMolle);
     if(checkData(postData.oreLav)) data.h_lavorate = parseInt(postData.oreLav);
-    if(checkData(postData.oreFermo)) data.h_fermo = parseInt(postData.oreFermo);
+    //if(checkData(postData.oreFermo)) data.h_fermo = parseInt(postData.oreFermo);
 
     console.log('user: ' + token.user);
     data.user = token.user;
