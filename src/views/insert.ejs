@@ -81,10 +81,15 @@
 										<input class="input100" type="text" name="prodFilo">
 										<span class="focus-input100" data-placeholder="Produttore Filo" name="prodFilo"></span>
 									</div>
+									<div class="wrap-input100 validate-input" name="cliente">
+										<input class="input100" type="text" name="cliente">
+										<span class="focus-input100" data-placeholder="Cliente" name="cliente"></span>
+									</div>
+									
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="misuraFilo">
 										<input class="input100" type="text" name="misuraFilo">
-										<span class="focus-input100" data-placeholder="Misura Filo (cm x cm)"></span>
+										<span class="focus-input100" data-placeholder="Misura Molleggio (cm x cm)"></span>
 									</div>
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="fileMolle" >
@@ -98,19 +103,24 @@
 									</div>
 									<!--Produzione Vecchia-->
 									<div class="wrap-input100 validate-input" name="giriMolla">
-										<select class="input100" type="number" name="giriMolla">
+										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
+										<br><br>
+										<select class="custom-select" type="number" name="giriMolla">
 											<option value="4">4</option>
 											<option value="5">5</option>
 											<option value="6">6</option>
 											<option value="7">7</option>
 											<option value="8">8</option>
 										</select>
-										<input class="input100" type="number" name="giriMolla" min="1" max="10" step=1>
-										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
 									</div>
 									<!--Produzione Vecchia e Nuova-->
-									<div class="wrap-input100 validate-input" name="diamFilo">
-										<select class="input100" type="number" name="diamFilo">
+									
+
+									<div class="wrap-input100" name="diamFilo">
+										<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
+										<br><br>
+										
+										<select class="custom-select" type="number" name="diamFilo">
 											<option value="1.9">1,9</option>
 											<option value="2">2</option>
 											<option value="2.1">2,1</option>
@@ -119,7 +129,7 @@
 											<option value="2.4">2,4</option>
 											<option value="2.5">2,5</option>
 										</select>
-										<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
+										
 									</div>
 									<div class="wrap-input100 validate-input" name="portata">
 										<input class="input100" type="number" name="portata" min="200" max="2000" step=1>
@@ -143,6 +153,10 @@
 									<div class="wrap-input100 validate-input" name="oreFermo">
 										<input class="input100" type="number" name="oreFermo" min="1" max="12" step=1>
 										<span class="focus-input100" data-placeholder="Ore Fermo"></span>
+									</div>
+									<div class="wrap-input100 validate-input" name="cambiMacchina">
+										<input class="input100" type="number" name="cambiMacchina" min="0" max="15" step=1>
+										<span class="focus-input100" data-placeholder="Cambi Macchina"></span>
 									</div>
 									
 
@@ -241,6 +255,9 @@
 div[name="prodFilo"]{
 	display:none;
 }
+div[name="cliente"]{
+	display:none;
+}
 div[name="misuraFilo"]{
 	display:none;
 }
@@ -272,7 +289,58 @@ div[name="oreLav"]{
 div[name="oreFermo"]{
 	display:none;
 }
+div[name="cambiMacchina"]{
+	display:none;
+}
 
+
+/* Stile di base per la select */
+.custom-select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Stile del bordo quando la select ha lo stato di focus */
+.custom-select:focus {
+  outline: none;
+  border-color: #80bdff; /* Cambia il colore come preferisci */
+  box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Cambia il box-shadow come preferisci */
+}
+
+/* Stile della freccia sulla select (per browser che supportano l'attributo appearance) */
+.custom-select::-ms-expand {
+  display: none;
+}
+
+/* Stile della freccia sulla select (per browser WebKit come Chrome e Safari) */
+.custom-select::-webkit-select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M1%204.5l4%204%204-4H1z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+/* Stile delle opzioni nella select */
+.custom-select option {
+  padding: 8px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #fff;
+}
+
+/* Stile delle opzioni nella select quando selezionate */
+.custom-select option:checked {
+  background-color: #e6f7ff; /* Cambia il colore come preferisci */
+}
 
 
 
@@ -284,6 +352,7 @@ div[name="oreFermo"]{
 
 
 var prodFilo = document.querySelector('div[name="prodFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var cliente = document.querySelector('div[name="cliente"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var misuraFilo = document.querySelector('div[name="misuraFilo"]'); // Seleziona l'elemento input con l'attributo "misuraFilo" specifico
 var fileMolle = document.querySelector('div[name="fileMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var qtaMolle = document.querySelector('div[name="qtaMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
@@ -294,6 +363,8 @@ var peso = document.querySelector('div[name="peso"]'); // Seleziona l'elemento i
 var nMolleProd = document.querySelector('div[name="nMolleProd"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var oreLav = document.querySelector('div[name="oreLav"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var cambiMacchina = document.querySelector('div[name="cambiMacchina"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+
 
 
 if (reparto==="produzione" && tipo ==="pocket") {
@@ -301,32 +372,32 @@ if (reparto==="produzione" && tipo ==="pocket") {
   diamFilo.style.display = 'block'; 
   peso.style.display = 'block'; 
   nMolleProd.style.display = 'block'; 
-  oreFermo.style.display = 'block'; 
+  oreLav.style.display = 'block'; 
   portata.style.display = 'block';
 } else if(reparto==="produzione" && tipo ==="bonnel"){
   prodFilo.style.display = 'block'; 
   diamFilo.style.display = 'block'; 
-  portata.style.display = 'block';
+  //portata.style.display = 'block';
   giriMolla.style.display = 'block';
   nMolleProd.style.display = 'block'
   oreLav.style.display = 'block';
 
 } else if(reparto==="assemblaggio" && tipo ==="pocket"){
-  prodFilo.style.display = 'block'; 
+  cliente.style.display = 'block'; 
   misuraFilo.style.display = 'block'; 
   fileMolle.style.display = 'block'; 
   qtaMolle.style.display = 'block'; 
   oreLav.style.display = 'block'; 
-  oreFermo.style.display = 'block'; 
+  //oreFermo.style.display = 'block'; 
 
 
 } else if(reparto==="assemblaggio" && tipo ==="bonnel"){
-  prodFilo.style.display = 'block'; 
+  cliente.style.display = 'block'; 
   misuraFilo.style.display = 'block'; 
   fileMolle.style.display = 'block'; 
   qtaMolle.style.display = 'block'; 
   oreLav.style.display = 'block'; 
-  oreFermo.style.display = 'block'; 
+  cambiMacchina.style.display = 'block'; 
   
  } else if(reparto==="imballaggio"&& tipo ===""){
   qtaMolle.style.display = 'block'; 
@@ -343,6 +414,8 @@ if (reparto==="produzione" && tipo ==="pocket") {
   nMolleProd.style.display = 'none';
   oreLav.style.display = 'none';
   oreFermo.style.display = 'none';
+  cliente.style.display  = 'none';
+  cambiMacchina.style.display = 'none';
 }
 </script>
 
