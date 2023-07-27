@@ -77,7 +77,7 @@ router.get("/download-pdf/:reparto/:tipo?", async (req, res) => {
 
     // Imposta l'header della risposta con il tipo di contenuto e il nome del file
     res.header('Content-Type', 'application/pdf');
-    res.header('Content-Disposition', 'attachment; filename=example.pdf');
+    res.header('Content-Disposition', `attachment; filename=${reparto}-${tipo}.pdf`);
 
     // Invia il documento PDF come risposta al client
     doc.pipe(res);
