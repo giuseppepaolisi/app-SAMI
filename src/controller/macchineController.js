@@ -96,4 +96,52 @@ macchineController.getMacchine = async (req, res) => {
       }
   };
 
+ macchineController.addMacchine= async (req, res, next) => {
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+
+    const reparto = req.body.reparto;
+    const tipo = req.body.tipo;
+    const macchina = req.body.macchina;
+    const molleOre = req.body.molleOre;
+    //let deleted = false;
+    
+
+  if(reparto==="produzione"){
+    const macchine = new Macchine({
+        reparto: reparto,
+        tipo: tipo,
+        macchina:macchina,
+        molleOre:molleOre,
+        deleted : 0
+
+     });
+     await macchine.save();
+
+    } else if(reparto==="assemblaggio"){
+        const macchine = new Macchine({
+            reparto: reparto,
+            tipo: tipo,
+            macchina:macchina,
+            deleted : 0
+    
+         });
+         await macchine.save();
+
+        } else {
+    const macchine = new Macchine({
+        reparto: reparto,
+        macchina:macchina,
+        deleted : 0
+
+     });
+     await macchine.save();
+
+    }
+
+    res.redirect('/macchine');
+};
+
+
   module.exports = macchineController;

@@ -1,4 +1,6 @@
 const Reparti = require('../db/reparti');
+const Macchine = require('../db/macchine');
+
 const mongoose = require('mongoose');
 const {getData} = require('../middleware/user-auth');
 
@@ -11,11 +13,16 @@ checkData = (data) => {
         return true;
 };
 
-createData = (postData, token) => {
+
+
+
+createData =async (postData, token) => {
+
+
     let data = {};
     if(checkData(postData.tipo)) data.tipo = postData.tipo;
     if(checkData(postData.reparto)) data.reparto = postData.reparto;
-    if(checkData(postData.prodfilo)) data.prodfilo = postData.prodfilo;
+    if(checkData(postData.prodFilo)) data.prodFilo = postData.prodFilo;
     if(checkData(postData.cliente)) data.cliente = postData.cliente;
 
     if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
@@ -23,18 +30,30 @@ createData = (postData, token) => {
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
     data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
-    if(checkData(postData.qtaMolle)) data.quantita = parseInt(postData.qtaMolle);
-    if(checkData(postData.nMolleProd)) data.quantita = parseInt(postData.nMolleProd);
+    if(checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
     if(checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
     if(checkData(postData.cambiMacchina)) data.cambiMacchina = parseInt(postData.cambiMacchina);
+
+    //CALCOLO ORE FERMO
+    const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
+    console.log("RETRIVEEEEE: " + retrive);
+    console.log("ORE LAVORATEEEE: " + data.oreLav);
+    const oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
+
+    console.log("ORE FERMOOOOOO: " + oreFermo);
+
+    data.oreFermo=oreFermo;
     
-    //if(checkData(postData.oreFermo)) data.h_fermo = parseInt(postData.oreFermo);
+    //if(checkData(postData.oreFermo)) data.oreFermo = parseInt(postData.oreFermo);
 
     console.log('user: ' + token.user);
     data.user = token.user;
     
     if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
+
+
+
     data.deleted = 0;
     console.log(data);
 
@@ -45,7 +64,9 @@ repartiController.insertMolleggi = (req, res) => {
     try {
         const uri = process.env.DB_URI || "";
         mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const molleggi = new Reparti(createData(req.body, getData(req.cookies.token)));
+        const creati= createData(req.body, getData(req.cookies.token))
+        console.log("DATI CREATI PER INSERIMENTO: " + creati);
+        const molleggi = new Reparti(creati);
         molleggi.save();
     } catch (error) {
         console.error("errore "+error);
@@ -131,5 +152,15 @@ repartiController.getTotal = async (reparto, tipo, tempo) => {
     }
   };
 
+  function decimalToSexagesimal(decimalHours) {
+    // Separare la parte intera (ore) dalla parte decimale (minuti)
+    const hours = Math.floor(decimalHours);
+    const minutesDecimal = decimalHours - hours;
+    
+    // Convertire i minuti decimali in minuti reali
+    const minutes = Math.round(minutesDecimal * 60);
+  
+    return `${hours}h ${minutes}m`;
+  }
 
   module.exports = repartiController;

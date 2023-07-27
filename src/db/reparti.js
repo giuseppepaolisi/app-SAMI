@@ -15,7 +15,7 @@ const repartiSchema = new mongoose.Schema({
     peso: Number,
     quantita: Number, //nMolleProdotte
     oreLav: Number,
-    oreFermo: Number,
+    oreFermo: String,
     cambiMacchina: Number,
     
     user: String,

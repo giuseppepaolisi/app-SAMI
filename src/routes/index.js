@@ -5,6 +5,7 @@ const User = require ("./../db/user.js");
 const Ferie = require ("./../db/ferie.js");
 const ferie = require('../controller/ferieController');
 const repartiController = require('../controller/repartiController');
+const macchineController = require('../controller/macchineController');
 
 
 const bodyparse = require("body-parser");
@@ -32,6 +33,16 @@ router.get('/calendario', async function(req, res, next) {
   res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario' });
 });
 
+router.get('/addMacchina', async function(req, res, next) {
+
+  res.render('addMacchina');
+});
+
+
+router.post('/addMacchina', (req, res, next) => {
+  
+  macchineController.addMacchine(req, res, next);
+});
 
 
 router.get('/addFerie', async function(req, res, next) {
