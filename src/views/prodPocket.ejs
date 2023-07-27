@@ -86,7 +86,8 @@
                                         %>
                                         <tr data-id="<%= values[0] %>">
                                             <% for (let i = 1; i < values.length; i++) { %>
-                                                <% if (moment(values[i], moment.ISO_8601, true).isValid()) { %>
+                                                <% 
+                                                if (aheader[i] === 'data' && moment(values[i], moment.ISO_8601, true).isValid()) { %>
                                                     <% const formattedDate = moment(values[i]).format("DD/MM/YYYY HH:mm"); %>
                                                     <td><%= formattedDate %></td>
                                                 <% } else { %>
