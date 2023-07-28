@@ -30,6 +30,7 @@ createData =async (postData, token) => {
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
     data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
+    console.log("macchine " + postData.macchina);
     if(checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
     if(checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
     if(checkData(postData.cambiMacchina)) data.cambiMacchina = parseInt(postData.cambiMacchina);

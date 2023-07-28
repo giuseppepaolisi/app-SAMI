@@ -17,6 +17,7 @@ const repartiSchema = new mongoose.Schema({
     oreLav: Number,
     oreFermo: String,
     cambiMacchina: Number,
+    macchina: String,
     
     user: String,
     data: Date,
