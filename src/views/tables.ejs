@@ -50,7 +50,17 @@
                         <%= title %>
                     </h1>
                     <p class="mb-4">Tabella dipendenti abilitati ad operare su inserimento molleggi </p>
+<!-- Alcun codice HTML precedente -->
 
+<% if (typeof error !== 'undefined') { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= error %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+  
+  <!-- Alcun codice HTML successivo -->
+  
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">

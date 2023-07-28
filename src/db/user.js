@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     nome: String,
     cognome: String,
-    user: String,
+    user: { type: String, unique: true },
     password: String,
     admin: Boolean,
     deleted: Boolean //false non è cancellato true è stato cancellato

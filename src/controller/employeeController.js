@@ -14,33 +14,43 @@ employeeController.getEmployees = async (req, res, next) => {
 };
 
 employeeController.addEmployee = async (req, res, next) => {
-    const uri = process.env.DB_URI || "";
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    try {
+        const uri = process.env.DB_URI || "";
+        await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    const nome = req.body.nome;
-    const cognome = req.body.cognome;
-    const user = req.body.username;
-    const password = req.body.password;
-    const admin = req.body.isAdmin;
-    let isAdmin = false;
-    
-    if(admin === "admin") {
-        isAdmin = true;
-    }
+        const nome = req.body.nome;
+        const cognome = req.body.cognome;
+        const user = req.body.username;
+        const password = req.body.password;
+        const admin = req.body.isAdmin;
+        let isAdmin = false;
+        
+        if (admin === "admin") {
+            isAdmin = true;
+        }
 
-    const utente = new User({
-        nome: nome,
-        cognome: cognome,
-        user:user,
-        password:password,
-        admin : isAdmin,
-        deleted : 0
+        const utente = new User({
+            nome: nome,
+            cognome: cognome,
+            user: user,
+            password: password,
+            admin: isAdmin,
+            deleted: 0
+        });
 
-    });
+        await utente.save();
 
-    await utente.save();
-
-    res.redirect('/dipendenti');
+        res.redirect('/dipendenti');
+    } catch (error) {
+        if (error.code === 11000) {
+          // Errore di duplicazione dell'indice (campo "user" duplicato)
+          return res.status(400).json({ error: 'L\'utente con questo nome utente è già presente nel sistema.' });
+        } else {
+          // Altri errori
+          console.error('Errore durante l\'inserimento dell\'utente:', error);
+          return res.status(500).json({ error: 'Si è verificato un errore durante l\'inserimento dell\'utente.' });
+        }
+      }      
 };
 
 employeeController.deleteEmployee = async (req, res, next) => {
