@@ -87,9 +87,10 @@
 										<select class="custom-select" id="opzioni" name="prodFilo">
 											<option selected value=""> Cerca Produttore </option>
 
-										  <% options.forEach(function(option) { %>
+										  <% options.forEach(function(option) {
+											if (option.tipologia==="ProduttoreFilo") { %>
 										  <option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
-										  <% }); %>
+										  <% }}); %>
 										</select>
 									  </div>
 									
@@ -97,9 +98,10 @@
 										<label for="opzioni" name="cliente">Seleziona un Cliente: </label>
 										<select class="custom-select" id="opzioni" name="cliente">
 											<option selected value=""> Cerca Cliente </option>
-										  <% options.forEach(function(option) { %>
+										  <% options.forEach(function(option) { 
+											if (option.tipologia==="Cliente") { %>
 											<option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
-										  <% }); %>
+										  <%} }); %>
 										</select>
 									  </div>
 									 

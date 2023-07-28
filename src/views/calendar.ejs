@@ -58,6 +58,7 @@
                           <th>Giorno della settimana &nbsp; &nbsp;</th>
                           <th>Giorno del mese  &nbsp; &nbsp;</th>
                           <th>Permessi e Ferie</th>
+                          
 
                   
                         </tr>
@@ -67,7 +68,39 @@
                             <td class="day">
                                 <p ><%= day.dayOfMonth %></p>
                               </td>
-                              <td> X</td>
+                              <td><% 
+                                
+                                if(month.month==="gennaio"){
+                                  numeroMese=0;
+                                } else if(month.month==="febbraio") {
+                                  numeroMese=1; 
+                                } else if(month.month==="marzo") {
+                                  numeroMese=2; 
+                                }else if(month.month==="aprile") {
+                                  numeroMese=2; 
+                                }else if(month.month==="maggio") {
+                                  numeroMese=4; 
+                                }else if(month.month==="giugno") {
+                                  numeroMese=5; 
+                                }else if(month.month==="luglio") {
+                                  numeroMese=6; 
+                                }else if(month.month==="agosto") {
+                                  numeroMese=7; 
+                                }else if(month.month==="settembre") {
+                                  numeroMese=8; 
+                                }else if(month.month==="ottobre") {
+                                  numeroMese=9; 
+                                }else if(month.month==="novembre") {
+                                  numeroMese=10; 
+                                }else if(month.month==="dicembre") {
+                                  numeroMese=11; 
+                                }
+                                
+                                let giorno = new Date(year,numeroMese,day.dayOfMonth);
+                                
+                                
+                                %><%=giorno%></td>
+                                
                       
           
                           </tr>

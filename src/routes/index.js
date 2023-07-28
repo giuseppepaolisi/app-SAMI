@@ -29,11 +29,14 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/calendario', async function(req, res, next) {
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const options = await Ferie.find({deleted: 0}).exec(); 
 
   const monthsData = getAllMonths();
 
   // Renderizza la pagina del calendario utilizzando il file "calendar.ejs"
-  res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario' });
+  res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario', options:options });
 });
 
 router.get('/addMacchina', async function(req, res, next) {
