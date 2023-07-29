@@ -11,29 +11,26 @@ router.get('/', isAdmin, function(req, res, next) {
   res.render('index');
 });
 
-router.get('/lista', async function(req, res, next) {
-  employee.getEmployees(req, res,next);
-}); 
 
 //permette di aggiungere un dipendente al sistema
-router.post('/addUser', async (req, res, next) => {
+router.post('/addUser', isAdmin,async (req, res, next) => {
   employee.addEmployee(req, res, next);
 
 });
 
 //permette di visualizzare la pagina per aggiungere un nuovo dipendente
-router.get('/addUser', async function(req, res, next) {
+router.get('/addUser',isAdmin, async function(req, res, next) {
   // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
   res.render('addUser');
 });
 
 //permette di cancellare un dipendente dal sistema
-router.delete('/eliminaDipendente/:id', async (req, res, next) => {
+router.delete('/eliminaDipendente/:id', isAdmin,async (req, res, next) => {
   employeeController.deleteEmployee(req, res, next);
 });
 
 //permette di visualizzare la pagina di modifica dati per un untente
-router.get('/editUser/:id', async function(req, res, next) {
+router.get('/editUser/:id', isAdmin,async function(req, res, next) {
 
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -46,7 +43,7 @@ router.get('/editUser/:id', async function(req, res, next) {
 });
 
 //permette di modificare i dati riguardanti un untente
-router.post('/editUser/:id', async function(req, res, next) {
+router.post('/editUser/:id', isAdmin,async function(req, res, next) {
 
   const elementId = req.params.id;
   console.log(elementId);

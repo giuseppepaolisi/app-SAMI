@@ -157,6 +157,58 @@ repartiController.getTotal = async (reparto, tipo, tempo) => {
     }
   };
 
+  repartiController.getTotalByMOnth = async (reparto, tipo) => {
+    try {
+      // Otteniamo l'anno corrente
+const annoCorrente = new Date().getFullYear();
+
+// Creiamo un nuovo oggetto Date per il primo giorno dell'anno corrente (1 gennaio)
+const primoGiornoAnnoCorrente = new Date(annoCorrente, 0, 1);
+const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
+
+        const pipeline = [
+          { $match : { 
+              data: { 
+                  $gte: new Date(primoGiornoAnnoCorrente),
+                  $lt: new Date(primoGiornoAnnoDopo) 
+              } 
+          }},
+          { $project: {
+              mese: { 
+                  $month: { 
+                      $ifNull: [ "$data", new Date("1900-01-01") ] 
+                  } 
+              }, quantita: 1
+          }},
+          { $group: { 
+              _id: "$mese", 
+              totale: { $sum: "$quantita" } 
+              }
+          },
+          { $sort: { _id: 1 } }
+      ];
+      const options = {
+        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+      };
+
+      const uri = process.env.DB_URI || "";
+      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      const result = await Reparti.aggregate(pipeline, options);
+      let array=[0,0,0,0,0,0,0,0,0,0,0,0];
+      for(i=0;i<result.length;i++){
+        k=(result[i]._id)-1;
+        console.log("K: " + k);
+        array[k]=result[i].totale;
+      }
+      //console.log(array)
+      
+      return array || -1;
+    } catch (err) {
+      console.error("Errore durante il calcolo del totale di molle:", err);
+      throw err;
+    }
+  };
+
   function decimalToSexagesimal(decimalHours) {
     // Separare la parte intera (ore) dalla parte decimale (minuti)
     const hours = Math.floor(decimalHours);

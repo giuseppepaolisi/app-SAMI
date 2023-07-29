@@ -4,14 +4,18 @@ const Cliente = require ("./../db/cliente.js");
 const express = require('express');
 const router = express.Router();
 const macchine = require('../controller/macchineController');
+const reparti = require('../controller/repartiController');
 const {isEmployee} = require('../middleware/user-auth');
 
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 
 //permette di visualizzare la lista di reparti disponibili
 router.get('/reparti', isEmployee, (req, res) => {
   res.render('dipendente/reparti.ejs');
 });
+
+
 
 //permette di selezionare il reparto di riferimento
 router.get('/reparto/:reparto/', isEmployee,(req, res) => {

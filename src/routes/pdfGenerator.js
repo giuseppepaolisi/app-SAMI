@@ -7,7 +7,10 @@ const Reparti = require ("./../db/reparti");
 const PDFDocument = require('pdfkit-table');
 const moment = require('moment');
 
-router.get("/download-pdf/:reparto/:tipo?", async (req, res) => {
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
+
+
+router.get("/download-pdf/:reparto/:tipo?",isAdmin, async (req, res) => {
   try {
     // Recupera i dati dei documenti dal database
     const uri = process.env.DB_URI || "";

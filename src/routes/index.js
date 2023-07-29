@@ -9,7 +9,7 @@ const cliente = require('../controller/clienteController');
 const repartiController = require('../controller/repartiController');
 const macchineController = require('../controller/macchineController');
 
-
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 const bodyparse = require("body-parser");
 
@@ -18,10 +18,15 @@ moment.locale('it')
 require('dotenv').config({path: '../env/developement.env'});
 
 
+router.get('/prova',isAdmin, async (req, res) => {
+  res.status(200).json(await repartiController.getTotalByMOnth('produzione','pocket'));
+  
+  });
+
 
 /* GET Calendario */
 
-router.get('/calendario', async function(req, res, next) {
+router.get('/calendario', isAdmin,async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const options = await Ferie.find({deleted: 0}).exec(); 
@@ -33,42 +38,42 @@ router.get('/calendario', async function(req, res, next) {
 });
 
 /* GET form aggiunta Macchine */
-router.get('/addMacchina', async function(req, res, next) {
+router.get('/addMacchina',isAdmin, async function(req, res, next) {
 
   res.render('addMacchina');
 });
 /* POST aggiunta Macchine */
-router.post('/addMacchina', (req, res, next) => {
+router.post('/addMacchina', isAdmin,(req, res, next) => {
   
   macchineController.addMacchine(req, res, next);
 });
 
  // Aggiugni Ferie
-router.get('/addFerie', async function(req, res, next) {
+router.get('/addFerie', isAdmin, async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const options = await User.find({deleted: 0}).exec(); 
   res.render('addFerie', {options:options});
 });
 
-router.post('/addFerie', async function(req, res, next) {
+router.post('/addFerie', isAdmin,async function(req, res, next) {
   ferie.addFerie(req, res, next);
 });
 
 // Aggiungi Cliente
-router.post('/addCliente', async function(req, res, next) {
+router.post('/addCliente', isAdmin,async function(req, res, next) {
   cliente.addCliente(req, res, next);
 });
 
-router.get('/conferma', async function(req, res, next) {
+router.get('/conferma', isAdmin,async function(req, res, next) {
   res.render('conferma');
 });
 
-router.get('/addCliente', async function(req, res, next) {
+router.get('/addCliente', isAdmin,async function(req, res, next) {
   res.render('addCliente');
 });
 
-router.get('/showCliente', async function(req, res, next) {
+router.get('/showCliente', isAdmin,async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -83,7 +88,7 @@ router.get('/showCliente', async function(req, res, next) {
 
 
 
-router.get('/dipendenti', async function(req, res, next) {
+router.get('/dipendenti', isAdmin,async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -97,7 +102,7 @@ router.get('/dipendenti', async function(req, res, next) {
 
 });
 
-router.get('/showFerie', async function(req, res, next) {
+router.get('/showFerie',isAdmin, async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 

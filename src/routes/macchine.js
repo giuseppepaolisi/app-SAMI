@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const {verifyToken, isEmployee} = require('../middleware/user-auth');
 const macchineController = require('../controller/macchineController');
 const mongoose = require("mongoose");
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 const Macchine = require ("../db/macchine");
 
-router.get('/macchine', (req, res, next) => {
+router.get('/macchine', isAdmin, (req, res, next) => {
     macchineController.getAll(req, res, next);
 });
 
-router.delete('/eliminaMacchina/:id', async (req, res, next) => {
+router.delete('/eliminaMacchina/:id',isAdmin, async (req, res, next) => {
     const elementId = req.params.id;
     console.log(elementId);
     // Verifica se l'ID è vuoto o nullo

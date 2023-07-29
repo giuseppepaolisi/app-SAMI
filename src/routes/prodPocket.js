@@ -12,6 +12,7 @@ const Cliente = require ("./../db/cliente.js");
 const bodyparse = require("body-parser");
 const repartiController = require("../controller/repartiController");
 
+const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 
 require('dotenv').config({path: '../env/developement.env'});
@@ -24,7 +25,7 @@ router.get('/', function(req, res, next) {
 });*/
 
 /* GET tables. */
-router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
+router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -67,7 +68,7 @@ router.get('/prodPocket/:reparto/:tipo?', async function(req, res, next) {
 
 });
 
-router.delete('/eliminaMisura/:id', async (req, res, next) => {
+router.delete('/eliminaMisura/:id', isAdmin,async (req, res, next) => {
   const elementId = req.params.id;
   console.log(elementId);
   // Verifica se l'ID è vuoto o nullo
@@ -93,7 +94,7 @@ router.delete('/eliminaMisura/:id', async (req, res, next) => {
     });
 });
 
-router.get('/editMolleggio/:id', async (req, res, next) => {
+router.get('/editMolleggio/:id', isAdmin,async (req, res, next) => {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const molleggio = await Reparti.find({_id: req.params.id}).exec(); 
@@ -107,7 +108,7 @@ router.get('/editMolleggio/:id', async (req, res, next) => {
   res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users, users, moment: moment});
 });
 
-router.post('/editMolleggio/:id', (req, res, next) => {
+router.post('/editMolleggio/:id', isAdmin,(req, res, next) => {
   console.log(req.params.id);
   repartiController.modificaMolleggio(req, res, next);
 });
