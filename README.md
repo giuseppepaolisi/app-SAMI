@@ -34,3 +34,10 @@ Sostituire `nome_container` con il nome desiderato per il container.
 Assicurarsi di configurare correttamente le variabili di ambiente nel file `development.env` prima di avviare l'applicazione. Inoltre, è possibile personalizzare altre impostazioni dell'applicazione nel file `development.env` a seconda delle esigenze specifiche del progetto.
 
 Per arrestare e rimuovere il container Docker, utilizzare i seguenti comandi:
+
+```bash
+docker stop nome_container
+docker rm nome_container
+```
+
+
