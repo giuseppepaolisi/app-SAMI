@@ -1,4 +1,4 @@
-# app-SAMI
+# App-SAMI
 
 Questo repository contiene il codice sorgente dell'applicazione SAMI basata su Express e MongoDB.
 
