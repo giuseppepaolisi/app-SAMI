@@ -61,7 +61,7 @@
                           
 
                   
-                        </tr>
+                        </tr> <% let i=0; %>
                         <% month.daysInMonth.forEach(day => { %> 
                           <tr> 
                             <td><%= day.dayOfWeek %></td>
@@ -98,8 +98,24 @@
                                 
                                 let giorno = new Date(year,numeroMese,day.dayOfMonth);
                                 
+
+
+                                for(option in options){
+                                  giorno.setHours(0, 0, 0, 0);
+                                  let dataInizio = new Date(options[option].dataInizio);
+                                  let dataFine = new Date(options[option].dataFine);
+                                  
+                                  dataInizio.setHours(0, 0, 0, 0);
+                                  dataFine.setHours(0, 0, 0, 0);
+
+
+                                  if((dataInizio==giorno)||(dataInizio<=giorno&&dataFine>=giorno)){
+                                    console.log("Giorno: " +giorno+ " Data inizio: " + dataInizio + " Data fine: " + dataFine);
+                                    %><%=options[option].nome + " " + options[option].cognome + ", "%><% 
+                                  } 
+                                }
                                 
-                                %><%=giorno%></td>
+                                %></td>
                                 
                       
           

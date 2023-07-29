@@ -19,14 +19,7 @@ require('dotenv').config({path: '../env/developement.env'});
 
 
 
-/* GET home page. 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});*/
-
-/* GET tables. */
-
-
+/* GET Calendario */
 
 router.get('/calendario', async function(req, res, next) {
   const uri = process.env.DB_URI || "";
@@ -39,12 +32,12 @@ router.get('/calendario', async function(req, res, next) {
   res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario', options:options });
 });
 
+/* GET form aggiunta Macchine */
 router.get('/addMacchina', async function(req, res, next) {
 
   res.render('addMacchina');
 });
-
-
+/* POST aggiunta Macchine */
 router.post('/addMacchina', (req, res, next) => {
   
   macchineController.addMacchine(req, res, next);
@@ -65,6 +58,10 @@ router.post('/addFerie', async function(req, res, next) {
 // Aggiungi Cliente
 router.post('/addCliente', async function(req, res, next) {
   cliente.addCliente(req, res, next);
+});
+
+router.get('/conferma', async function(req, res, next) {
+  res.render('conferma');
 });
 
 router.get('/addCliente', async function(req, res, next) {

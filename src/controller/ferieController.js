@@ -40,7 +40,7 @@ ferieController.addFerie= async (req, res, next) => {
 
     await ferie.save();
 
-    res.redirect('/showFerie');
+    res.redirect('/conferma');
 };
 
 module.exports = ferieController;
