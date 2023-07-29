@@ -114,7 +114,7 @@ router.get('/showFerie',isAdmin, async function(req, res, next) {
 
 });
 
-router.get('/', async function(req, res, next) {
+router.get('/', isAdmin, async function(req, res, next) {
   const totalMolleMese = await repartiController.getTotal("produzione", "pocket", "m");
   console.log(totalMolleMese);
 
