@@ -44,13 +44,15 @@ employeeController.addEmployee = async (req, res, next) => {
     } catch (error) {
         if (error.code === 11000) {
           // Errore di duplicazione dell'indice (campo "user" duplicato)
-          return res.status(400).json({ error: 'L\'utente con questo nome utente è già presente nel sistema.' });
+          const message = 'L\'utente con questo nome utente è già presente nel sistema.';
+          return res.status(400).render('error', { message });
         } else {
           // Altri errori
           console.error('Errore durante l\'inserimento dell\'utente:', error);
-          return res.status(500).json({ error: 'Si è verificato un errore durante l\'inserimento dell\'utente.' });
+          const message = 'Si è verificato un errore durante l\'inserimento dell\'utente.';
+          return res.status(500).render('error', { message });
         }
-      }      
+      }          
 };
 
 employeeController.deleteEmployee = async (req, res, next) => {
