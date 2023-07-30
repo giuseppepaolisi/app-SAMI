@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const moment = require('moment');
 const logger = require('morgan');
-require('dotenv').config({path: path.resolve(__dirname,'./env/developement.env')});
+require('dotenv').config({path: path.resolve(__dirname,'./.env')});
 const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
@@ -16,6 +16,7 @@ const employeeRouter = require('./routes/reparto');
 const prodPocketRouter = require('./routes/prodPocket');
 const pdfGen = require('./routes/pdfGenerator');
 const macchine = require('./routes/macchine');
+process.env.TZ = 'Europe/Rome';
 //const calendarRouter = require('./routes/calendario');
 
 

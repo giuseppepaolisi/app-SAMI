@@ -15,7 +15,7 @@ const repartiController = require("../controller/repartiController");
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
 
-require('dotenv').config({path: '../env/developement.env'});
+require('dotenv').config({path: './../.env'});
 
 
 
@@ -48,7 +48,7 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       };
   }
   
-  const list = await Reparti.find(parametri).exec();
+  const list = await Reparti.find(parametri).sort({data: -1}).exec();
   
     if (list.length > 0) {
       //const list = await Reparti.find({tipo:'Produzione', reparto:'produzione'}).exec(); 

@@ -59,7 +59,7 @@ function signToken(req, res, user, next) {
     const cookieSetting = {
         expires: new Date(Date.now() + (2*60*60*1000)),
         httpOnly: true,
-        secure: false
+        secure: true
     };
     const prv_key = fs.readFileSync('rsa.private');
     // Aggiungi l'opzione expiresIn per impostare il tempo di scadenza del token a 2 ore

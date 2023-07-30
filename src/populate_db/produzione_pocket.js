@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const faker = require("faker");
 const Reparti = require("./../db/reparti");
 const path = require('path');
-require('dotenv').config({path: path.resolve(__dirname,'./../env/developement.env')});
+require('dotenv').config({path: path.resolve(__dirname,'./../.env')});
 
 const uri = process.env.DB_URI || "";
 console.log(uri);
