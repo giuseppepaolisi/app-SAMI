@@ -379,41 +379,91 @@ var oreLav = document.querySelector('div[name="oreLav"]'); // Seleziona l'elemen
 var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var cambiMacchina = document.querySelector('div[name="cambiMacchina"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 
+var prodFiloInput = document.querySelector('div[name="prodFilo"] select');
+var clienteInput = document.querySelector('div[name="cliente"] select');
+var misuraFiloInput = document.querySelector('.wrap-input100[name="misuraFilo"] input');
+var fileMolleInput = document.querySelector('.wrap-input100[name="fileMolle"] input'); 
+var giriMollaInput = document.querySelector('.wrap-input100[name="giriMolla"] input'); 
+var diamFiloInput = document.querySelector('div[name="cliente"] select'); 
+var portataInput = document.querySelector('.wrap-input100[name="portata"] input');
+var pesoInput = document.querySelector('.wrap-input100[name="peso"] input');
+var quantitaInput = document.querySelector('.wrap-input100[name="quantita"] input');
+var oreLavInput = document.querySelector('.wrap-input100[name="oreLav"] input');
+var cambiMacchina = document.querySelector('.wrap-input100[name="cambiMacchina"] input');
 
 
 if (reparto==="produzione" && tipo ==="pocket") {
-  prodFilo.style.display = 'block'; 
-  diamFilo.style.display = 'block'; 
-  peso.style.display = 'block'; 
-  quantita.style.display = 'block'; 
-  oreLav.style.display = 'block'; 
-  portata.style.display = 'block';
+	//visibilità
+	prodFilo.style.display = 'block'; 
+	diamFilo.style.display = 'block'; 
+	peso.style.display = 'block'; 
+	quantita.style.display = 'block'; 
+	oreLav.style.display = 'block'; 
+	portata.style.display = 'block';
+
+	//required
+	prodFiloInput.required = true;
+	pesoInput.required = true;
+	diamFiloInput.required = true;
+	quantitaInput.required = true;
+	oreLavInput.required = true;
+	portataInput.required = true;
+	
 } else if(reparto==="produzione" && tipo ==="bonnel"){
-  prodFilo.style.display = 'block'; 
-  diamFilo.style.display = 'block'; 
-  giriMolla.style.display = 'block';
-  quantita.style.display = 'block'
-  oreLav.style.display = 'block';
+	//visivilità
+	prodFilo.style.display = 'block'; 
+	diamFilo.style.display = 'block'; 
+	giriMolla.style.display = 'block';
+	quantita.style.display = 'block'
+	oreLav.style.display = 'block';
+
+	//required
+	prodFiloInput.required = true;
+	diamFiloInput.required = true;
+	giriMollaInput.required = true;
+	quantitaInput.required = true;
+	oreLavInput.required = true;
 
 } else if(reparto==="assemblaggio" && tipo ==="pocket"){
-  cliente.style.display = 'block'; 
-  misuraFilo.style.display = 'block'; 
-  fileMolle.style.display = 'block'; 
-  quantita.style.display = 'block'; 
-  oreLav.style.display = 'block'; 
+	//visilbilità
+	cliente.style.display = 'block'; 
+	misuraFilo.style.display = 'block'; 
+	fileMolle.style.display = 'block'; 
+	quantita.style.display = 'block'; 
+	oreLav.style.display = 'block'; 
 
+	//required
+	clienteInput.required = true;
+	misuraFiloInput.required = true;
+	fileMolleInput.required = true;
+	quantitaInput.required = true;
+	oreLavInput.required = true;
 
 } else if(reparto==="assemblaggio" && tipo ==="bonnel"){
-  cliente.style.display = 'block'; 
-  misuraFilo.style.display = 'block'; 
-  fileMolle.style.display = 'block'; 
-  quantita.style.display = 'block'; 
-  oreLav.style.display = 'block'; 
-  cambiMacchina.style.display = 'block'; 
+	//visibilità
+	cliente.style.display = 'block'; 
+	misuraFilo.style.display = 'block'; 
+	fileMolle.style.display = 'block'; 
+	quantita.style.display = 'block'; 
+	oreLav.style.display = 'block'; 
+	cambiMacchina.style.display = 'block'; 
+
+	//required
+	clienteInput.required = true;
+	misuraFiloInput.required = true;
+	fileMolleInput.required = true;
+	quantitaInput.required = true;
+	oreLavInput.required = true;
+	cambiMacchinaInput.required = true;
   
  } else if(reparto==="imballaggio"&& tipo ===""){
-  quantita.style.display = 'block'; 
-  oreLav.style.display = 'block'; 
+	//visibilità
+	quantita.style.display = 'block'; 
+	oreLav.style.display = 'block'; 
+
+	//required
+	quantitaInput.required = true;
+	oreLavInput.required = true;
   
  }else {
   prodFilo.style.display = 'none'; // Nascondi l'input se la variabile è falsa
