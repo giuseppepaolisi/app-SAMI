@@ -190,7 +190,7 @@
               const password = elementRow.querySelector("td:nth-child(4)").innerText;*/
       
               // Popola il modal con i dati dell'elemento
-              deleteModalBody.innerHTML = `Vuoi eliminare l'utente: <b>${nome} ${cognome}</b>`;
+              deleteModalBody.innerHTML = `Vuoi eliminare le ferie per l'utente: <b>${nome} ${cognome}</b>`;
       
               // Aggiungi l'ID dell'elemento al pulsante di conferma
               deleteConfirmButton.setAttribute("data-id", elementId);
@@ -205,7 +205,7 @@
             const elementId = deleteConfirmButton.getAttribute("data-id");
       
             // Eliminazione sul server
-            fetch(`/eliminaDipendente/${elementId}`, {
+            fetch(`/eliminaFerie/${elementId}`, {
               method: "DELETE",
             })
               .then((response) => response.json())
