@@ -168,10 +168,13 @@ const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
 
         const pipeline = [
           { $match : { 
+            reparto: reparto,
+            tipo: tipo,
+            deleted: false,
               data: { 
                   $gte: new Date(primoGiornoAnnoCorrente),
                   $lt: new Date(primoGiornoAnnoDopo) 
-              } 
+              }
           }},
           { $project: {
               mese: { 
@@ -193,7 +196,7 @@ const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
 
       const uri = process.env.DB_URI || "";
       mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      const result = await Reparti.aggregate(pipeline, options);
+      const result = await Reparti.aggregate(pipeline);
       let array=[0,0,0,0,0,0,0,0,0,0,0,0];
       for(i=0;i<result.length;i++){
         k=(result[i]._id)-1;
@@ -201,7 +204,7 @@ const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
         array[k]=result[i].totale;
       }
       //console.log(array)
-      
+      console.log(array)
       return array || -1;
     } catch (err) {
       console.error("Errore durante il calcolo del totale di molle:", err);
