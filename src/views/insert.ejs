@@ -179,7 +179,7 @@
 										<span class="focus-input100" data-placeholder="Ore Fermo"></span>
 									</div>
 									<div class="wrap-input100 validate-input" name="cambiMacchina">
-										<input class="input100" type="number" name="cambiMacchina" min="0" max="15" step=1>
+										<input class="input100" type="number" name="cambiMacchina" min="0" max="100" step=1>
 										<span class="focus-input100" data-placeholder="Cambi Macchina"></span>
 									</div>
 
@@ -389,7 +389,7 @@ var portataInput = document.querySelector('.wrap-input100[name="portata"] input'
 var pesoInput = document.querySelector('.wrap-input100[name="peso"] input');
 var quantitaInput = document.querySelector('.wrap-input100[name="quantita"] input');
 var oreLavInput = document.querySelector('.wrap-input100[name="oreLav"] input');
-var cambiMacchina = document.querySelector('.wrap-input100[name="cambiMacchina"] input');
+var cambiMacchinaInput = document.querySelector('.wrap-input100[name="cambiMacchina"] input');
 
 
 if (reparto==="produzione" && tipo ==="pocket") {
@@ -400,6 +400,7 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	quantita.style.display = 'block'; 
 	oreLav.style.display = 'block'; 
 	portata.style.display = 'block';
+	cambiMacchina.style.display = 'block';
 
 	//required
 	prodFiloInput.required = true;
@@ -408,6 +409,7 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	quantitaInput.required = true;
 	oreLavInput.required = true;
 	portataInput.required = true;
+	cambiMacchinaInput.required = true;
 	
 } else if(reparto==="produzione" && tipo ==="bonnel"){
 	//visivilità
