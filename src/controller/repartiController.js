@@ -54,6 +54,7 @@ createData =async (postData, token) => {
     
     if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
+    if(checkData(postData.note)) data.note = postData.note;
 
 
 
