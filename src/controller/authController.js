@@ -29,7 +29,7 @@ authController.login = async (req, res) => {
     // Cerca l'utente nel database
     const uri = process.env.DB_URI || "";
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    const user = await User.findOne({ user: username });
+    const user = await User.findOne({ user: username, deleted:0 });
     console.log(user);
 
     // Verifica se l'utente esiste
