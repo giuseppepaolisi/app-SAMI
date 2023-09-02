@@ -22,8 +22,11 @@ const repartiSchema = new mongoose.Schema({
     user: String,
     data: Date,
 
-    deleted: Boolean
-
+    deleted: Boolean,
+    note: {
+        type: String,
+        maxlength: 1000,
+    }
 
 });
 
