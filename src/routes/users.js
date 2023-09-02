@@ -5,6 +5,7 @@ const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/
 const mongoose = require('mongoose');
 const User = require("./../db/user.js");
 const employeeController = require('../controller/employeeController');
+const ferieController = require('../controller/ferieController');
 
 /* GET users listing. */
 router.get('/', isAdmin, function(req, res, next) {
@@ -27,6 +28,10 @@ router.get('/addUser',isAdmin, async function(req, res, next) {
 //permette di cancellare un dipendente dal sistema
 router.delete('/eliminaDipendente/:id', isAdmin,async (req, res, next) => {
   employeeController.deleteEmployee(req, res, next);
+});
+//permette di cancellare un dipendente dal sistema
+router.delete('/eliminaFerie/:id', isAdmin,async (req, res, next) => {
+  ferieController.deleteFerie(req, res, next);
 });
 
 //permette di visualizzare la pagina di modifica dati per un untente

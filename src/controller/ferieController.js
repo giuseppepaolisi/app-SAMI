@@ -43,4 +43,26 @@ ferieController.addFerie= async (req, res, next) => {
     res.redirect('/conferma');
 };
 
+ferieController.deleteFerie = async (req, res, next) => {
+    const elementId = req.params.id;
+    console.log(elementId);
+        const uri = process.env.DB_URI || "";
+        mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+        const flag = {
+        deleted : 1
+        };
+        Ferie.findByIdAndUpdate(elementId, flag, { new: true, runValidators: true })
+        .then((flag) => {
+            if(flag) {
+            console.log('Elemento aggiornato:', flag);
+            res.json({ message: "Elemento eliminato con successo" });
+            } else {
+            console.log('Elemento non trovato.');
+            }
+        }).catch((errore) => {
+            console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+            res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+        });
+};
+
 module.exports = ferieController;
