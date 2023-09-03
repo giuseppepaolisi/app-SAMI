@@ -77,8 +77,8 @@
 									<input type="hidden" id="time" name="time" value="">
 									
 									<div name="prodFilo">
-										<label for="opzioni" name="prodFilo">Seleziona un Produttore Filo: </label>
-										<select class="custom-select" id="opzioni" name="prodFilo">
+										<label name="prodFilo">Seleziona un Produttore Filo: </label>
+										<select class="custom-select" name="prodFilo">
 											<option selected value=""> Cerca Produttore </option>
 
 										  <% options.forEach(function(option) {
@@ -89,8 +89,8 @@
 									  </div>
 									
 									  <div name="cliente">
-										<label for="opzioni" name="cliente">Seleziona un Cliente: </label>
-										<select class="custom-select" id="opzioni" name="cliente">
+										<label name="cliente">Seleziona un Cliente: </label>
+										<select class="custom-select" name="cliente">
 											<option selected value=""> Cerca Cliente </option>
 										  <% options.forEach(function(option) { 
 											if (option.tipologia==="Cliente") { %>
@@ -108,13 +108,13 @@
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="misuraFilo">
 										<label>Misura Molleggio (cm x cm)</label>
-										<input class="input100" type="text" name="misuraFilo">
+										<input class="input100" type="text" name="misuraFilo" value="<%= molleggio.misuraFilo %>">
 										
 									</div>
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="fileMolle" >
 										<label>file (cm x cm)</label>
-										<input class="input100" type="text" name="fileMolle">
+										<input class="input100" type="text" name="fileMolle" value="<%= molleggio.fileMolle %>">
 
 									</div>
 					
@@ -182,10 +182,7 @@
 										<label>Ore Lavorate</label>
 										<input class="input100" type="number" name="oreLav" min="1" max="12" value="<%= molleggio.oreLav %>">
 									</div>
-									<div class="wrap-input100 validate-input" name="oreFermo">
-										<label>Ore Fermo</label>
-										<input class="input100" type="number" name="oreFermo" min="1" max="12" value="<%= molleggio.oreFermo %>">
-									</div>
+
 									<div class="wrap-input100 validate-input" name="cambiMacchina">
 										<label>Cambi Macchina</label>
 										<input class="input100" type="number" name="cambiMacchina" min="0" max="100" value="<%= molleggio.cambiMacchina %>">

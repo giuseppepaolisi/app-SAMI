@@ -25,6 +25,9 @@ createData =async (postData, token) => {
     if(checkData(postData.prodFilo)) data.prodFilo = postData.prodFilo;
     if(checkData(postData.cliente)) data.cliente = postData.cliente;
 
+    if(checkData(postData.misuraFilo)) data.misuraFilo = postData.misuraFilo;
+    if(checkData(postData.fileMolle)) data.fileMolle = postData.fileMolle;
+
     if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
     if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);

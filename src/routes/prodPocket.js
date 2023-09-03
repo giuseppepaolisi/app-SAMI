@@ -59,7 +59,7 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       //let keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted'].includes(key));
       let keys = []
       if (reparto == "produzione" && tipo == "pocket") {
-        keys = ['_id', 'macchina', 'prodFilo', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'user', 'note'];
+        keys = ['_id', 'macchina', 'prodFilo', 'cliente', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'user', 'note'];
       } else if (reparto == "produzione" && tipo == "bonnel") {
         keys = ['_id', 'macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'user', 'note'];
       } else if (reparto == "assemblaggio" && tipo == "pocket") {
