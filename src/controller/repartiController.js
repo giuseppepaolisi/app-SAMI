@@ -37,10 +37,16 @@ createData =async (postData, token) => {
 
     if(data.reparto==="produzione" && data.tipo==="pocket"){
         //CALCOLO ORE FERMO
-         const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
+        const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
+        let oreFermo = 0;
+        if (!retrive) {
+          oreFermo = 0;
+        } else {
+          oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
+        }
         console.log("RETRIVEEEEE: " + retrive);
         console.log("ORE LAVORATEEEE: " + data.oreLav);
-        const oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
+        
 
         console.log("ORE FERMOOOOOO: " + oreFermo);
 

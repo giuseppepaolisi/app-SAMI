@@ -37,15 +37,52 @@ router.get("/download-pdf/:reparto/:tipo?",isAdmin, async (req, res) => {
     }
 
     const list = await Reparti.find(parametri).exec();
+    /*
+    const currentDate = new Date(); // Ottieni la data corrente
+    const threeMonthsAgo = new Date(currentDate);
+    threeMonthsAgo.setMonth(currentDate.getMonth() - 3); // Sottrai 3 mesi dalla data corrente
+
+    const pipeline = [
+      {
+        $match: {
+          reparto: reparto,
+          tipo: tipo,
+          deleted: 0,
+          data: { $gte: threeMonthsAgo } // Filtra per documenti con data maggiore o uguale a quella di tre mesi fa
+        }
+      }
+    ];
+
+    // Eseguire la pipeline MongoDB
+    Reparti.aggregate(pipeline).exec((err, results) => {
+      if (err) {
+        // Gestisci gli errori
+      } else {
+        // I risultati contengono i documenti che soddisfano i criteri
+        console.log(results);
+      }
+    });*/
 
     // Crea un nuovo documento PDF
     const doc = new PDFDocument();
 
     // Aggiungi il titolo della tabella
     doc.fontSize(16).text("Tabella " + reparto + " " + tipo, { align: "center" });
+    let keys = []
+      if (reparto == "produzione" && tipo == "pocket") {
+        keys = ['macchina', 'prodFilo', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data'];
+      } else if (reparto == "produzione" && tipo == "bonnel") {
+        keys = ['macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data'];
+      } else if (reparto == "assemblaggio" && tipo == "pocket") {
+        keys = ['macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambioTelina','oreLav', 'data'];
+      } else if (reparto == "assemblaggio" && tipo == "bonnel") {
+        keys = ['macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambiMacchina','oreLav', 'data'];
+      } else if (reparto == "imballaggio") {
+        keys = ['macchina', 'quantita', 'oreLav', 'data'];
+      }
 
     // Header della tabella
-    const tableHeaders = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted', '_id'].includes(key));
+    const tableHeaders = keys;
 
     // Dimensioni delle colonne della tabella
     const options = {
