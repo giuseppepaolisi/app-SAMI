@@ -98,7 +98,7 @@
 									  <div name="cliente">
 										<label for="opzioni" name="cliente">Seleziona un Cliente: </label>
 										<select class="custom-select" id="opzioni" name="cliente">
-											<option selected value=""> Cerca Cliente </option>
+											<!--<option selected value=""> Cerca Cliente </option>-->
 										  <% options.forEach(function(option) { 
 											if (option.tipologia==="Cliente") { %>
 											<option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
@@ -128,12 +128,12 @@
 										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
 										<br><br>
 										<select class="custom-select" type="number" name="giriMolla">
-											<option selected value=""> Premi </option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
+											<!--<option selected value=""> Premi </option>-->
+											<option value="4">4,00</option>
+											<option value="5">5,00</option>
+											<option value="6">6,00</option>
+											<option value="7">7,00</option>
+											<option value="8">8,00</option>
 										</select>
 									</div>
 									<!--Produzione Vecchia e Nuova-->
@@ -144,14 +144,14 @@
 										<br><br>
 										
 										<select class="custom-select" type="number" name="diamFilo">
-											<option selected value=""> Premi </option>
-											<option value="1.9">1,9</option>
-											<option value="2">2</option>
-											<option value="2.1">2,1</option>
-											<option value="2.2">2,2</option>
-											<option value="2.3">2,3</option>
-											<option value="2.4">2,4</option>
-											<option value="2.5">2,5</option>
+											<!--<option selected value=""> Premi </option>-->
+											<option value="1.9">1,90</option>
+											<option value="2">2,00</option>
+											<option value="2.1">2,10</option>
+											<option value="2.2">2,20</option>
+											<option value="2.3">2,30</option>
+											<option value="2.4">2,40</option>
+											<option value="2.5">2,50</option>
 										</select>
 										
 									</div>
@@ -362,6 +362,37 @@ div[name="cambiMacchina"]{
 </style>
 
 <script>
+	//ordina gli elementi in una select
+	function ordinaSelect(selectElement) {
+		// Ottieni una collezione degli elementi <option>
+		var options = selectElement.querySelectorAll('option');
+
+		// Converti la collezione in un array
+		var optionsArray = Array.from(options);
+
+		// Ordina gli elementi <option> in base al loro attributo "value"
+		optionsArray.sort(function(a, b) {
+			var valueA = a.value;
+			var valueB = b.value;
+			return valueA.localeCompare(valueB);
+		});
+
+		// Imposta l'attributo "selected" sul primo elemento dell'array
+		if (optionsArray.length > 0) {
+			optionsArray[0].selected = true;
+		}
+
+		// Rimuovi tutti gli <option> dall'elemento <select>
+		while (selectElement.firstChild) {
+			selectElement.removeChild(selectElement.firstChild);
+		}
+
+		// Aggiungi gli <option> ordinati nuovamente all'elemento <select>
+		optionsArray.forEach(function(option) {
+			selectElement.appendChild(option);
+		});
+		
+	}
 	var reparto = "<%= reparto %>"; // La tua variabile con il valore desiderato
 	var tipo = "<%= typeof tipo !== 'undefined' ? tipo : '' %>"; // La tua variabile con il valore desiderato
 
@@ -383,8 +414,8 @@ var prodFiloInput = document.querySelector('div[name="prodFilo"] select');
 var clienteInput = document.querySelector('div[name="cliente"] select');
 var misuraFiloInput = document.querySelector('.wrap-input100[name="misuraFilo"] input');
 var fileMolleInput = document.querySelector('.wrap-input100[name="fileMolle"] input'); 
-var giriMollaInput = document.querySelector('.wrap-input100[name="giriMolla"] input'); 
-var diamFiloInput = document.querySelector('div[name="cliente"] select'); 
+var giriMollaInput = document.querySelector('div[name="giriMolla"] select');
+var diamFiloInput = document.querySelector('div[name="diamFilo"] select'); 
 var portataInput = document.querySelector('.wrap-input100[name="portata"] input');
 var pesoInput = document.querySelector('.wrap-input100[name="peso"] input');
 var quantitaInput = document.querySelector('.wrap-input100[name="quantita"] input');
@@ -410,7 +441,17 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	oreLavInput.required = true;
 	portataInput.required = true;
 	cambiMacchinaInput.required = true;
-	
+
+	//aggiunta e ordinamento
+	var newOption = document.createElement('option');
+	newOption.value = '1.8'; 
+	newOption.textContent = '1,80'; 
+	diamFiloInput.appendChild(newOption);
+	ordinaSelect(diamFiloInput);
+
+	//ordinamento prodFilo
+	ordinaSelect(prodFiloInput);
+		
 } else if(reparto==="produzione" && tipo ==="bonnel"){
 	//visivilità
 	prodFilo.style.display = 'block'; 
@@ -426,6 +467,17 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	quantitaInput.required = true;
 	oreLavInput.required = true;
 
+	//aggiunta e ordinamento
+	newOption = document.createElement('option');
+	newOption.value = '2.16'; 
+	newOption.textContent = '2,16'; 
+	diamFiloInput.appendChild(newOption);
+	ordinaSelect(diamFiloInput);
+
+	//ordinamento prodFilo
+	ordinaSelect(prodFiloInput);
+	ordinaSelect(giriMollaInput);
+
 } else if(reparto==="assemblaggio" && tipo ==="pocket"){
 	//visilbilità
 	cliente.style.display = 'block'; 
@@ -440,6 +492,9 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	fileMolleInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
+
+	//ordinamento clienti
+	ordinaSelect(clienteInput);
 
 } else if(reparto==="assemblaggio" && tipo ==="bonnel"){
 	//visibilità
@@ -457,6 +512,9 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	quantitaInput.required = true;
 	oreLavInput.required = true;
 	cambiMacchinaInput.required = true;
+
+	//ordinamento clienti
+	ordinaSelect(clienteInput);
   
  } else if(reparto==="imballaggio"&& tipo ===""){
 	//visibilità
