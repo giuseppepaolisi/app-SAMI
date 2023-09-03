@@ -169,6 +169,11 @@
 										<input class="input100" type="number" name="quantita" min="0" max="999999999" step=1>
 										<span class="focus-input100" data-placeholder="Quantità molle"></span>
 									</div>
+									<!--Produzione Nuova-->
+									<div class="wrap-input100 validate-input" name="altezza">
+										<input class="input100" type="number" name="altezza" min="0" max="100" step=0.05>
+										<span class="focus-input100" data-placeholder="altezza (cm)"></span>
+									</div>
 									<!--Ore standard/Ore prodotte-->
 									<div class="wrap-input100 validate-input"  name="oreLav">
 										<input class="input100" type="number" name="oreLav" min="1" max="12" step=1>
@@ -185,7 +190,7 @@
 
 									<!-- Note -->
 									<div class="wrap-input100 validate-input" name="note">
-										<textarea class="input100" name="note"  rows="10" cols="50" style="height: auto;" maxlength="1000"></textarea>
+										<textarea class="input100" name="note"  rows="10" cols="50" style="height: auto;" maxlength="255"></textarea>
 										<span class="focus-input100" data-placeholder="Note"></span>
 									</div>
 	
@@ -307,6 +312,9 @@ div[name="oreFermo"]{
 div[name="cambiMacchina"]{
 	display:none;
 }
+div[name="altezza"]{
+	display:none;
+}
 
 
 /* Stile di base per la select */
@@ -409,6 +417,7 @@ var quantita = document.querySelector('div[name="quantita"]'); // Seleziona l'el
 var oreLav = document.querySelector('div[name="oreLav"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var cambiMacchina = document.querySelector('div[name="cambiMacchina"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+var altezza = document.querySelector('div[name="altezza"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 
 var prodFiloInput = document.querySelector('div[name="prodFilo"] select');
 var clienteInput = document.querySelector('div[name="cliente"] select');
@@ -421,6 +430,7 @@ var pesoInput = document.querySelector('.wrap-input100[name="peso"] input');
 var quantitaInput = document.querySelector('.wrap-input100[name="quantita"] input');
 var oreLavInput = document.querySelector('.wrap-input100[name="oreLav"] input');
 var cambiMacchinaInput = document.querySelector('.wrap-input100[name="cambiMacchina"] input');
+var altezzaInput = document.querySelector('.wrap-input100[name="altezza"] input');
 
 
 if (reparto==="produzione" && tipo ==="pocket") {
@@ -459,6 +469,7 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	giriMolla.style.display = 'block';
 	quantita.style.display = 'block'
 	oreLav.style.display = 'block';
+	altezza.style.display = 'block';
 
 	//required
 	prodFiloInput.required = true;
@@ -466,6 +477,7 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	giriMollaInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
+	altezzaInput.required = true;
 
 	//aggiunta e ordinamento
 	newOption = document.createElement('option');

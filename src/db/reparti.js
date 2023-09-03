@@ -25,8 +25,9 @@ const repartiSchema = new mongoose.Schema({
     deleted: Boolean,
     note: {
         type: String,
-        maxlength: 1000,
-    }
+        maxlength: 255,
+    },
+    altezza: Number
 
 });
 
