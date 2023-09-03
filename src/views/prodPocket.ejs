@@ -90,6 +90,8 @@
                                                 if (aheader[i] === 'data' && moment(values[i], moment.ISO_8601, true).isValid()) { %>
                                                     <% const formattedDate = moment(values[i]).format("DD/MM/YYYY HH:mm"); %>
                                                     <td><%= formattedDate %></td>
+                                                <% } else if (typeof values[i] === 'number') { %>
+                                                    <td><%= values[i].toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
                                                 <% } else { %>
                                                     <td><%= values[i] %></td>
                                                 <% } %>

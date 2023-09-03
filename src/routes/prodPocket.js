@@ -56,7 +56,19 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       /*const aheader = "nome";*/
 
       //prende gli header della prima occorrenza nel db ed elimina alcuni di loro.
-      const keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted'].includes(key));
+      //let keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted'].includes(key));
+      let keys = []
+      if (reparto == "produzione" && tipo == "pocket") {
+        keys = ['_id', 'macchina', 'prodFilo', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'note'];
+      } else if (reparto == "produzione" && tipo == "bonnel") {
+        keys = ['_id', 'macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'note'];
+      } else if (reparto == "assemblaggio" && tipo == "pocket") {
+        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambioTelina','oreLav', 'data', 'note'];
+      } else if (reparto == "assemblaggio" && tipo == "bonnel") {
+        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambiMacchina','oreLav', 'data', 'note'];
+      } else if (reparto == "imballaggio") {
+        keys = ['_id', 'macchina', 'quantità', 'oreLav', 'data', 'note'];
+      }
 
       console.log(keys); 
       console.log(list[0]);
