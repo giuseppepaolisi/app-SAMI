@@ -59,15 +59,15 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       //let keys = Object.keys(list[0]._doc).filter(key => !['__v', 'tipo', 'reparto', 'deleted'].includes(key));
       let keys = []
       if (reparto == "produzione" && tipo == "pocket") {
-        keys = ['_id', 'macchina', 'prodFilo', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'note'];
+        keys = ['_id', 'macchina', 'prodFilo', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'user', 'note'];
       } else if (reparto == "produzione" && tipo == "bonnel") {
-        keys = ['_id', 'macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'note'];
+        keys = ['_id', 'macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'user', 'note'];
       } else if (reparto == "assemblaggio" && tipo == "pocket") {
-        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambioTelina','oreLav', 'data', 'note'];
+        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambioTelina','oreLav', 'data', 'user', 'note'];
       } else if (reparto == "assemblaggio" && tipo == "bonnel") {
-        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambiMacchina','oreLav', 'data', 'note'];
+        keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambiMacchina','oreLav', 'data', 'user', 'note'];
       } else if (reparto == "imballaggio") {
-        keys = ['_id', 'macchina', 'quantità', 'oreLav', 'data', 'note'];
+        keys = ['_id', 'macchina', 'quantità', 'oreLav', 'data', 'user', 'note'];
       }
 
       console.log(keys); 
