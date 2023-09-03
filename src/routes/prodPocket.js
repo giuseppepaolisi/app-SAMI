@@ -67,7 +67,7 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       } else if (reparto == "assemblaggio" && tipo == "bonnel") {
         keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambiMacchina','oreLav', 'data', 'user', 'note'];
       } else if (reparto == "imballaggio") {
-        keys = ['_id', 'macchina', 'quantità', 'oreLav', 'data', 'user', 'note'];
+        keys = ['_id', 'macchina', 'quantita', 'oreLav', 'data', 'user', 'note'];
       }
 
       console.log(keys); 
@@ -110,14 +110,16 @@ router.get('/editMolleggio/:id', isAdmin,async (req, res, next) => {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const molleggio = await Reparti.find({_id: req.params.id}).exec(); 
-  const users = await User.find({deleted:0}).exec(); 
+  const users = await User.find({deleted:0}).exec();
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  options = await Cliente.find({ deleted: 0 }).sort({ ragioneSociale: 1 }).exec(); 
 
   console.log(req.params.id);
   console.log(molleggio[0]);
-  console.log(molleggio[0].data);
+  console.log(molleggio[0].prodFilo);
 
   // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
-  res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users, users, moment: moment});
+  res.render('editMolleggio', {molleggio:molleggio[0], reparto:molleggio[0].reparto, tipo:molleggio[0].tipo, macchina:molleggio[0].macchina, users: users, moment: moment, options:options});
 });
 
 router.post('/editMolleggio/:id', isAdmin,(req, res, next) => {

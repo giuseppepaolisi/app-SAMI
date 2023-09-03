@@ -84,12 +84,14 @@ repartiController.insertMolleggi = async (req, res) => {
     res.render("dipendente/postInsert.ejs");
 };
 
-repartiController.modificaMolleggio = (req, res, next ) => {
+repartiController.modificaMolleggio = async (req, res, next ) => {
     const elementId = req.params.id;
     const uri = process.env.DB_URI || "";
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    const data = createData(req.body, req.body);
-    Reparti.findByIdAndUpdate(elementId, data, { new: true, runValidators: true })
+    console.log("note: " + req.body.note);
+    let dataProcessed = await createData(req.body, req.body);
+
+    Reparti.findByIdAndUpdate(elementId, dataProcessed, { new: true, runValidators: true })
     .then((data) => {
         if(data) {
             console.log('Elemento aggiornato:', data);
@@ -99,7 +101,7 @@ repartiController.modificaMolleggio = (req, res, next ) => {
                 res.redirect("/prodPocket/" + data.reparto + "/" + data.tipo);
             }
         } else {
-        console.log('Elemento non trovato.');
+          console.log('Elemento non trovato.');
         }
     }).catch((errore) => {
         console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
