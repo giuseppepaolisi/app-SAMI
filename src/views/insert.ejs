@@ -98,7 +98,7 @@
 									  <div name="cliente">
 										<label for="opzioni" name="cliente">Seleziona un Cliente: </label>
 										<select class="custom-select" id="opzioni" name="cliente">
-											<!--<option selected value=""> Cerca Cliente </option>-->
+											<option selected value=""> Cerca Cliente </option>
 										  <% options.forEach(function(option) { 
 											if (option.tipologia==="Cliente") { %>
 											<option value="<%= option.ragioneSociale %>"> <%= option.ragioneSociale %> </option>
@@ -106,12 +106,7 @@
 										</select>
 									  </div>
 									 <br>
-									  <!--cliente
-									<div class="wrap-input100 validate-input" name="cliente">
-										<input class="input100" type="text" name="cliente">
-										<span class="focus-input100" data-placeholder="Cliente" name="cliente"></span>
-									</div>-->
-									
+									  									
 									<!--Assemblaggio-->
 									<div class="wrap-input100 validate-input" name="misuraFilo">
 										<input class="input100" type="text" name="misuraFilo">
@@ -128,7 +123,7 @@
 										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
 										<br><br>
 										<select class="custom-select" type="number" name="giriMolla">
-											<!--<option selected value=""> Premi </option>-->
+											<option selected value=""> Premi </option>
 											<option value="4">4,00</option>
 											<option value="5">5,00</option>
 											<option value="6">6,00</option>
@@ -144,7 +139,7 @@
 										<br><br>
 										
 										<select class="custom-select" type="number" name="diamFilo">
-											<!--<option selected value=""> Premi </option>-->
+											<option selected value=""> Premi </option>
 											<option value="1.9">1,90</option>
 											<option value="2">2,00</option>
 											<option value="2.1">2,10</option>
