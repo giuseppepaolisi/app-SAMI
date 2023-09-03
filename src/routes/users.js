@@ -6,6 +6,9 @@ const mongoose = require('mongoose');
 const User = require("./../db/user.js");
 const employeeController = require('../controller/employeeController');
 const ferieController = require('../controller/ferieController');
+const clienteController = require('../controller/clienteController');
+const Ferie = require('../db/ferie');
+
 
 /* GET users listing. */
 router.get('/', isAdmin, function(req, res, next) {
@@ -32,6 +35,11 @@ router.delete('/eliminaDipendente/:id', isAdmin,async (req, res, next) => {
 //permette di cancellare un dipendente dal sistema
 router.delete('/eliminaFerie/:id', isAdmin,async (req, res, next) => {
   ferieController.deleteFerie(req, res, next);
+});
+//permette di cancellare un ferie dal sistema
+router.delete('/eliminaCliente:id', isAdmin,async (req, res, next) => {
+  console.log("SONO ROUTER.DELETE");
+  clienteController.deleteCliente(req, res, next);
 });
 
 //permette di visualizzare la pagina di modifica dati per un untente
@@ -64,6 +72,46 @@ router.post('/editUser/:id', isAdmin,async function(req, res, next) {
         if(editingUser) {
           console.log('Elemento aggiornato:', editingUser);
           res.redirect('/dipendenti');
+        } else {
+          console.log('Elemento non trovato.');
+        }
+      }).catch((errore) => {
+        console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
+        //res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+      });
+
+});
+
+//permette di visualizzare la pagina di modifica dati per un untente
+router.get('/editFerie/:id', isAdmin,async function(req, res, next) {
+
+  const uri = process.env.DB_URI || "";
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const ferie = await Ferie.find({_id: req.params.id}).exec(); 
+
+  //console.log(user.nome + "ECCOMIIIII");
+
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('editFerie', {ferie:ferie[0]});
+});
+
+//permette di modificare i dati riguardanti un utente
+router.post('/editFerie/:id', isAdmin,async function(req, res, next) {
+
+  const elementId = req.params.id;
+  console.log(elementId);
+    const uri = process.env.DB_URI || "";
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const editingFerie = {
+      dataInizio : req.body.dataInizio,
+      dataFine : req.body.dataFine,
+      tipologia: req.body.isFerie
+    };
+    Ferie.findByIdAndUpdate(elementId, editingFerie, { new: true, runValidators: true })
+      .then((editingFerie) => {
+        if(editingFerie) {
+          console.log('Elemento aggiornato:', editingFerie);
+          res.redirect('/showFerie');
         } else {
           console.log('Elemento non trovato.');
         }
