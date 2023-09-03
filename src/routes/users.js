@@ -37,7 +37,7 @@ router.delete('/eliminaFerie/:id', isAdmin,async (req, res, next) => {
   ferieController.deleteFerie(req, res, next);
 });
 //permette di cancellare un ferie dal sistema
-router.delete('/eliminaCliente:id', isAdmin,async (req, res, next) => {
+router.delete('/eliminaCliente/:id', isAdmin,async (req, res, next) => {
   console.log("SONO ROUTER.DELETE");
   clienteController.deleteCliente(req, res, next);
 });

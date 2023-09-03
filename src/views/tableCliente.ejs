@@ -201,7 +201,7 @@
             const elementId = deleteConfirmButton.getAttribute("data-id");
       
             // Eliminazione sul server
-            fetch(`/eliminiaCliente/${elementId}`, {
+            fetch(`/eliminaCliente/${elementId}`, {
               method: "DELETE",
             })
               .then((response) => response.json())
