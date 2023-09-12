@@ -164,7 +164,7 @@
 									</div>
 									
 									<div class="wrap-input100 validate-input" name="quantita">
-										<label>Quantità molle</label>
+										<label><%=reparto=='imballaggio'? 'Quantità rotoli imballati' : 'Quantità molle'%></label>
 										<input class="input100" type="number" name="quantita" min="0" max="999999999" step=1 value="<%= molleggio.quantita %>">
 									</div>
 									<!--Produzione Nuova-->
