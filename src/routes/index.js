@@ -155,6 +155,14 @@ function getAllMonths() {
   return monthsData;
 }
 
+router.get('/getTotalForSelectedDay', isAdmin, async (req, res, next) => {
+  const selectedDate = req.query.date;
+  let totale = await repartiController.getTotalForDay("produzione", "pocket", selectedDate);
+  console.log(totale);
+  console.log(new Date(selectedDate));
+  res.json({ total: totale });
+});
+
 
 
 module.exports = router;

@@ -22,6 +22,17 @@
 
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        /* Stile per centrare in verticale e orizzontale il valore totalValue */
+        #totalValue {
+            text-align: center; /* Centro orizzontalmente */
+            display: flex;
+            align-items: center; /* Centro verticalmente */
+            justify-content: center; /* Centro orizzontalmente */
+            height: 100%; /* Imposta l'altezza al 100% del contenitore padre per centrare verticalmente */
+        }
+    </style>
+    
 
 </head>
 
@@ -225,6 +236,29 @@
                             </div>
                         </div>
                     </div>-->
+                        <!-- seleziona giorno -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Produzione Pocket per una data selezionata</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                <label for="selectedDate">Seleziona una data:</label>
+                                                <input type="date" id="selectedDate" class="form-control">
+                                                <br>
+                                                <button class="btn btn-primary" onclick="updateTotalForSelectedDay()">Cerca</button>
+
+                                            </div>
+                                            <br>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalValue"></div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     <!-- Content Row -->
                     <div class="row">
@@ -431,7 +465,24 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/chart-area-demo.js"></script>
     <script src="/js/demo/chart-pie-demo.js"></script>
-
+    <script>
+        function updateTotalForSelectedDay() {
+            var selectedDate = $('#selectedDate').val();
+            $('#totalValue').text('Attendere...');
+            $.ajax({
+                url: '/getTotalForSelectedDay',
+                type: 'GET',
+                data: { date: selectedDate },
+                success: function (data) {
+                    // Aggiorna il valore totale con il risultato della query
+                    $('#totalValue').text(data.total);
+                },
+                error: function () {
+                    $('#totalValue').text('Errore nella richiesta');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>

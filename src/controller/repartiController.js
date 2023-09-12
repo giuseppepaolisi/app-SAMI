@@ -226,6 +226,43 @@ const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
     }
   };
 
+  repartiController.getTotalForDay = async (reparto, tipo, selectedData) => {
+    let dataInizio = new Date(selectedData);
+    let dataFine = new Date(dataInizio.getFullYear(), dataInizio.getMonth(), dataInizio.getDate() + 1);
+    try {
+      const pipeline = [
+        {
+          $match: {
+            reparto: reparto,
+            tipo: tipo,
+            deleted: false,
+            data: { 
+              $gte: new Date(dataInizio),
+              $lt: new Date(dataFine) 
+          }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalMolle: { $sum: "$quantita" }
+          }
+        }
+      ];
+      const options = {
+        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+      };
+
+      const uri = process.env.DB_URI || "";
+      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      const result = await Reparti.aggregate(pipeline, options);
+      return result[0]?.totalMolle || 0;
+    } catch (err) {
+      console.error("Errore durante il calcolo del totale di molle:", err);
+      throw err;
+    }
+  };
+
   function decimalToSexagesimal(decimalHours) {
     // Separare la parte intera (ore) dalla parte decimale (minuti)
     const hours = Math.floor(decimalHours);
