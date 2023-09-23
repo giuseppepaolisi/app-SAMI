@@ -24,6 +24,7 @@ ferieController.addFerie= async (req, res, next) => {
     const dataInizio = req.body.dataInizio;
     const dataFine = req.body.dataFine;
     const tipologia = req.body.isFerie;
+    const note = req.body.noteFerie;
     //let deleted = false;
     
 
@@ -34,6 +35,7 @@ ferieController.addFerie= async (req, res, next) => {
         dataInizio:dataInizio,
         dataFine:dataFine,
         tipologia : tipologia,
+        note : note,
         deleted : 0
 
     });

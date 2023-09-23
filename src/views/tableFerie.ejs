@@ -86,6 +86,8 @@
                                                 <td> <%= moment(list[item].dataInizio).format("DD/MM/YYYY HH:mm") %> </td>  
                                                 <td> <%= moment(list[item].dataFine).format("DD/MM/YYYY HH:mm") %> </td> 
                                                 <td> <%=list[item].tipologia%> </td> 
+                                                <td> <%=list[item].note%> </td> 
+                                                
                                                 <td>
                                                     <a class="btn btn-danger btn-circle delete-btn" data-id="<%= list[item]._id %>">
                                                         <i class="fas fa-trash"></i>

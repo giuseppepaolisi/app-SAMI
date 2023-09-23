@@ -6,6 +6,7 @@ const ferieSchema = new mongoose.Schema({
     dataInizio: Date,
     dataFine: Date,
     tipologia:String,
+    note: String,
     deleted: Boolean
 });
 

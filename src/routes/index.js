@@ -107,7 +107,7 @@ router.get('/showFerie',isAdmin, async function(req, res, next) {
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
   const list = await Ferie.find({deleted: 0}).exec(); 
-  const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia'];
+  const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia', 'note'];
   /*const aheader = "nome";*/
 
   res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list, moment:moment});
