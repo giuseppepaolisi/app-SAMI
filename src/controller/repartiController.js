@@ -16,7 +16,7 @@ checkData = (data) => {
 
 
 
-createData =async (postData, token) => {
+createData =async (postData, token, isNew=true) => {
 
 
     let data = {};
@@ -31,7 +31,7 @@ createData =async (postData, token) => {
     if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
     if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
-    data.data = new Date();
+    if(isNew) data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
     console.log("macchine " + postData.macchina);
     if(checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
@@ -61,7 +61,9 @@ createData =async (postData, token) => {
     console.log('user: ' + token.user);
     data.user = token.user;
     
-    if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
+    //if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
+    
+    if(checkData(postData.diamMolla)) data.diamMolla = parseInt(postData.diamMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
     if(checkData(postData.note)) data.note = postData.note;
     if(checkData(postData.altezza)) data.altezza = parseFloat(postData.altezza);
@@ -79,7 +81,7 @@ repartiController.insertMolleggi = async (req, res) => {
     try {
         const uri = process.env.DB_URI || "";
         mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const creati= await createData(req.body, getData(req.cookies.token));
+        const creati= await createData(req.body, getData(req.cookies.token), true);
         console.log("DATI CREATI PER INSERIMENTO: " + creati);
         const molleggi = new Reparti(creati);
         molleggi.save();
@@ -98,7 +100,7 @@ repartiController.modificaMolleggio = async (req, res, next ) => {
     const uri = process.env.DB_URI || "";
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("note: " + req.body.note);
-    let dataProcessed = await createData(req.body, req.body);
+    let dataProcessed = await createData(req.body, req.body, false);
 
     Reparti.findByIdAndUpdate(elementId, dataProcessed, { new: true, runValidators: true })
     .then((data) => {
@@ -220,6 +222,43 @@ const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
       //console.log(array)
       console.log(array)
       return array || -1;
+    } catch (err) {
+      console.error("Errore durante il calcolo del totale di molle:", err);
+      throw err;
+    }
+  };
+
+  repartiController.getTotalForDay = async (reparto, tipo, selectedData) => {
+    let dataInizio = new Date(selectedData);
+    let dataFine = new Date(dataInizio.getFullYear(), dataInizio.getMonth(), dataInizio.getDate() + 1);
+    try {
+      const pipeline = [
+        {
+          $match: {
+            reparto: reparto,
+            tipo: tipo,
+            deleted: false,
+            data: { 
+              $gte: new Date(dataInizio),
+              $lt: new Date(dataFine) 
+          }
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalMolle: { $sum: "$quantita" }
+          }
+        }
+      ];
+      const options = {
+        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+      };
+
+      const uri = process.env.DB_URI || "";
+      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      const result = await Reparti.aggregate(pipeline, options);
+      return result[0]?.totalMolle || 0;
     } catch (err) {
       console.error("Errore durante il calcolo del totale di molle:", err);
       throw err;

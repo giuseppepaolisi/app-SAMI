@@ -119,7 +119,8 @@
 									</div>
 					
 									<!--Produzione Vecchia-->
-									<div class="wrap-input100 validate-input" name="giriMolla">
+									<!-- giriMolla corrisposnde a diamMolla-->
+									<!--<div class="wrap-input100 validate-input" name="giriMolla">
 										<span class="focus-input100" data-placeholder="Giri Molla (mm)"></span>
 										<br><br>
 										<select class="custom-select" type="number" name="giriMolla">
@@ -130,10 +131,14 @@
 											<option value="7">7,00</option>
 											<option value="8">8,00</option>
 										</select>
+									</div>-->
+									<!-- Diametro molla-->
+									<div class="wrap-input100 validate-input" name="diamMolla">
+										<input class="input100" type="number" name="diamMolla" step=1>
+										<span class="focus-input100" data-placeholder="Diametro Molla"></span>
 									</div>
-									<!--Produzione Vecchia e Nuova-->
-									
 
+									<!--Produzione Vecchia e Nuova-->
 									<div class="wrap-input100" name="diamFilo">
 										<span class="focus-input100" data-placeholder="Diametro Filo (mm)"></span>
 										<br><br>
@@ -151,7 +156,7 @@
 										
 									</div>
 									<div class="wrap-input100 validate-input" name="portata">
-										<input class="input100" type="number" name="portata" min="200" max="2000" step=10>
+										<input class="input100" type="number" name="portata" min="0" max="2000" step=1>
 										<span class="focus-input100" data-placeholder="Portata (gr)"></span>
 									</div>
 									<!--Produzione Nuova-->
@@ -287,9 +292,6 @@ div[name="fileMolle"]{
 	display:none;
 }
 
-div[name="giriMolla"]{
-	display:none;
-}
 div[name="diamFilo"]{
 	display:none;
 }
@@ -318,7 +320,9 @@ div[name="altezza"]{
 div[name="cambioTelina"]{
 	display:none;
 }
-
+div[name="diamMolla"]{
+	display:none;
+}
 
 /* Stile di base per la select */
 .custom-select {
@@ -412,7 +416,7 @@ var prodFilo = document.querySelector('div[name="prodFilo"]'); // Seleziona l'el
 var cliente = document.querySelector('div[name="cliente"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var misuraFilo = document.querySelector('div[name="misuraFilo"]'); // Seleziona l'elemento input con l'attributo "misuraFilo" specifico
 var fileMolle = document.querySelector('div[name="fileMolle"]'); // Seleziona l'elemento input con l'attributo "name" specifico
-var giriMolla = document.querySelector('div[name="giriMolla"]'); // Seleziona l'elemento input con l'attributo "name" specifico
+//var giriMolla = document.querySelector('div[name="giriMolla"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var diamFilo = document.querySelector('div[name="diamFilo"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var portata = document.querySelector('div[name="portata"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var peso = document.querySelector('div[name="peso"]'); // Seleziona l'elemento input con l'attributo "name" specifico
@@ -422,12 +426,13 @@ var oreFermo = document.querySelector('div[name="oreFermo"]'); // Seleziona l'el
 var cambiMacchina = document.querySelector('div[name="cambiMacchina"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var altezza = document.querySelector('div[name="altezza"]'); // Seleziona l'elemento input con l'attributo "name" specifico
 var cambioTelina = document.querySelector('div[name="cambioTelina"]');
+var diamMolla = document.querySelector('div[name="diamMolla"]');
 
 var prodFiloInput = document.querySelector('div[name="prodFilo"] select');
 var clienteInput = document.querySelector('div[name="cliente"] select');
 var misuraFiloInput = document.querySelector('.wrap-input100[name="misuraFilo"] input');
 var fileMolleInput = document.querySelector('.wrap-input100[name="fileMolle"] input'); 
-var giriMollaInput = document.querySelector('div[name="giriMolla"] select');
+//var giriMollaInput = document.querySelector('div[name="giriMolla"] select');
 var diamFiloInput = document.querySelector('div[name="diamFilo"] select'); 
 var portataInput = document.querySelector('.wrap-input100[name="portata"] input');
 var pesoInput = document.querySelector('.wrap-input100[name="peso"] input');
@@ -449,18 +454,23 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	cambiMacchina.style.display = 'block';
 
 	//required
+	/*
 	prodFiloInput.required = true;
 	pesoInput.required = true;
 	diamFiloInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
 	portataInput.required = true;
-	cambiMacchinaInput.required = true;
+	cambiMacchinaInput.required = true;*/
 
 	//aggiunta e ordinamento
 	var newOption = document.createElement('option');
 	newOption.value = '1.8'; 
 	newOption.textContent = '1,80'; 
+	diamFiloInput.appendChild(newOption);
+	newOption = document.createElement('option');
+	newOption.value = '1.7'; 
+	newOption.textContent = '1,70'; 
 	diamFiloInput.appendChild(newOption);
 	ordinaSelect(diamFiloInput);
 
@@ -471,20 +481,22 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	//visivilità
 	prodFilo.style.display = 'block'; 
 	diamFilo.style.display = 'block'; 
-	giriMolla.style.display = 'block';
+	//giriMolla.style.display = 'block';
 	quantita.style.display = 'block'
 	oreLav.style.display = 'block';
 	altezza.style.display = 'block';
 	peso.style.display = 'block';
+	diamMolla.style.display = 'block';
 
 	//required
+	/*
 	prodFiloInput.required = true;
 	diamFiloInput.required = true;
 	giriMollaInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
 	altezzaInput.required = true;
-	pesoInput.required = true;
+	pesoInput.required = true;*/
 
 	//aggiunta e ordinamento
 	newOption = document.createElement('option');
@@ -507,12 +519,13 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	cambioTelina.style.display = 'block';
 
 	//required
+	/*
 	clienteInput.required = true;
 	misuraFiloInput.required = true;
 	fileMolleInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
-	cambioTelinaInput.required = true;
+	cambioTelinaInput.required = true;*/
 
 	//ordinamento clienti
 	ordinaSelect(clienteInput);
@@ -527,12 +540,13 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	cambiMacchina.style.display = 'block'; 
 
 	//required
+	/*
 	clienteInput.required = true;
 	misuraFiloInput.required = true;
 	fileMolleInput.required = true;
 	quantitaInput.required = true;
 	oreLavInput.required = true;
-	cambiMacchinaInput.required = true;
+	cambiMacchinaInput.required = true;*/
 
 	//ordinamento clienti
 	ordinaSelect(clienteInput);
@@ -543,15 +557,16 @@ if (reparto==="produzione" && tipo ==="pocket") {
 	oreLav.style.display = 'block'; 
 
 	//required
+	/*
 	quantitaInput.required = true;
-	oreLavInput.required = true;
+	oreLavInput.required = true;*/
   
  }else {
   prodFilo.style.display = 'none'; // Nascondi l'input se la variabile è falsa
   misuraFilo.style.display = 'none';
   fileMolle.style.display = 'none';
   quantita.style.display = 'none';
-  giriMolla.style.display = 'none';
+  //giriMolla.style.display = 'none';
   diamFilo.style.display = 'none';
   peso.style.display = 'none';
   oreLav.style.display = 'none';
