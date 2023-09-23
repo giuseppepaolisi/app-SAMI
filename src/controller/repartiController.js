@@ -16,7 +16,7 @@ checkData = (data) => {
 
 
 
-createData =async (postData, token) => {
+createData =async (postData, token, isNew=true) => {
 
 
     let data = {};
@@ -31,7 +31,7 @@ createData =async (postData, token) => {
     if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
     if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
     if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
-    data.data = new Date();
+    if(isNew) data.data = new Date();
     if(checkData(postData.macchina)) data.macchina = postData.macchina;
     console.log("macchine " + postData.macchina);
     if(checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
@@ -81,7 +81,7 @@ repartiController.insertMolleggi = async (req, res) => {
     try {
         const uri = process.env.DB_URI || "";
         mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const creati= await createData(req.body, getData(req.cookies.token));
+        const creati= await createData(req.body, getData(req.cookies.token), true);
         console.log("DATI CREATI PER INSERIMENTO: " + creati);
         const molleggi = new Reparti(creati);
         molleggi.save();
@@ -100,7 +100,7 @@ repartiController.modificaMolleggio = async (req, res, next ) => {
     const uri = process.env.DB_URI || "";
     mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     console.log("note: " + req.body.note);
-    let dataProcessed = await createData(req.body, req.body);
+    let dataProcessed = await createData(req.body, req.body, false);
 
     Reparti.findByIdAndUpdate(elementId, dataProcessed, { new: true, runValidators: true })
     .then((data) => {
