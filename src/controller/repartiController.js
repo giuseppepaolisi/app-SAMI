@@ -61,7 +61,9 @@ createData =async (postData, token) => {
     console.log('user: ' + token.user);
     data.user = token.user;
     
-    if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
+    //if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
+    
+    if(checkData(postData.diamMolla)) data.diamMolla = parseInt(postData.diamMolla);
     if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
     if(checkData(postData.note)) data.note = postData.note;
     if(checkData(postData.altezza)) data.altezza = parseFloat(postData.altezza);

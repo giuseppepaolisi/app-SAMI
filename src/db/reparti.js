@@ -9,7 +9,7 @@ const repartiSchema = new mongoose.Schema({
     misuraFilo: String,
     fileMolle: String,
     qtaMolle: Number,
-    giriMolla: Number,
+    //giriMolla: Number,
     diamFilo: Number,
     portata: Number,
     peso: Number,
@@ -18,6 +18,7 @@ const repartiSchema = new mongoose.Schema({
     oreFermo: String,
     cambiMacchina: Number,
     macchina: String,
+    diamMolla: Number,
     
     user: String,
     data: Date,

@@ -61,7 +61,7 @@ router.get('/prodPocket/:reparto/:tipo?', isAdmin,async function(req, res, next)
       if (reparto == "produzione" && tipo == "pocket") {
         keys = ['_id', 'macchina', 'prodFilo', 'cliente', 'diamFilo', 'portata', 'peso', 'quantita', 'oreLav', 'oreFermo', 'cambiMacchina','data', 'user', 'note'];
       } else if (reparto == "produzione" && tipo == "bonnel") {
-        keys = ['_id', 'macchina', 'prodFilo', 'giriMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'user', 'note'];
+        keys = ['_id', 'macchina', 'prodFilo', 'diamMolla', 'diamFilo', 'peso', 'quantita', 'altezza', 'oreLav','data', 'user', 'note'];
       } else if (reparto == "assemblaggio" && tipo == "pocket") {
         keys = ['_id', 'macchina', 'cliente', 'misuraFilo', 'fileMolle', 'quantita', 'cambioTelina','oreLav', 'data', 'user', 'note'];
       } else if (reparto == "assemblaggio" && tipo == "bonnel") {
