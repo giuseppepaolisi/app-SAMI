@@ -59,7 +59,7 @@
 					<div class="limiter">
 						<div class="container-login100">
 							<div class="wrap-login100">
-								<form class="login100-form" method="post" action="/insert">
+								<form class="login100-form" method="post" action="/insert" id="formInsert">
 									
 									<span class="login100-form-title p-b-26">
 										<%= macchina %>
@@ -203,24 +203,27 @@
 									<div class="container-login100-form-btn">
 										<div class="wrap-login100-form-btn">
 											<div class="login100-form-bgbtn"></div>
-											<button onclick="myFunction()" type="submit" class="login100-form-btn">
-												Invia 
+											<button type="button" class="login100-form-btn" onclick="myFunction()">
+												Invia
 											</button>
-
-											<script>
-												function myFunction() {
-												var txt;
-												if (confirm("Invia Molleggi")) {
-													txt = "Molleggi inviati oggi ";
-												} else {
-													txt = "Non hai inviato i molleggi!";
-												}
-												document.getElementById("demo").innerHTML = txt;
-												}
-												</script>
-												
 										</div>
-										<p id="demo"></p>
+									</div>
+
+									<script>
+										function myFunction() {
+											var txt;
+											if (confirm("Invia Molleggi")) {
+												txt = "Molleggi inviati oggi";
+												document.getElementById("formInsert").submit();
+											} else {
+												txt = "Non hai inviato i molleggi!";
+											}
+											document.getElementById("demo").innerHTML = txt;
+										}
+									</script>
+												
+									<div class="text-center">
+										<p id="demo" class="text-center"></p>
 									</div>
 									
 								
