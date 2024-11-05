@@ -3,9 +3,6 @@ const router = express.Router();
 const Auth = require('../controller/authController');
 
 /* GET login page. */
-router.get('/', function(req, res, next) {
-    console.log('Logout!');
-    Auth.logout(req, res);
-});
+router.get('/logout', Auth.logout);
 
 module.exports = router;

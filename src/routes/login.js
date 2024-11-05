@@ -3,17 +3,10 @@ const router = express.Router();
 const Auth = require('../controller/authController');
 
 /* GET login page. */
-router.get('/', function(req, res, next) {
-  Auth.showLoginForm(req, res);
-  res.render('login');
-});
+router.get('/login', Auth.showLoginForm);
 
 /* POST effettua il login*/
-router.post('/', (req, res) => {
-  console.log('inizio login');
-  Auth.login(req, res);
-
-});
+router.post('/login', Auth.login);
 
 
 module.exports = router;

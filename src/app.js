@@ -43,9 +43,9 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
-app.use('/login', loginRouter);
+app.use('/', loginRouter);
 app.use('/', insertRouter);
-app.use('/logout', logoutRouter);
+app.use('/', logoutRouter);
 app.use('/', employeeRouter);
 app.use('/', prodPocketRouter);
 app.use('/dipendenti', prodPocketRouter);
