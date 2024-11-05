@@ -18,6 +18,7 @@ const prodPocketRouter = require('./routes/prodPocket');
 const pdfGen = require('./routes/pdfGenerator');
 const macchine = require('./routes/macchine');
 const clienteRoutes = require('./routes/cliente');
+const dipendenteRoutes = require('./routes/dipendente');
 
 process.env.TZ = 'Europe/Rome';
 //const calendarRouter = require('./routes/calendario');
@@ -55,6 +56,7 @@ app.use('/dipendenti', prodPocketRouter);
 app.use('/', pdfGen);
 app.use('/', macchine);
 app.use('/', clienteRoutes);
+app.use('/', dipendenteRoutes);
 //app.use('/calendario', calendarRouter);
 
 

@@ -58,21 +58,6 @@ router.get('/conferma', isAdmin,async function(req, res, next) {
 
 
 
-
-router.get('/dipendenti', isAdmin,async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  const list = await User.find({deleted: 0}).exec(); 
-  const aheader = ['nome', 'cognome', 'user', 'password'];
-  /*const aheader = "nome";*/
-
-  res.render('tables', { title: 'Dipendenti',aheader:aheader,list:list});
-
-  
-
-});
-
 router.get('/showFerie',isAdmin, async function(req, res, next) {
   const uri = process.env.DB_URI || "";
   mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
