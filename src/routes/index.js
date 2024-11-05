@@ -60,29 +60,10 @@ router.post('/addFerie', isAdmin,async function(req, res, next) {
   ferie.addFerie(req, res, next);
 });
 
-// Aggiungi Cliente
-router.post('/addCliente', isAdmin,async function(req, res, next) {
-  cliente.addCliente(req, res, next);
-});
+
 
 router.get('/conferma', isAdmin,async function(req, res, next) {
   res.render('conferma');
-});
-
-router.get('/addCliente', isAdmin,async function(req, res, next) {
-  res.render('addCliente');
-});
-
-router.get('/showCliente', isAdmin,async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  const list = await Cliente.find({deleted: 0}).exec(); 
-  const aheader = ['ragioneSociale', 'tipologia'];
-  /*const aheader = "nome";*/
-
-  res.render('tableCliente', { title: 'Cliente',aheader:aheader,list:list, moment:moment});
-
 });
 
 

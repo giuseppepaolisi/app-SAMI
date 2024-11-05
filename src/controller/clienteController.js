@@ -1,63 +1,63 @@
 const Cliente = require("../model/cliente.js");
-const User = require("../model/user.js");
-const mongoose = require('mongoose');
+const moment = require('moment');
 
 const ClienteController = {};
 
-ClienteController.getCliente = async (req, res, next) => {
-    const uri = process.env.DB_URI || "";
-    console.log("uri: "+ uri);
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+// Funzione per recuperare la lista clienti
+ClienteController.getClienti = async (req, res, next) => {
+    try {
+        // Recupero dei clienti non eliminati
+        const clientiList = await Cliente.find({ deleted: false }).exec(); 
+        const headers = ['Ragione Sociale', 'Tipologia'];
 
-    console.log("\n\nLista");
-    console.log(await Cliente.find({deleted: 0}).exec());
-    //res.render('addCliente', { title: 'Lista' });
-};
-
-ClienteController.addCliente= async (req, res, next) => {
-    const uri = process.env.DB_URI || "";
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-   // const user = await User.find({user:req.body.opzione}).exec();
-
-    const ragioneSociale = req.body.ragioneSociale;
-    const tipologia = req.body.isCliente;
-    //let deleted = false;
-    
-
-
-    const cliente = new Cliente({
-        ragioneSociale:ragioneSociale,
-        tipologia : tipologia,
-        deleted : 0
-
-    });
-
-    await cliente.save();
-
-    res.redirect('/showCliente');
-};
-
-ClienteController.deleteCliente = async (req, res, next) => {
-    console.log("SONO NEL CONTROLLER DI CLIENTE\n")
-    const elementId = req.params.id;
-    console.log(elementId);
-        const uri = process.env.DB_URI || "";
-        mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const flag = {
-        deleted : 1
-        };
-        Cliente.findByIdAndUpdate(elementId, flag, { new: true, runValidators: true })
-        .then((flag) => {
-            if(flag) {
-            console.log('Elemento aggiornato:', flag);
-            res.json({ message: "Elemento eliminato con successo" });
-            } else {
-            console.log('Elemento non trovato.');
-            }
-        }).catch((errore) => {
-            console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
-            res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+        // Rendering della pagina con la lista dei clienti
+        res.render('tableCliente', { 
+            title: 'Lista Clienti', 
+            aheader: headers, 
+            list: clientiList, 
+            moment: moment 
         });
+    } catch (error) {
+        console.error("Errore nel recupero della lista clienti:", error);
+        next(error);
+    }
+};
+
+// Funzione per aggiungere un cliente
+ClienteController.addCliente = async (req, res, next) => {
+    try {
+        const { ragioneSociale, isCliente } = req.body;
+        const cliente = new Cliente({
+            ragioneSociale,
+            tipologia: isCliente,
+            deleted: false
+        });
+
+        await cliente.save();
+        res.redirect('/showCliente');
+    } catch (error) {
+        console.error("Errore durante l'aggiunta del cliente:", error);
+        next(error);
+    }
+};
+
+// Funzione per eliminare un cliente
+ClienteController.deleteCliente = async (req, res, next) => {
+    try {
+        const elementId = req.params.id;
+        const result = await Cliente.findByIdAndUpdate(elementId, { deleted: 1 }, { new: true, runValidators: true });
+
+        if (result) {
+            console.log('Elemento aggiornato:', result);
+            res.json({ message: "Elemento eliminato con successo" });
+        } else {
+            console.log('Elemento non trovato.');
+            res.status(404).json({ message: "Elemento non trovato" });
+        }
+    } catch (error) {
+        console.error('Errore durante l\'eliminazione dell\'elemento:', error);
+        res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+    }
 };
 
 module.exports = ClienteController;

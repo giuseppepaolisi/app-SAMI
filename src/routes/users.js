@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const User = require("./../model/user.js");
 const employeeController = require('../controller/employeeController');
 const ferieController = require('../controller/ferieController');
-const clienteController = require('../controller/clienteController');
 const Ferie = require('../model/ferie');
 
 
@@ -36,11 +35,7 @@ router.delete('/eliminaDipendente/:id', isAdmin,async (req, res, next) => {
 router.delete('/eliminaFerie/:id', isAdmin,async (req, res, next) => {
   ferieController.deleteFerie(req, res, next);
 });
-//permette di cancellare un ferie dal sistema
-router.delete('/eliminaCliente/:id', isAdmin,async (req, res, next) => {
-  console.log("SONO ROUTER.DELETE");
-  clienteController.deleteCliente(req, res, next);
-});
+
 
 //permette di visualizzare la pagina di modifica dati per un untente
 router.get('/editUser/:id', isAdmin,async function(req, res, next) {
