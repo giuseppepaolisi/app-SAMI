@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require("mongoose");
-const User = require ("./../db/user.js");
-const Ferie = require ("./../db/ferie.js");
-const Cliente = require ("./../db/cliente.js");
+const User = require ("./../model/user.js");
+const Ferie = require ("./../model/ferie.js");
+const Cliente = require ("./../model/cliente.js");
 const ferie = require('../controller/ferieController');
 const cliente = require('../controller/clienteController');
 const repartiController = require('../controller/repartiController');

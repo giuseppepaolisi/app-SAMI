@@ -1,4 +1,4 @@
-const User = require('../db/user');
+const User = require('../model/user');
 const { signToken, deleteToken } = require('../middleware/user-auth');
 const mongoose = require('mongoose');
 //const bcrypt = require('bcrypt');

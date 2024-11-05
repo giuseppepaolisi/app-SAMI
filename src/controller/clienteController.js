@@ -1,5 +1,5 @@
-const Cliente = require("../db/cliente.js");
-const User = require("../db/user");
+const Cliente = require("../model/cliente.js");
+const User = require("../model/user.js");
 const mongoose = require('mongoose');
 
 const ClienteController = {};

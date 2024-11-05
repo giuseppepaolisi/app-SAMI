@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Cliente = require ("./../db/cliente.js");
+const Cliente = require ("./../model/cliente.js");
 const express = require('express');
 const router = express.Router();
 const macchine = require('../controller/macchineController');

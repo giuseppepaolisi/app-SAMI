@@ -3,11 +3,11 @@ var router = express.Router();
 const employee = require('../controller/employeeController');
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 const mongoose = require('mongoose');
-const User = require("./../db/user.js");
+const User = require("./../model/user.js");
 const employeeController = require('../controller/employeeController');
 const ferieController = require('../controller/ferieController');
 const clienteController = require('../controller/clienteController');
-const Ferie = require('../db/ferie');
+const Ferie = require('../model/ferie');
 
 
 /* GET users listing. */

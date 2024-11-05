@@ -1,5 +1,5 @@
-const Ferie = require("../db/ferie.js");
-const User = require("../db/user");
+const Ferie = require("../model/ferie.js");
+const User = require("../model/user");
 const mongoose = require('mongoose');
 
 const ferieController = {};

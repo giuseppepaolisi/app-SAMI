@@ -1,5 +1,5 @@
-const Reparti = require('../db/reparti');
-const Macchine = require('../db/macchine');
+const Reparti = require('../model/reparti');
+const Macchine = require('../model/macchine');
 
 const mongoose = require('mongoose');
 const {getData} = require('../middleware/user-auth');

@@ -3,7 +3,7 @@ const router = express.Router();
 //const PDFDocument = require("pdfkit");
 const fs = require("fs");
 const mongoose = require("mongoose");
-const Reparti = require ("./../db/reparti");
+const Reparti = require ("./../model/reparti");
 const PDFDocument = require('pdfkit-table');
 const moment = require('moment');
 

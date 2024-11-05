@@ -1,4 +1,4 @@
-const Macchine = require('../db/macchine');
+const Macchine = require('../model/macchine');
 const mongoose = require('mongoose');
 
 const macchineController = {}; //consente di esportare le funzioni

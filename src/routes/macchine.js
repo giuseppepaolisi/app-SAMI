@@ -4,7 +4,7 @@ const macchineController = require('../controller/macchineController');
 const mongoose = require("mongoose");
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
-const Macchine = require ("../db/macchine");
+const Macchine = require ("../model/macchine");
 
 router.get('/macchine', isAdmin, (req, res, next) => {
     macchineController.getAll(req, res, next);
