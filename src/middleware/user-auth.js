@@ -1,98 +1,76 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-//definisce lla durata del token e l'algoritmo utilizzato
-const options = { expiresIn: '100s', algorithm: 'RS256' };
+const path = require('path');
 
-//verifica che l'utente sia loggato
-function verifyToken(req,res,next) {
+// Caricamento chiavi e opzioni una volta sola
+const pub_key = fs.readFileSync(path.resolve( 'rsa.public'));
+const prv_key = fs.readFileSync(path.resolve( 'rsa.private'));
+const jwtOptions = { expiresIn: '2h', algorithm: 'RS256' };
+
+// Middleware per la verifica del token
+function verifyToken(req, res, next) {
     const token = req.cookies.token;
-    const options = { expiresIn: '100s', algorithm: 'RS256' };
-    if (!token) return res.status(200).redirect('/login'); //nessun token foornito dal client
+    if (!token) return res.status(200).redirect('/login'); // Nessun token fornito
+
     try {
-        const pub_key = fs.readFileSync('rsa.public');
-        req.user = jwt.verify(token, pub_key, options);
+        req.user = jwt.verify(token, pub_key, jwtOptions);
         next();
     } catch (err) {
-        return res.status(200).redirect('/login');//Il token non è valido oppure è scaduto
+        console.error("Errore di verifica del token:", err);
+        return res.status(200).redirect('/login'); // Token non valido o scaduto
     }
 }
 
-//verifica che l'utente è loggato ed è un dipendente
-function isEmployee(req,res,next) {
-    const token = req.cookies.token;
-    const options = { expiresIn: '100s', algorithm: 'RS256' };
-    if (!token) return res.status(200).redirect('/login'); //nessun token foornito dal client
-    try {
-        const pub_key = fs.readFileSync('rsa.public');
-        req.user = jwt.verify(token, pub_key, options);
-        if(!req.user.isAdmin) {
-            next();
-        } else {
-            return res.status(200).redirect('/login');
-        }
-    } catch (err) {
-        return res.status(200).redirect('/login');//Il token non è valido oppure è scaduto
-    }
+// Middleware per autorizzare solo dipendenti (non admin)
+function isEmployee(req, res, next) {
+    verifyToken(req, res, (err) => {
+        if (err || req.user.isAdmin) return res.status(200).redirect('/login'); // Accesso non consentito per admin
+        next();
+    });
 }
 
-//verifica che l'utente è loggato ed è un admin
-function isAdmin(req,res,next) {
-    const token = req.cookies.token;
-    const options = { expiresIn: '100s', algorithm: 'RS256' };
-    if (!token) return res.status(200).redirect('/login'); //nessun token foornito dal client
-    try {
-        const pub_key = fs.readFileSync('rsa.public');
-        req.user = jwt.verify(token, pub_key, options);
-        if(req.user.isAdmin) {
-            next();
-        } else {
-            return res.status(200).redirect('/login');
-        }
-    } catch (err) {
-        return res.status(200).redirect('/login');//Il token non è valido oppure è scaduto
-    }
+// Middleware per autorizzare solo admin
+function isAdmin(req, res, next) {
+    verifyToken(req, res, (err) => {
+        if (err || !req.user.isAdmin) return res.status(200).redirect('/login'); // Accesso non consentito per non admin
+        next();
+    });
 }
 
-//genera il token
+// Generazione del token JWT
 function signToken(req, res, user, next) {
     const payload = { user: req.body.username, isAdmin: user.admin, isLogged: true };
-    const cookieSetting = {
-        expires: new Date(Date.now() + (2*60*60*1000)),
+    const cookieOptions = {
+        expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 ore
         httpOnly: true,
         secure: true
     };
-    const prv_key = fs.readFileSync('rsa.private');
-    // Aggiungi l'opzione expiresIn per impostare il tempo di scadenza del token a 2 ore
-    // Aggiungi l'opzione algorithm per specificare l'algoritmo di firma RSA
-    const options = { expiresIn: "2h", algorithm: "RS256" };
-    const token = jwt.sign(payload, prv_key, options);
-    res.cookie('token', token, cookieSetting);
-    res.cookie('nome', user.nome, cookieSetting);
-    res.cookie('cognome', user.cognome, cookieSetting);
+    const token = jwt.sign(payload, prv_key, jwtOptions);
+    res.cookie('token', token, cookieOptions);
+    res.cookie('nome', user.nome, cookieOptions);
+    res.cookie('cognome', user.cognome, cookieOptions);
     next();
 }
 
-
-//elimina il token
-function deleteToken(req,res,next) {
-    const cookieSetting = {
+// Eliminazione del token
+function deleteToken(req, res, next) {
+    const cookieOptions = {
         expires: new Date(0),
         httpOnly: true,
         secure: false
     };
-    console.log(req.cookies);
-    res.cookie('token', '', cookieSetting);
+    res.cookie('token', '', cookieOptions);
     next();
 }
 
+// Funzione per ottenere dati dal token
 function getData(token) {
     try {
-      const pub_key = fs.readFileSync('rsa.public');
-      const decoded = jwt.verify(token, pub_key);
-      return decoded;
+        const decoded = jwt.verify(token, pub_key, jwtOptions);
+        return decoded;
     } catch (err) {
-      console.error('Errore durante la decodifica del token:', err);
-      return null;
+        console.error('Errore durante la decodifica del token:', err);
+        return null;
     }
 }
 
@@ -103,4 +81,4 @@ module.exports = {
     signToken,
     deleteToken,
     getData
-}
+};
