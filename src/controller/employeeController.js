@@ -7,7 +7,7 @@ employeeController.getEmployees = async (req, res, next) => {
     try {
         const employees = await User.find({ deleted: 0 }).exec();
         console.log("\n\nLista", employees);
-        res.render('index', { title: 'Lista', employees });
+        res.render('tables', { title: 'Lista', employees });
     } catch (error) {
         console.error('Errore nel recupero degli impiegati:', error);
         return res.status(500).render('error', { message: 'Si è verificato un errore nel recupero degli impiegati.' });

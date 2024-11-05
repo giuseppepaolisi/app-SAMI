@@ -3,9 +3,7 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const User = require ("./../model/user.js");
 const Ferie = require ("./../model/ferie.js");
-const Cliente = require ("./../model/cliente.js");
 const ferie = require('../controller/ferieController');
-const cliente = require('../controller/clienteController');
 const repartiController = require('../controller/repartiController');
 
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
@@ -16,7 +14,12 @@ const moment = require('moment');
 moment.locale('it')
 require('dotenv').config({path: '../env/developement.env'});
 
+// Home page (Dashboard)
+/*router.get('/', isAdmin, (req, res, next) => {
+  res.render('index');
+});*/
 
+// grafico molle pocket
 router.get('/prova',isAdmin, async (req, res) => {
   res.status(200).json(await repartiController.getTotalByMOnth('produzione','pocket'));
   
@@ -70,12 +73,11 @@ router.get('/showFerie',isAdmin, async function(req, res, next) {
 
 });
 
+// Dashboard
 router.get('/', isAdmin, async function(req, res, next) {
   const totalMolleMese = await repartiController.getTotal("produzione", "pocket", "m");
-  console.log(totalMolleMese);
 
   const totalMolleGiorno = await repartiController.getTotal("produzione", "pocket", "g");
-  console.log(totalMolleGiorno);
 
   res.render('index', {totG: totalMolleGiorno, totM: totalMolleMese});
 });

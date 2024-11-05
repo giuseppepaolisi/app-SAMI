@@ -10,10 +10,6 @@ router.delete('/eliminaDipendente/:id', isAdmin, employeeController.deleteEmploy
 router.post('/editUser/:id', isAdmin, employeeController.editUser);
 
 // template route
-// GET users listing.
-router.get('/', isAdmin, (req, res, next) => {
-    res.render('index');
-});
 
 //permette di visualizzare la pagina per aggiungere un nuovo dipendente
 router.get('/addUser',isAdmin, async (req, res, next) => {
