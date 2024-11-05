@@ -4,8 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const moment = require('moment');
 const logger = require('morgan');
-require('dotenv').config({path: path.resolve(__dirname,'./.env')});
+require('dotenv').config();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -16,6 +17,8 @@ const employeeRouter = require('./routes/reparto');
 const prodPocketRouter = require('./routes/prodPocket');
 const pdfGen = require('./routes/pdfGenerator');
 const macchine = require('./routes/macchine');
+const clienteRoutes = require('./routes/cliente');
+
 process.env.TZ = 'Europe/Rome';
 //const calendarRouter = require('./routes/calendario');
 
@@ -51,6 +54,7 @@ app.use('/', prodPocketRouter);
 app.use('/dipendenti', prodPocketRouter);
 app.use('/', pdfGen);
 app.use('/', macchine);
+app.use('/', clienteRoutes);
 //app.use('/calendario', calendarRouter);
 
 
@@ -70,5 +74,13 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// connect to db
+mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('Database connesso con successo');
+    })
+    .catch((error) => {
+        console.error('Errore nella connessione al database:', error);
+    });
 
 module.exports = app;
