@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Cliente = require ("./../model/cliente.js");
 const express = require('express');
 const router = express.Router();
-const macchine = require('../controller/macchineController');
 const reparti = require('../controller/repartiController');
 const {isEmployee} = require('../middleware/user-auth');
 
@@ -37,11 +36,7 @@ router.get('/reparto/:reparto/', isEmployee,(req, res) => {
     
 });
 
-//permette di visualizzare la lista di macchine dopo aver selezionato reparto e tipologia di molla
-router.get('/macchine/:reparto/:tipo/', isEmployee, (req, res) => {
-    console.log("\n\nMACCHINE");
-    macchine.getMacchine(req, res);
-  });
+
 
   //permette di visualizzare la lista di macchine dopo aver selezionato il reparto assemblaggio
   router.get('/macchine/:reparto/', isEmployee, (req, res) => {

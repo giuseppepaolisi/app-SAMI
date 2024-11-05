@@ -7,7 +7,6 @@ const Cliente = require ("./../model/cliente.js");
 const ferie = require('../controller/ferieController');
 const cliente = require('../controller/clienteController');
 const repartiController = require('../controller/repartiController');
-const macchineController = require('../controller/macchineController');
 
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 
@@ -37,16 +36,7 @@ router.get('/calendario', isAdmin,async function(req, res, next) {
   res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario', options:options });
 });
 
-/* GET form aggiunta Macchine */
-router.get('/addMacchina',isAdmin, async function(req, res, next) {
 
-  res.render('addMacchina');
-});
-/* POST aggiunta Macchine */
-router.post('/addMacchina', isAdmin,(req, res, next) => {
-  
-  macchineController.addMacchine(req, res, next);
-});
 
  // Aggiugni Ferie
 router.get('/addFerie', isAdmin, async function(req, res, next) {
