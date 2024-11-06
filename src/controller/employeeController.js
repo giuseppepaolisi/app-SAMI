@@ -2,11 +2,14 @@ const User = require("./../model/user.js");
 
 const employeeController = {};
 
-// Ottiene la lista degli impiegati
+/**
+ * Recupera e mostra la lista degli impiegati non eliminati.
+ * @param {Object} req - La richiesta Express.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.getEmployees = async (req, res, next) => {
     try {
         const employees = await User.find({ deleted: 0 }).exec();
-        console.log("\n\nLista", employees);
         res.render('tables', { title: 'Lista', employees });
     } catch (error) {
         console.error('Errore nel recupero degli impiegati:', error);
@@ -14,7 +17,11 @@ employeeController.getEmployees = async (req, res, next) => {
     }
 };
 
-// Aggiunge un nuovo impiegato
+/**
+ * Aggiunge un nuovo impiegato nel sistema.
+ * @param {Object} req - La richiesta Express contenente i dati del nuovo impiegato.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.addEmployee = async (req, res, next) => {
     try {
         const { nome, cognome, username, password, isAdmin } = req.body;
@@ -36,7 +43,6 @@ employeeController.addEmployee = async (req, res, next) => {
             const message = 'L\'utente con questo nome utente è già presente nel sistema.';
             return res.status(400).render('error', { message });
         } else {
-            // Altri errori
             console.error('Errore durante l\'inserimento dell\'utente:', error);
             const message = 'Si è verificato un errore durante l\'inserimento dell\'utente.';
             return res.status(500).render('error', { message });
@@ -44,7 +50,11 @@ employeeController.addEmployee = async (req, res, next) => {
     }          
 };
 
-// Elimina un impiegato
+/**
+ * Imposta come eliminato un impiegato specifico, indicato dall'ID.
+ * @param {Object} req - La richiesta Express contenente l'ID dell'impiegato.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.deleteEmployee = async (req, res, next) => {
     const elementId = req.params.id;
 
@@ -56,10 +66,8 @@ employeeController.deleteEmployee = async (req, res, next) => {
         );
 
         if (updatedUser) {
-            console.log('Elemento aggiornato:', updatedUser);
             res.json({ message: "Elemento eliminato con successo" });
         } else {
-            console.log('Elemento non trovato.');
             res.status(404).json({ message: "Elemento non trovato" });
         }
     } catch (error) {
@@ -68,7 +76,11 @@ employeeController.deleteEmployee = async (req, res, next) => {
     }
 };
 
-// Modifica un dipendente
+/**
+ * Modifica le informazioni di un impiegato specifico.
+ * @param {Object} req - La richiesta Express contenente i nuovi dati dell'impiegato.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.editUser = async (req, res, next) => {
     const elementId = req.params.id;
     const { nome, cognome, password } = req.body;
@@ -87,10 +99,8 @@ employeeController.editUser = async (req, res, next) => {
         );
 
         if (updatedUser) {
-            console.log('Elemento aggiornato:', updatedUser);
             res.redirect('/dipendenti');
         } else {
-            console.log('Elemento non trovato.');
             res.status(404).render('error', { message: 'Elemento non trovato.' });
         }
     } catch (error) {
@@ -99,20 +109,20 @@ employeeController.editUser = async (req, res, next) => {
     }
 };
 
-// Visualizza la pagina di modifica dati per un utente
+/**
+ * Mostra la pagina di modifica per i dati di un utente specifico.
+ * @param {Object} req - La richiesta Express contenente l'ID dell'utente.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.getEditUserPage = async (req, res, next) => {
     const elementId = req.params.id;
 
     try {
-        // Trova l'utente in base all'ID
         const user = await User.findById(elementId).exec();
 
         if (user) {
-            console.log(user.nome + " ECCOMIIIII");
-            // Renderizza la pagina di modifica dati dell'utente
             res.render('editUser', { user });
         } else {
-            console.log('Utente non trovato.');
             res.status(404).render('error', { message: 'Utente non trovato.' });
         }
     } catch (error) {
@@ -121,14 +131,16 @@ employeeController.getEditUserPage = async (req, res, next) => {
     }
 };
 
-// Lista dei dipendenti
+/**
+ * Recupera e visualizza la lista dei dipendenti non eliminati.
+ * @param {Object} req - La richiesta Express.
+ * @param {Object} res - La risposta Express.
+ */
 employeeController.getEmployeesList = async (req, res, next) => {
     try {
-        // Recupera la lista degli utenti non eliminati
         const list = await User.find({ deleted: 0 }).exec();
         const aheader = ['nome', 'cognome', 'user', 'password'];
 
-        // Renderizza la pagina con la lista dei dipendenti
         res.render('tables', { title: 'Dipendenti', aheader: aheader, list: list });
     } catch (error) {
         console.error('Errore durante il recupero dei dipendenti:', error);
