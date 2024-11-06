@@ -12,11 +12,9 @@ const employeeController = {
       res.render('tables', { title: 'Lista', employees });
     } catch (error) {
       console.error('Errore nel recupero degli impiegati:', error);
-      return res
-        .status(500)
-        .render('error', {
-          message: 'Si è verificato un errore nel recupero degli impiegati.',
-        });
+      return res.status(500).render('error', {
+        message: 'Si è verificato un errore nel recupero degli impiegati.',
+      });
     }
   },
 
@@ -111,11 +109,9 @@ const employeeController = {
       }
     } catch (error) {
       console.error("Errore durante l'aggiornamento dell'elemento:", error);
-      return res
-        .status(500)
-        .render('error', {
-          message: "Errore durante l'aggiornamento dell'elemento.",
-        });
+      return res.status(500).render('error', {
+        message: "Errore durante l'aggiornamento dell'elemento.",
+      });
     }
   },
 
@@ -137,11 +133,9 @@ const employeeController = {
       }
     } catch (error) {
       console.error("Errore durante il recupero dell'utente:", error);
-      return res
-        .status(500)
-        .render('error', {
-          message: "Errore durante il recupero dell'utente.",
-        });
+      return res.status(500).render('error', {
+        message: "Errore durante il recupero dell'utente.",
+      });
     }
   },
 
@@ -162,11 +156,9 @@ const employeeController = {
       });
     } catch (error) {
       console.error('Errore durante il recupero dei dipendenti:', error);
-      res
-        .status(500)
-        .render('error', {
-          message: 'Errore durante il recupero dei dipendenti.',
-        });
+      res.status(500).render('error', {
+        message: 'Errore durante il recupero dei dipendenti.',
+      });
     }
   },
 };

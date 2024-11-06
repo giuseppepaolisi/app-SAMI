@@ -124,7 +124,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo molleggio?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo dipendente?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -199,7 +199,16 @@
               const password = elementRow.querySelector("td:nth-child(4)").innerText;*/
       
               // Popola il modal con i dati dell'elemento
-              deleteModalBody.innerHTML = `Vuoi eliminare l'utente: <b>${nome} ${cognome}</b>`;
+              // Crea un nodo di testo per la prima parte del messaggio
+            const textNode1 = document.createTextNode("Vuoi eliminare l'utente: ");
+
+            // Crea il nodo <b> e aggiungi il nome e il cognome come nodi di testo
+            const boldElement = document.createElement("b");
+            boldElement.appendChild(document.createTextNode(`${nome} ${cognome}`));
+
+            // Aggiungi il nodo di testo e il nodo <b> al modal
+            deleteModalBody.appendChild(textNode1);
+            deleteModalBody.appendChild(boldElement);
       
               // Aggiungi l'ID dell'elemento al pulsante di conferma
               deleteConfirmButton.setAttribute("data-id", elementId);
