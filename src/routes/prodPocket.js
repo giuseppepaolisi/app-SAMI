@@ -4,9 +4,9 @@ const moment = require('moment');
 
 const mongoose = require("mongoose");
 
-const Reparti = require ("./../model/reparti.js");
-const User = require ("./../model/user.js");
-const Cliente = require ("./../model/cliente.js");
+const Reparti = require ("./../models/reparti.js");
+const User = require ("./../models/user.js");
+const Cliente = require ("./../models/cliente.js");
 
 
 const bodyparse = require("body-parser");

@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 const mongoose = require("mongoose");
-const User = require ("./../model/user.js");
-const Ferie = require ("./../model/ferie.js");
+const User = require ("./../models/user.js");
+const Ferie = require ("./../models/ferie.js");
 const ferie = require('../controllers/ferieController');
 const repartiController = require('../controllers/repartiController');
 
