@@ -3,10 +3,15 @@ const moment = require('moment');
 
 const ClienteController = {};
 
-// Funzione per recuperare la lista clienti
+/**
+ * Recupera e mostra la lista dei clienti non eliminati.
+ * @param {Object} req - La richiesta Express.
+ * @param {Object} res - La risposta Express.
+ * @param {Function} next - La funzione di middleware successiva.
+ */
 ClienteController.getClienti = async (req, res, next) => {
     try {
-        // Recupero dei clienti non eliminati
+        // Recupero dei clienti che non sono stati eliminati
         const clientiList = await Cliente.find({ deleted: false }).exec(); 
         const headers = ['Ragione Sociale', 'Tipologia'];
 
@@ -23,7 +28,12 @@ ClienteController.getClienti = async (req, res, next) => {
     }
 };
 
-// Funzione per aggiungere un cliente
+/**
+ * Aggiunge un nuovo cliente nel sistema.
+ * @param {Object} req - La richiesta Express contenente i dati del nuovo cliente.
+ * @param {Object} res - La risposta Express.
+ * @param {Function} next - La funzione di middleware successiva.
+ */
 ClienteController.addCliente = async (req, res, next) => {
     try {
         const { ragioneSociale, isCliente } = req.body;
@@ -33,6 +43,7 @@ ClienteController.addCliente = async (req, res, next) => {
             deleted: false
         });
 
+        // Salvataggio del nuovo cliente nel database
         await cliente.save();
         res.redirect('/showCliente');
     } catch (error) {
@@ -41,11 +52,22 @@ ClienteController.addCliente = async (req, res, next) => {
     }
 };
 
-// Funzione per eliminare un cliente
+/**
+ * Elimina logicamente un cliente impostando il campo 'deleted' a true.
+ * @param {Object} req - La richiesta Express contenente l'ID del cliente da eliminare.
+ * @param {Object} res - La risposta Express.
+ * @param {Function} next - La funzione di middleware successiva.
+ */
 ClienteController.deleteCliente = async (req, res, next) => {
     try {
         const elementId = req.params.id;
-        const result = await Cliente.findByIdAndUpdate(elementId, { deleted: 1 }, { new: true, runValidators: true });
+        
+        // Aggiornamento del campo 'deleted' del cliente selezionato
+        const result = await Cliente.findByIdAndUpdate(
+            elementId, 
+            { deleted: 1 }, 
+            { new: true, runValidators: true }
+        );
 
         if (result) {
             console.log('Elemento aggiornato:', result);
