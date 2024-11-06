@@ -1,5 +1,5 @@
-const Ferie = require("../model/ferie");
-const User = require("../model/user");
+const Ferie = require("../models/ferie");
+const User = require("../models/user");
 const moment = require('moment');
 
 /**
