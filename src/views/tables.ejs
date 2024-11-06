@@ -197,7 +197,8 @@
               const cognome = elementRow.querySelector("td:nth-child(2)").innerText;
               /*const user = elementRow.querySelector("td:nth-child(3)").innerText;
               const password = elementRow.querySelector("td:nth-child(4)").innerText;*/
-      
+            // Cancella il contenuto precedente del modal
+            deleteModalBody.innerHTML = "";
               // Popola il modal con i dati dell'elemento
               // Crea un nodo di testo per la prima parte del messaggio
             const textNode1 = document.createTextNode("Vuoi eliminare l'utente: ");
