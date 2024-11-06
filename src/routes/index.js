@@ -3,8 +3,8 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const User = require ("./../model/user.js");
 const Ferie = require ("./../model/ferie.js");
-const ferie = require('../controller/ferieController');
-const repartiController = require('../controller/repartiController');
+const ferie = require('../controllers/ferieController');
+const repartiController = require('../controllers/repartiController');
 
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 

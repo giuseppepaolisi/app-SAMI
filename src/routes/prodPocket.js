@@ -10,7 +10,7 @@ const Cliente = require ("./../model/cliente.js");
 
 
 const bodyparse = require("body-parser");
-const repartiController = require("../controller/repartiController");
+const repartiController = require("../controllers/repartiController");
 
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
 

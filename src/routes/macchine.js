@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const macchineController = require('../controller/macchineController');
+const macchineController = require('../controllers/macchineController');
 const { isEmployee, isAdmin } = require('../middleware/user-auth');
 
 // Controller route

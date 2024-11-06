@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Cliente = require ("./../model/cliente.js");
 const express = require('express');
 const router = express.Router();
-const reparti = require('../controller/repartiController');
+const reparti = require('../controllers/repartiController');
 const {isEmployee} = require('../middleware/user-auth');
 
 const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
