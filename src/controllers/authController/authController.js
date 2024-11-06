@@ -1,5 +1,5 @@
-const User = require('../models/user');
-const { signToken, deleteToken } = require('../middleware/user-auth');
+const User = require('../../models/user');
+const { signToken, deleteToken } = require('../../middleware/user-auth');
 //const bcrypt = require('bcrypt');
 
 const authController = {

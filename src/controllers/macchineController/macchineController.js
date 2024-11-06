@@ -1,4 +1,4 @@
-const Macchine = require('../models/macchine');
+const Macchine = require('../../models/macchine');
 
 /*
 * reparto: si riferisce a un singolo reparto [produzione, assemblaggio, imballaggio]

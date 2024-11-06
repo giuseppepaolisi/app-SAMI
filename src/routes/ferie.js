@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ferieController = require('../controllers/ferieController');
+const ferieController = require('../controllers/ferieController/ferieController');
 const { isAdmin } = require('../middleware/user-auth');
 
 // Permette di cancellare un dipendente dal sistema
