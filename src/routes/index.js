@@ -26,52 +26,6 @@ router.get('/prova',isAdmin, async (req, res) => {
   });
 
 
-/* GET Calendario */
-
-router.get('/calendario', isAdmin,async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  const options = await Ferie.find({deleted: 0}).exec(); 
-
-  const monthsData = getAllMonths();
-
-  // Renderizza la pagina del calendario utilizzando il file "calendar.ejs"
-  res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario', options:options });
-});
-
-
-
- // Aggiugni Ferie
-router.get('/addFerie', isAdmin, async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-  const options = await User.find({deleted: 0}).exec(); 
-  res.render('addFerie', {options:options});
-});
-
-router.post('/addFerie', isAdmin,async function(req, res, next) {
-  ferie.addFerie(req, res, next);
-});
-
-
-
-router.get('/conferma', isAdmin,async function(req, res, next) {
-  res.render('conferma');
-});
-
-
-
-router.get('/showFerie',isAdmin, async function(req, res, next) {
-  const uri = process.env.DB_URI || "";
-  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-  const list = await Ferie.find({deleted: 0}).exec(); 
-  const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia', 'note'];
-  /*const aheader = "nome";*/
-
-  res.render('tableFerie', { title: 'Ferie',aheader:aheader,list:list, moment:moment});
-
-});
 
 // Dashboard
 router.get('/', isAdmin, async function(req, res, next) {

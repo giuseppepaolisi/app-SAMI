@@ -9,7 +9,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const insertRouter = require('./routes/insert');
 const logoutRouter = require('./routes/logout');
@@ -19,6 +18,7 @@ const pdfGen = require('./routes/pdfGenerator');
 const macchine = require('./routes/macchine');
 const clienteRoutes = require('./routes/cliente');
 const dipendenteRoutes = require('./routes/dipendente');
+const ferieRoutes = require('./routes/ferie');
 
 process.env.TZ = 'Europe/Rome';
 //const calendarRouter = require('./routes/calendario');
@@ -46,7 +46,6 @@ app.use(function(req, res, next) {
 
 
 app.use('/', indexRouter);
-app.use('/', usersRouter);
 app.use('/', loginRouter);
 app.use('/', insertRouter);
 app.use('/', logoutRouter);
@@ -57,6 +56,7 @@ app.use('/', pdfGen);
 app.use('/', macchine);
 app.use('/', clienteRoutes);
 app.use('/', dipendenteRoutes);
+app.use('/', ferieRoutes);
 //app.use('/calendario', calendarRouter);
 
 
