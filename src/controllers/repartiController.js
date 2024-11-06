@@ -2,278 +2,297 @@ const Reparti = require('../models/reparti');
 const Macchine = require('../models/macchine');
 
 const mongoose = require('mongoose');
-const {getData} = require('../middleware/user-auth');
+const { getData } = require('../middleware/user-auth');
 
 const repartiController = {}; //consente di esportare le funzioni
 
 checkData = (data) => {
-    if(data === '' || typeof data === 'undefined')
-        return false;
-    else
-        return true;
+  if (data === '' || typeof data === 'undefined') return false;
+  else return true;
 };
 
+createData = async (postData, token, isNew = true) => {
+  let data = {};
+  if (checkData(postData.tipo)) data.tipo = postData.tipo;
+  if (checkData(postData.reparto)) data.reparto = postData.reparto;
+  if (checkData(postData.prodFilo)) data.prodFilo = postData.prodFilo;
+  if (checkData(postData.cliente)) data.cliente = postData.cliente;
 
+  if (checkData(postData.misuraFilo)) data.misuraFilo = postData.misuraFilo;
+  if (checkData(postData.fileMolle)) data.fileMolle = postData.fileMolle;
 
+  if (checkData(postData.diamFilo))
+    data.diamFilo = parseFloat(postData.diamFilo);
+  if (checkData(postData.portata)) data.portata = parseFloat(postData.portata);
+  if (checkData(postData.peso)) data.peso = parseFloat(postData.peso);
+  if (isNew) data.data = new Date();
+  if (checkData(postData.macchina)) data.macchina = postData.macchina;
+  console.log('macchine ' + postData.macchina);
+  if (checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
+  if (checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
+  if (checkData(postData.cambiMacchina))
+    data.cambiMacchina = parseInt(postData.cambiMacchina);
 
-createData =async (postData, token, isNew=true) => {
-
-
-    let data = {};
-    if(checkData(postData.tipo)) data.tipo = postData.tipo;
-    if(checkData(postData.reparto)) data.reparto = postData.reparto;
-    if(checkData(postData.prodFilo)) data.prodFilo = postData.prodFilo;
-    if(checkData(postData.cliente)) data.cliente = postData.cliente;
-
-    if(checkData(postData.misuraFilo)) data.misuraFilo = postData.misuraFilo;
-    if(checkData(postData.fileMolle)) data.fileMolle = postData.fileMolle;
-
-    if(checkData(postData.diamFilo)) data.diamFilo = parseFloat(postData.diamFilo);
-    if(checkData(postData.portata)) data.portata = parseFloat(postData.portata);
-    if(checkData(postData.peso)) data.peso = parseFloat(postData.peso);
-    if(isNew) data.data = new Date();
-    if(checkData(postData.macchina)) data.macchina = postData.macchina;
-    console.log("macchine " + postData.macchina);
-    if(checkData(postData.quantita)) data.quantita = parseInt(postData.quantita);
-    if(checkData(postData.oreLav)) data.oreLav = parseInt(postData.oreLav);
-    if(checkData(postData.cambiMacchina)) data.cambiMacchina = parseInt(postData.cambiMacchina);
-
-    if(data.reparto==="produzione" && data.tipo==="pocket"){
-        //CALCOLO ORE FERMO
-        const retrive = await  Macchine.findOne({macchina:data.macchina}).exec();
-        let oreFermo = 0;
-        if (!retrive) {
-          oreFermo = 0;
-        } else {
-          oreFermo = decimalToSexagesimal((data.oreLav * retrive.molleOre)/data.quantita);
-        }
-        console.log("RETRIVEEEEE: " + retrive);
-        console.log("ORE LAVORATEEEE: " + data.oreLav);
-        
-
-        console.log("ORE FERMOOOOOO: " + oreFermo);
-
-        data.oreFermo=oreFermo;
+  if (data.reparto === 'produzione' && data.tipo === 'pocket') {
+    //CALCOLO ORE FERMO
+    const retrive = await Macchine.findOne({ macchina: data.macchina }).exec();
+    let oreFermo = 0;
+    if (!retrive) {
+      oreFermo = 0;
+    } else {
+      oreFermo = decimalToSexagesimal(
+        (data.oreLav * retrive.molleOre) / data.quantita
+      );
     }
-    
-    //if(checkData(postData.oreFermo)) data.oreFermo = parseInt(postData.oreFermo);
+    console.log('RETRIVEEEEE: ' + retrive);
+    console.log('ORE LAVORATEEEE: ' + data.oreLav);
 
-    console.log('user: ' + token.user);
-    data.user = token.user;
-    
-    //if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
-    
-    if(checkData(postData.diamMolla)) data.diamMolla = parseInt(postData.diamMolla);
-    if(checkData(postData.fileMolle)) data.file = postData.fileMolle;
-    if(checkData(postData.note)) data.note = postData.note;
-    if(checkData(postData.altezza)) data.altezza = parseFloat(postData.altezza);
-    if(checkData(postData.cambioTelina)) data.cambioTelina = parseInt(postData.cambioTelina);
+    console.log('ORE FERMOOOOOO: ' + oreFermo);
 
+    data.oreFermo = oreFermo;
+  }
 
+  //if(checkData(postData.oreFermo)) data.oreFermo = parseInt(postData.oreFermo);
 
-    data.deleted = 0;
-    console.log(data);
+  console.log('user: ' + token.user);
+  data.user = token.user;
 
-    return data;
+  //if(checkData(postData.giriMolla)) data.giriMolla = parseInt(postData.giriMolla);
+
+  if (checkData(postData.diamMolla))
+    data.diamMolla = parseInt(postData.diamMolla);
+  if (checkData(postData.fileMolle)) data.file = postData.fileMolle;
+  if (checkData(postData.note)) data.note = postData.note;
+  if (checkData(postData.altezza)) data.altezza = parseFloat(postData.altezza);
+  if (checkData(postData.cambioTelina))
+    data.cambioTelina = parseInt(postData.cambioTelina);
+
+  data.deleted = 0;
+  console.log(data);
+
+  return data;
 };
 
 repartiController.insertMolleggi = async (req, res) => {
-    try {
-        const uri = process.env.DB_URI || "";
-        mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-        const creati= await createData(req.body, getData(req.cookies.token), true);
-        console.log("DATI CREATI PER INSERIMENTO: " + creati);
-        const molleggi = new Reparti(creati);
-        molleggi.save();
-    } catch (error) {
-        console.error("errore "+error);
-        return res.redirect('/reparti'); //errore
-      }
-    res.status(200);
-    
+  try {
+    const uri = process.env.DB_URI || '';
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const creati = await createData(req.body, getData(req.cookies.token), true);
+    console.log('DATI CREATI PER INSERIMENTO: ' + creati);
+    const molleggi = new Reparti(creati);
+    molleggi.save();
+  } catch (error) {
+    console.error('errore ' + error);
+    return res.redirect('/reparti'); //errore
+  }
+  res.status(200);
 
-    res.render("dipendente/postInsert.ejs");
+  res.render('dipendente/postInsert.ejs');
 };
 
-repartiController.modificaMolleggio = async (req, res, next ) => {
-    const elementId = req.params.id;
-    const uri = process.env.DB_URI || "";
-    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log("note: " + req.body.note);
-    let dataProcessed = await createData(req.body, req.body, false);
+repartiController.modificaMolleggio = async (req, res, next) => {
+  const elementId = req.params.id;
+  const uri = process.env.DB_URI || '';
+  mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+  console.log('note: ' + req.body.note);
+  let dataProcessed = await createData(req.body, req.body, false);
 
-    Reparti.findByIdAndUpdate(elementId, dataProcessed, { new: true, runValidators: true })
+  Reparti.findByIdAndUpdate(elementId, dataProcessed, {
+    new: true,
+    runValidators: true,
+  })
     .then((data) => {
-        if(data) {
-            console.log('Elemento aggiornato:', data);
-            if(typeof data.tipo === undefined){
-                res.redirect("/prodPocket/" + data.reparto);
-            } else {
-                res.redirect("/prodPocket/" + data.reparto + "/" + data.tipo);
-            }
+      if (data) {
+        console.log('Elemento aggiornato:', data);
+        if (typeof data.tipo === undefined) {
+          res.redirect('/prodPocket/' + data.reparto);
         } else {
-          console.log('Elemento non trovato.');
+          res.redirect('/prodPocket/' + data.reparto + '/' + data.tipo);
         }
-    }).catch((errore) => {
-        console.error('Errore durante l\'aggiornamento dell\'elemento:', errore);
-        res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+      } else {
+        console.log('Elemento non trovato.');
+      }
+    })
+    .catch((errore) => {
+      console.error("Errore durante l'aggiornamento dell'elemento:", errore);
+      res
+        .status(500)
+        .json({ message: "Errore durante l'eliminazione dell'elemento" });
     });
 };
 
 //ritorna il totale di molle prodotte in un giorno se tempo = "g", ritorna quelle prodotte nel mese corrente se tempo = "m"
 repartiController.getTotal = async (reparto, tipo, tempo) => {
-    try {
-      let dataInizio;
-      let dataFine;
-  
-      if (tempo === "m") {
-        // Calcola le date di inizio e fine del mese corrente
-        const oggi = new Date();
-        dataInizio = new Date(oggi.getFullYear(), oggi.getMonth(), 1);
-        dataFine = new Date(oggi.getFullYear(), oggi.getMonth() + 1, 1);
-      } else if (tempo === "g") {
-        // Calcola le date di inizio e fine della giornata corrente
-        const oggi = new Date();
-        dataInizio = new Date(oggi.getFullYear(), oggi.getMonth(), oggi.getDate());
-        dataFine = new Date(oggi.getFullYear(), oggi.getMonth(), oggi.getDate() + 1);
-      } else {
-        throw new Error("Il valore di 'tempo' deve essere 'm' o 'g'");
-      }
+  try {
+    let dataInizio;
+    let dataFine;
 
-      const pipeline = [
-        {
-          $match: {
-            reparto: reparto,
-            tipo: tipo,
-            deleted: false,
-            data: {
-              $gte: dataInizio,
-              $lt: dataFine
-            }
-          }
-        },
-        {
-          $group: {
-            _id: null,
-            totalMolle: { $sum: "$quantita" }
-          }
-        }
-      ];
-      const options = {
-        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
-      };
-
-      const uri = process.env.DB_URI || "";
-      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      const result = await Reparti.aggregate(pipeline, options);
-      return result[0]?.totalMolle || 0;
-    } catch (err) {
-      console.error("Errore durante il calcolo del totale di molle:", err);
-      throw err;
+    if (tempo === 'm') {
+      // Calcola le date di inizio e fine del mese corrente
+      const oggi = new Date();
+      dataInizio = new Date(oggi.getFullYear(), oggi.getMonth(), 1);
+      dataFine = new Date(oggi.getFullYear(), oggi.getMonth() + 1, 1);
+    } else if (tempo === 'g') {
+      // Calcola le date di inizio e fine della giornata corrente
+      const oggi = new Date();
+      dataInizio = new Date(
+        oggi.getFullYear(),
+        oggi.getMonth(),
+        oggi.getDate()
+      );
+      dataFine = new Date(
+        oggi.getFullYear(),
+        oggi.getMonth(),
+        oggi.getDate() + 1
+      );
+    } else {
+      throw new Error("Il valore di 'tempo' deve essere 'm' o 'g'");
     }
-  };
 
-  repartiController.getTotalByMOnth = async (reparto, tipo) => {
-    try {
-      // Otteniamo l'anno corrente
-const annoCorrente = new Date().getFullYear();
-
-// Creiamo un nuovo oggetto Date per il primo giorno dell'anno corrente (1 gennaio)
-const primoGiornoAnnoCorrente = new Date(annoCorrente, 0, 1);
-const primoGiornoAnnoDopo = new Date(annoCorrente+1, 0, 1);
-
-        const pipeline = [
-          { $match : { 
-            reparto: reparto,
-            tipo: tipo,
-            deleted: false,
-              data: { 
-                  $gte: new Date(primoGiornoAnnoCorrente),
-                  $lt: new Date(primoGiornoAnnoDopo) 
-              }
-          }},
-          { $project: {
-              mese: { 
-                  $month: { 
-                      $ifNull: [ "$data", new Date("1900-01-01") ] 
-                  } 
-              }, quantita: 1
-          }},
-          { $group: { 
-              _id: "$mese", 
-              totale: { $sum: "$quantita" } 
-              }
+    const pipeline = [
+      {
+        $match: {
+          reparto: reparto,
+          tipo: tipo,
+          deleted: false,
+          data: {
+            $gte: dataInizio,
+            $lt: dataFine,
           },
-          { $sort: { _id: 1 } }
-      ];
-      const options = {
-        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
-      };
-
-      const uri = process.env.DB_URI || "";
-      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      const result = await Reparti.aggregate(pipeline);
-      let array=[0,0,0,0,0,0,0,0,0,0,0,0];
-      for(i=0;i<result.length;i++){
-        k=(result[i]._id)-1;
-        console.log("K: " + k);
-        array[k]=result[i].totale;
-      }
-      //console.log(array)
-      console.log(array)
-      return array || -1;
-    } catch (err) {
-      console.error("Errore durante il calcolo del totale di molle:", err);
-      throw err;
-    }
-  };
-
-  repartiController.getTotalForDay = async (reparto, tipo, selectedData) => {
-    let dataInizio = new Date(selectedData);
-    let dataFine = new Date(dataInizio.getFullYear(), dataInizio.getMonth(), dataInizio.getDate() + 1);
-    try {
-      const pipeline = [
-        {
-          $match: {
-            reparto: reparto,
-            tipo: tipo,
-            deleted: false,
-            data: { 
-              $gte: new Date(dataInizio),
-              $lt: new Date(dataFine) 
-          }
-          }
         },
-        {
-          $group: {
-            _id: null,
-            totalMolle: { $sum: "$quantita" }
-          }
-        }
-      ];
-      const options = {
-        maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
-      };
+      },
+      {
+        $group: {
+          _id: null,
+          totalMolle: { $sum: '$quantita' },
+        },
+      },
+    ];
+    const options = {
+      maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+    };
 
-      const uri = process.env.DB_URI || "";
-      mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-      const result = await Reparti.aggregate(pipeline, options);
-      return result[0]?.totalMolle || 0;
-    } catch (err) {
-      console.error("Errore durante il calcolo del totale di molle:", err);
-      throw err;
-    }
-  };
-
-  function decimalToSexagesimal(decimalHours) {
-    // Separare la parte intera (ore) dalla parte decimale (minuti)
-    const hours = Math.floor(decimalHours);
-    const minutesDecimal = decimalHours - hours;
-    
-    // Convertire i minuti decimali in minuti reali
-    const minutes = Math.round(minutesDecimal * 60);
-  
-    return `${hours}h ${minutes}m`;
+    const uri = process.env.DB_URI || '';
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const result = await Reparti.aggregate(pipeline, options);
+    return result[0]?.totalMolle || 0;
+  } catch (err) {
+    console.error('Errore durante il calcolo del totale di molle:', err);
+    throw err;
   }
+};
 
-  module.exports = repartiController;
+repartiController.getTotalByMOnth = async (reparto, tipo) => {
+  try {
+    // Otteniamo l'anno corrente
+    const annoCorrente = new Date().getFullYear();
+
+    // Creiamo un nuovo oggetto Date per il primo giorno dell'anno corrente (1 gennaio)
+    const primoGiornoAnnoCorrente = new Date(annoCorrente, 0, 1);
+    const primoGiornoAnnoDopo = new Date(annoCorrente + 1, 0, 1);
+
+    const pipeline = [
+      {
+        $match: {
+          reparto: reparto,
+          tipo: tipo,
+          deleted: false,
+          data: {
+            $gte: new Date(primoGiornoAnnoCorrente),
+            $lt: new Date(primoGiornoAnnoDopo),
+          },
+        },
+      },
+      {
+        $project: {
+          mese: {
+            $month: {
+              $ifNull: ['$data', new Date('1900-01-01')],
+            },
+          },
+          quantita: 1,
+        },
+      },
+      {
+        $group: {
+          _id: '$mese',
+          totale: { $sum: '$quantita' },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ];
+    const options = {
+      maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+    };
+
+    const uri = process.env.DB_URI || '';
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const result = await Reparti.aggregate(pipeline);
+    let array = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    for (i = 0; i < result.length; i++) {
+      k = result[i]._id - 1;
+      console.log('K: ' + k);
+      array[k] = result[i].totale;
+    }
+    //console.log(array)
+    console.log(array);
+    return array || -1;
+  } catch (err) {
+    console.error('Errore durante il calcolo del totale di molle:', err);
+    throw err;
+  }
+};
+
+repartiController.getTotalForDay = async (reparto, tipo, selectedData) => {
+  let dataInizio = new Date(selectedData);
+  let dataFine = new Date(
+    dataInizio.getFullYear(),
+    dataInizio.getMonth(),
+    dataInizio.getDate() + 1
+  );
+  try {
+    const pipeline = [
+      {
+        $match: {
+          reparto: reparto,
+          tipo: tipo,
+          deleted: false,
+          data: {
+            $gte: new Date(dataInizio),
+            $lt: new Date(dataFine),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalMolle: { $sum: '$quantita' },
+        },
+      },
+    ];
+    const options = {
+      maxTimeMS: 30000, // Imposta il timeout a 30 secondi (30000 ms)
+    };
+
+    const uri = process.env.DB_URI || '';
+    mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const result = await Reparti.aggregate(pipeline, options);
+    return result[0]?.totalMolle || 0;
+  } catch (err) {
+    console.error('Errore durante il calcolo del totale di molle:', err);
+    throw err;
+  }
+};
+
+function decimalToSexagesimal(decimalHours) {
+  // Separare la parte intera (ore) dalla parte decimale (minuti)
+  const hours = Math.floor(decimalHours);
+  const minutesDecimal = decimalHours - hours;
+
+  // Convertire i minuti decimali in minuti reali
+  const minutes = Math.round(minutesDecimal * 60);
+
+  return `${hours}h ${minutes}m`;
+}
+
+module.exports = repartiController;

@@ -8,5 +8,4 @@ router.get('/login', Auth.showLoginForm);
 /* POST effettua il login*/
 router.post('/login', Auth.login);
 
-
 module.exports = router;

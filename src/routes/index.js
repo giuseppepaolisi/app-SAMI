@@ -2,13 +2,18 @@ var express = require('express');
 var router = express.Router();
 const repartiController = require('../controllers/repartiController');
 
-const { verifyToken, isAdmin, signToken, deleteToken } = require('../middleware/user-auth');
+const {
+  verifyToken,
+  isAdmin,
+  signToken,
+  deleteToken,
+} = require('../middleware/user-auth');
 
-const bodyparse = require("body-parser");
+const bodyparse = require('body-parser');
 
 const moment = require('moment');
-moment.locale('it')
-require('dotenv').config({path: '../env/developement.env'});
+moment.locale('it');
+require('dotenv').config({ path: '../env/developement.env' });
 
 // Home page (Dashboard)
 /*router.get('/', isAdmin, (req, res, next) => {
@@ -16,23 +21,28 @@ require('dotenv').config({path: '../env/developement.env'});
 });*/
 
 // grafico molle pocket
-router.get('/prova',isAdmin, async (req, res) => {
-  res.status(200).json(await repartiController.getTotalByMOnth('produzione','pocket'));
-  
-  });
-
-
-
-// Dashboard
-router.get('/', isAdmin, async function(req, res, next) {
-  const totalMolleMese = await repartiController.getTotal("produzione", "pocket", "m");
-
-  const totalMolleGiorno = await repartiController.getTotal("produzione", "pocket", "g");
-
-  res.render('index', {totG: totalMolleGiorno, totM: totalMolleMese});
+router.get('/prova', isAdmin, async (req, res) => {
+  res
+    .status(200)
+    .json(await repartiController.getTotalByMOnth('produzione', 'pocket'));
 });
 
+// Dashboard
+router.get('/', isAdmin, async function (req, res, next) {
+  const totalMolleMese = await repartiController.getTotal(
+    'produzione',
+    'pocket',
+    'm'
+  );
 
+  const totalMolleGiorno = await repartiController.getTotal(
+    'produzione',
+    'pocket',
+    'g'
+  );
+
+  res.render('index', { totG: totalMolleGiorno, totM: totalMolleMese });
+});
 
 // Definisci la funzione per ottenere i giorni di tutti i mesi dell'anno corrente
 function getAllMonths() {
@@ -65,12 +75,14 @@ function getAllMonths() {
 
 router.get('/getTotalForSelectedDay', isAdmin, async (req, res, next) => {
   const selectedDate = req.query.date;
-  let totale = await repartiController.getTotalForDay("produzione", "pocket", selectedDate);
+  let totale = await repartiController.getTotalForDay(
+    'produzione',
+    'pocket',
+    selectedDate
+  );
   console.log(totale);
   console.log(new Date(selectedDate));
   res.json({ total: totale });
 });
-
-
 
 module.exports = router;

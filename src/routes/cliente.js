@@ -1,7 +1,7 @@
 const express = require('express');
 
 const clienteController = require('../controllers/clienteController/clienteController');
-const { isAdmin  } = require('../middleware/user-auth');
+const { isAdmin } = require('../middleware/user-auth');
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.delete('/eliminaCliente/:id', isAdmin, clienteController.deleteCliente);
 
 // Template route
 router.get('/addCliente', isAdmin, (req, res) => {
-    res.render('addCliente', { title: 'Aggiungi Cliente' });
+  res.render('addCliente', { title: 'Aggiungi Cliente' });
 });
 
-  module.exports = router;
+module.exports = router;

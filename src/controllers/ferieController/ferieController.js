@@ -1,5 +1,5 @@
-const Ferie = require("../../models/ferie");
-const User = require("../../models/user");
+const Ferie = require('../../models/ferie');
+const User = require('../../models/user');
 const moment = require('moment');
 
 /**
@@ -32,7 +32,6 @@ function getAllMonths(year) {
 }
 
 const ferieController = {
-  
   /**
    * Mostra la pagina per modificare i dati di una richiesta ferie per un dipendente.
    * @param {Object} req - La richiesta Express.
@@ -51,14 +50,16 @@ const ferieController = {
   updateFerie: async (req, res, next) => {
     const { dataInizio, dataFine, isFerie } = req.body;
     try {
-      const ferie = await Ferie.findByIdAndUpdate(req.params.id, 
-      { dataInizio, dataFine, tipologia: isFerie }, 
-      { new: true, runValidators: true });
+      const ferie = await Ferie.findByIdAndUpdate(
+        req.params.id,
+        { dataInizio, dataFine, tipologia: isFerie },
+        { new: true, runValidators: true }
+      );
       if (ferie) {
         res.redirect('/showFerie');
       }
     } catch (error) {
-      console.error('Errore durante l\'aggiornamento dell\'elemento:', error);
+      console.error("Errore durante l'aggiornamento dell'elemento:", error);
     }
   },
 
@@ -91,12 +92,15 @@ const ferieController = {
         dataFine,
         tipologia: isFerie,
         note: noteFerie,
-        deleted: 0
+        deleted: 0,
       });
       await ferie.save();
       res.redirect('/conferma');
     } catch (error) {
-      console.error("Errore durante l'inserimento della richiesta ferie:", error);
+      console.error(
+        "Errore durante l'inserimento della richiesta ferie:",
+        error
+      );
     }
   },
 
@@ -107,15 +111,26 @@ const ferieController = {
    */
   deleteFerie: async (req, res, next) => {
     try {
-      const ferie = await Ferie.findByIdAndUpdate(req.params.id, { deleted: 1 }, { new: true });
+      const ferie = await Ferie.findByIdAndUpdate(
+        req.params.id,
+        { deleted: 1 },
+        { new: true }
+      );
       if (ferie) {
-        res.json({ message: "Elemento eliminato con successo" });
+        res.json({ message: 'Elemento eliminato con successo' });
       } else {
-        res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+        res
+          .status(500)
+          .json({ message: "Errore durante l'eliminazione dell'elemento" });
       }
     } catch (error) {
-      console.error("Errore durante l'eliminazione della richiesta ferie:", error);
-      res.status(500).json({ message: "Errore durante l'eliminazione dell'elemento" });
+      console.error(
+        "Errore durante l'eliminazione della richiesta ferie:",
+        error
+      );
+      res
+        .status(500)
+        .json({ message: "Errore durante l'eliminazione dell'elemento" });
     }
   },
 
@@ -127,10 +142,17 @@ const ferieController = {
   showFerie: async (req, res, next) => {
     try {
       const list = await Ferie.find({ deleted: 0 });
-      const aheader = ['nome', 'cognome', 'dataInizio', 'dataFine', 'tipologia', 'note'];
+      const aheader = [
+        'nome',
+        'cognome',
+        'dataInizio',
+        'dataFine',
+        'tipologia',
+        'note',
+      ];
       res.render('tableFerie', { title: 'Ferie', aheader, list, moment });
     } catch (error) {
-      console.error("Errore nel recupero delle richieste ferie:", error);
+      console.error('Errore nel recupero delle richieste ferie:', error);
       res.redirect('/');
     }
   },
@@ -144,9 +166,14 @@ const ferieController = {
     try {
       const options = await Ferie.find({ deleted: 0 });
       const monthsData = getAllMonths(moment().year());
-      res.render('calendar', { year: moment().year(), months: monthsData, title: 'Calendario', options });
+      res.render('calendar', {
+        year: moment().year(),
+        months: monthsData,
+        title: 'Calendario',
+        options,
+      });
     } catch (error) {
-      console.error("Errore nel caricamento della pagina calendario:", error);
+      console.error('Errore nel caricamento della pagina calendario:', error);
       res.redirect('/');
     }
   },
@@ -158,7 +185,7 @@ const ferieController = {
    */
   getConfirmaPage: async (req, res, next) => {
     res.render('conferma');
-  }
+  },
 };
 
 module.exports = ferieController;

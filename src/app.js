@@ -23,7 +23,6 @@ const ferieRoutes = require('./routes/ferie');
 process.env.TZ = 'Europe/Rome';
 //const calendarRouter = require('./routes/calendario');
 
-
 const app = express();
 
 // view engine setup
@@ -39,11 +38,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //permette di inviare username al client
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.nomeUtente = req.cookies.nome || '';
   next();
 });
-
 
 app.use('/', indexRouter);
 app.use('/', loginRouter);
@@ -59,14 +57,13 @@ app.use('/', dipendenteRoutes);
 app.use('/', ferieRoutes);
 //app.use('/calendario', calendarRouter);
 
-
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -77,12 +74,16 @@ app.use(function(err, req, res, next) {
 });
 
 // connect to db
-mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('Database connesso con successo');
-    })
-    .catch((error) => {
-        console.error('Errore nella connessione al database:', error);
-    });
+mongoose
+  .connect(process.env.DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('Database connesso con successo');
+  })
+  .catch((error) => {
+    console.error('Errore nella connessione al database:', error);
+  });
 
 module.exports = app;

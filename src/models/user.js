@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 //import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    nome: String,
-    cognome: String,
-    user: { type: String, unique: true },
-    password: String,
-    admin: Boolean,
-    deleted: Boolean //false non è cancellato true è stato cancellato
+  nome: String,
+  cognome: String,
+  user: { type: String, unique: true },
+  password: String,
+  admin: Boolean,
+  deleted: Boolean, //false non è cancellato true è stato cancellato
 });
 
 const User = mongoose.model('User', userSchema);

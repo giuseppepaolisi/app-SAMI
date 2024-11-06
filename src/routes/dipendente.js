@@ -5,16 +5,20 @@ const employeeController = require('../controllers/dipendenteController/employee
 
 // Controller route
 router.get('/dipendenti', isAdmin, employeeController.getEmployeesList);
-router.post('/addUser', isAdmin,employeeController.addEmployee);
-router.delete('/eliminaDipendente/:id', isAdmin, employeeController.deleteEmployee);
+router.post('/addUser', isAdmin, employeeController.addEmployee);
+router.delete(
+  '/eliminaDipendente/:id',
+  isAdmin,
+  employeeController.deleteEmployee
+);
 router.post('/editUser/:id', isAdmin, employeeController.editUser);
 
 // template route
 
 //permette di visualizzare la pagina per aggiungere un nuovo dipendente
-router.get('/addUser',isAdmin, async (req, res, next) => {
-    // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
-    res.render('addUser');
+router.get('/addUser', isAdmin, async (req, res, next) => {
+  // Renderizza la pagina del calendario utilizzando il file "addUser.ejs"
+  res.render('addUser');
 });
 
 // Visualizza la pagina di modifica per un dipendente
