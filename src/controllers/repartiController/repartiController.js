@@ -1,9 +1,9 @@
-const Reparti = require('../models/reparti');
-const Macchine = require('../models/macchine');
-const User = require('../models/user');
-const Cliente = require('../models/cliente');
+const Reparti = require('../../models/reparti');
+const Macchine = require('../../models/macchine');
+const User = require('../../models/user');
+const Cliente = require('../../models/cliente');
 const moment = require('moment');
-const { getData } = require('../middleware/user-auth');
+const { getData } = require('../../middleware/user-auth');
 
 // Funzione helper per verificare la validità dei dati
 const checkData = (data) =>

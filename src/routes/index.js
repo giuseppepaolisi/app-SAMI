@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const repartiController = require('../controllers/repartiController');
+const repartiController = require('../controllers/repartiController/repartiController');
 
 const {
   verifyToken,

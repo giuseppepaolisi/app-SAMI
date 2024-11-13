@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken, isEmployee, isAdmin } = require('../middleware/user-auth');
-const repartiController = require('../controllers/repartiController');
+const repartiController = require('../controllers/repartiController/repartiController');
 
 // POST: Inserisce nuovi dati nel database
 router.post(
