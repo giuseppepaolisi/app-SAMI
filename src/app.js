@@ -10,10 +10,9 @@ const mongoose = require('mongoose');
 
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
-const insertRouter = require('./routes/insert');
 const logoutRouter = require('./routes/logout');
 const employeeRouter = require('./routes/reparto');
-const prodPocketRouter = require('./routes/prodPocket');
+const repartiRouter = require('./routes/reparti');
 const pdfGen = require('./routes/pdfGenerator');
 const macchine = require('./routes/macchine');
 const clienteRoutes = require('./routes/cliente');
@@ -45,11 +44,10 @@ app.use(function (req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/', loginRouter);
-app.use('/', insertRouter);
 app.use('/', logoutRouter);
 app.use('/', employeeRouter);
-app.use('/', prodPocketRouter);
-app.use('/dipendenti', prodPocketRouter);
+app.use('/', repartiRouter);
+app.use('/dipendenti', repartiRouter);
 app.use('/', pdfGen);
 app.use('/', macchine);
 app.use('/', clienteRoutes);

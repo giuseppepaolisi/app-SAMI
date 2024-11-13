@@ -24,7 +24,7 @@ require('dotenv').config({ path: '../env/developement.env' });
 router.get('/prova', isAdmin, async (req, res) => {
   res
     .status(200)
-    .json(await repartiController.getTotalByMOnth('produzione', 'pocket'));
+    .json(await repartiController.getTotalByMonth('produzione', 'pocket'));
 });
 
 // Dashboard

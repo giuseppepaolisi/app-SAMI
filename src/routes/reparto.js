@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const reparti = require('../controllers/repartiController');
 const { isEmployee } = require('../middleware/user-auth');
+const macchine = require('../controllers/macchineController/macchineController.js');
 
 const {
   verifyToken,
