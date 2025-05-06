@@ -1,23 +1,40 @@
 const Cliente = require("../../models/cliente.js");
 const moment = require("moment");
 
+const ALLOWED_LIMITS = [10, 25, 50, 100]; // Definisci i limiti consentiti
+
 const ClienteController = {
-  /**
-   * Recupera e mostra la lista paginata dei clienti non eliminati.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   * @param {Function} next - La funzione di middleware successiva.
-   */
   getClienti: async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 25; // Default 10 items per pagina
+    // Nuovo: valida e imposta il limite
+    let limit = parseInt(req.query.limit);
+    if (!ALLOWED_LIMITS.includes(limit)) {
+      limit = 25; // Valore predefinito se il limite non è valido o non è specificato
+    }
+
     const skip = (page - 1) * limit;
+    const searchTerm = req.query.search || "";
+    const sortField = req.query.sort || "ragioneSociale";
+    const sortOrder = req.query.order === "desc" ? -1 : 1;
 
     try {
-      const query = { deleted: false };
-      // Recupero dei clienti paginati che non sono stati eliminati
+      let query = { deleted: false };
+
+      if (searchTerm) {
+        const searchRegex = new RegExp(searchTerm, "i");
+        query.$or = [
+          { ragioneSociale: searchRegex },
+          { tipologia: searchRegex },
+        ];
+      }
+
+      const sortOptions = {};
+      if (sortField) {
+        sortOptions[sortField] = sortOrder;
+      }
+
       const clientiList = await Cliente.find(query)
-        .sort({ ragioneSociale: 1 }) // Manteniamo un ordinamento consistente
+        .sort(sortOptions)
         .skip(skip)
         .limit(limit)
         .exec();
@@ -25,9 +42,11 @@ const ClienteController = {
       const totalItems = await Cliente.countDocuments(query);
       const totalPages = Math.ceil(totalItems / limit);
 
-      const headers = ["Ragione Sociale", "Tipologia"];
+      const headers = [
+        { name: "Ragione Sociale", field: "ragioneSociale" }, 
+        { name: "Tipologia", field: "tipologia" }
+      ];
 
-      // Rendering della pagina con la lista dei clienti e i dati di paginazione
       res.render("tableCliente", {
         title: "Lista Clienti",
         aheader: headers,
@@ -35,23 +54,20 @@ const ClienteController = {
         moment: moment,
         currentPage: page,
         totalPages,
-        limit,
+        limit, // Passa il limite corrente alla vista
         totalItems,
+        currentSearch: searchTerm,
+        currentSort: sortField,
+        currentOrder: sortOrder === 1 ? "asc" : "desc",
+        req: req, // Passa l'oggetto req per costruire URL nella vista
+        allowedLimits: ALLOWED_LIMITS // Passa i limiti consentiti alla vista
       });
     } catch (error) {
       console.error("Errore nel recupero della lista clienti:", error);
-      // Passare l'errore al gestore di errori di Express
-      // o renderizzare una pagina di errore specifica
       res.status(500).render("error", { message: "Errore nel recupero della lista clienti", error });
     }
   },
 
-  /**
-   * Aggiunge un nuovo cliente nel sistema.
-   * @param {Object} req - La richiesta Express contenente i dati del nuovo cliente.
-   * @param {Object} res - La risposta Express.
-   * @param {Function} next - La funzione di middleware successiva.
-   */
   addCliente: async (req, res, next) => {
     try {
       const { ragioneSociale, isCliente } = req.body;
@@ -61,22 +77,14 @@ const ClienteController = {
         deleted: false,
       });
 
-      // Salvataggio del nuovo cliente nel database
       await cliente.save();
-      // Reindirizza alla prima pagina della tabella clienti dopo l'aggiunta
-      res.redirect("/showCliente?page=1");
+      res.redirect("/showCliente?page=1"); // Mantiene il limite predefinito dopo l'aggiunta
     } catch (error) {
       console.error("Errore durante l'aggiunta del cliente:", error);
       res.status(500).render("error", { message: "Errore durante l'aggiunta del cliente", error });
     }
   },
 
-  /**
-   * Elimina logicamente un cliente impostando il campo 'deleted' a true.
-   * @param {Object} req - La richiesta Express contenente l'ID del cliente da eliminare.
-   * @param {Object} res - La risposta Express.
-   * @param {Function} next - La funzione di middleware successiva.
-   */
   deleteCliente: async (req, res, next) => {
     try {
       const elementId = req.params.id;
@@ -84,7 +92,6 @@ const ClienteController = {
         return res.status(400).json({ message: "ID elemento non valido" });
       }
 
-      // Aggiornamento del campo 'deleted' del cliente selezionato
       const result = await Cliente.findByIdAndUpdate(
         elementId,
         { deleted: 1 },

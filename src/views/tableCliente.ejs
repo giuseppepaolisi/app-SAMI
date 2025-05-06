@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
-    <title><%= title %></title> <%# title viene passato dal controller %>
+    <title><%= title %></title>
 
     <!-- Custom fonts for this template -->
     <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
@@ -19,10 +19,30 @@
 
     <!-- Custom styles for this template -->
     <link href="/css/sb-admin-2.css" rel="stylesheet">
-
-    <%# DataTables CSS - Rimuovere o commentare se non si usa DataTables con paginazione server-side %>
-    <%# <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet"> %>
-
+    <style>
+        .sortable-header {
+            cursor: pointer;
+        }
+        .sortable-header:hover {
+            background-color: #f8f9fc;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            color: #858796;
+        }
+        .sort-icon.active {
+            color: #4e73df;
+        }
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem; /* Added margin for spacing */
+        }
+        .table-controls .form-group {
+            margin-bottom: 0; /* Removed bottom margin for inline elements */
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -30,7 +50,6 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- nav bar-->
         <%- include("components/sidebar.ejs") %>
 
         <!-- Content Wrapper -->
@@ -39,41 +58,71 @@
             <!-- Main Content -->
             <div id="content">
 
-                <!-- top bar-->
                 <%- include("components/topbar.ejs") %>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">
                         <%= title %>
                     </h1>
                     <p class="mb-4">Tabella clienti e produttori </p>
 
-                    <!-- Data Table -->
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <div>
-                                <a class="btn btn-primary" href="/addCliente" role="button">Aggiungi Cliente/Produttore</a>
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <a class="btn btn-primary" href="/addCliente" role="button">Aggiungi Cliente/Produttore</a>
+                            <div class="ml-auto">
+                                <input type="text" id="searchInput" class="form-control" placeholder="Cerca..." value="<%= typeof currentSearch !== 'undefined' ? currentSearch : '' %>">
                             </div>
                         </div>
                         <div class="card-body">
+                            <%# Nuovo: Controlli Tabella (Limite Entry) %>
+                            <div class="table-controls">
+                                <div class="form-group">
+                                    <label for="limitSelect" class="mr-2">Mostra entry:</label>
+                                    <select id="limitSelect" class="form-control form-control-sm d-inline-block" style="width: auto;">
+                                        <% allowedLimits.forEach(val => { %>
+                                            <option value="<%= val %>" <%= limit == val ? 'selected' : '' %>><%= val %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="clientTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <%# aheader è passato dal controller e contiene ["Ragione Sociale", "Tipologia"] %>
-                                            <% for(const headerName of aheader) { %> 
-                                                <th class="text-capitalize"><%= headerName %></th>
+                                            <% 
+                                            const baseUrl = new URL(req.protocol + '://' + req.get('host') + req.originalUrl.split('?')[0]);
+                                            const currentParams = new URLSearchParams(req.url.split('?')[1] || '');
+                                            // Non resettare la pagina qui, lo faremo nello script per il cambio limite e ordinamento
+                                            %>
+                                            <% for(const header of aheader) { %> 
+                                                <% 
+                                                const isCurrentSortField = currentSort === header.field;
+                                                const newOrder = isCurrentSortField && currentOrder === 'asc' ? 'desc' : 'asc';
+                                                const sortLinkParams = new URLSearchParams(currentParams);
+                                                sortLinkParams.set('sort', header.field);
+                                                sortLinkParams.set('order', newOrder);
+                                                sortLinkParams.set('page', '1'); // Resetta alla prima pagina quando si cambia ordinamento
+                                                const sortLink = baseUrl.pathname + '?' + sortLinkParams.toString();
+                                                %>
+                                                <th class="text-capitalize sortable-header" onclick="window.location.href='<%= sortLink %>'">
+                                                    <%= header.name %>
+                                                    <% if (isCurrentSortField) { %>
+                                                        <i class="fas fa-sort-<%= currentOrder === 'asc' ? 'up' : 'down' %> sort-icon active"></i>
+                                                    <% } else { %>
+                                                        <i class="fas fa-sort sort-icon"></i>
+                                                    <% } %>
+                                                </th>
                                             <% } %>
                                             <th>Azioni</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <% for(const headerName of aheader) { %> 
-                                                <th class="text-capitalize"><%= headerName %></th>
+                                            <% for(const header of aheader) { %> 
+                                                <th class="text-capitalize"><%= header.name %></th>
                                             <% } %>
                                             <th>Azioni</th>
                                         </tr>
@@ -88,27 +137,27 @@
                                                         <button class="btn btn-danger btn-circle btn-sm delete-btn" data-id="<%= cliente._id %>" title="Elimina">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
-                                                        <%# Aggiungere un link di modifica se esiste una route per modificare il cliente %>
-                                                        <%# <a class="btn btn-success btn-circle btn-sm" href="/editCliente/<%= cliente._id %>" title="Modifica"><i class="fas fa-edit"></i></a> %>
                                                     </td> 
                                                 </tr>
                                             <% } %>
                                         <% } else { %>
                                             <tr>
-                                                <td colspan="<%= aheader.length + 1 %>" class="text-center">Nessun cliente o produttore trovato per questa pagina.</td>
+                                                <td colspan="<%= aheader.length + 1 %>" class="text-center">Nessun cliente o produttore trovato.</td>
                                             </tr>
                                         <% } %>
                                     </tbody>
                                 </table>
                             </div>
-                            <%# Includi il partial per la paginazione %>
                             <%- include("components/pagination.ejs", {
                                 currentPage: currentPage,
                                 totalPages: totalPages,
                                 limit: limit,
                                 totalItems: totalItems,
-                                list: list // Pass list to pagination to show count on current page
-                                // Non ci sono filtri specifici come reparto/tipo per i clienti
+                                list: list,
+                                currentSearch: typeof currentSearch !== 'undefined' ? currentSearch : '',
+                                currentSort: typeof currentSort !== 'undefined' ? currentSort : '',
+                                currentOrder: typeof currentOrder !== 'undefined' ? currentOrder : 'asc',
+                                req: req // Pass req to pagination to build URLs
                             }) %>
                         </div>
                     </div>
@@ -172,11 +221,6 @@
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <%# DataTables JS - Rimuovere o commentare se non si usa DataTables con paginazione server-side %>
-    <%# <script src="/vendor/datatables/jquery.dataTables.min.js"></script> %>
-    <%# <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script> %>
-    <%# <script src="/js/demo/datatables-demo.js"></script> %>
-
     <script>
         document.addEventListener("DOMContentLoaded", function () {
           const deleteButtons = document.querySelectorAll(".delete-btn");
@@ -190,7 +234,7 @@
               const ragioneSociale = row.querySelector("td:first-child").textContent;
               deleteModal.querySelector(".modal-title").textContent = `Vuoi eliminare "${ragioneSociale}"?`;
               deleteConfirmButton.setAttribute("data-id", elementId);
-              $("#deleteModal").modal("show");
+              $('#deleteModal').modal('show');
             });
           });
       
@@ -208,7 +252,6 @@
             })
             .then((data) => {
                 if (data.message === "Elemento eliminato con successo") {
-                    // Ricarica la pagina corrente per riflettere le modifiche e la paginazione
                     const params = new URLSearchParams(window.location.search);
                     window.location.href = window.location.pathname + "?" + params.toString();
                 } else {
@@ -221,7 +264,34 @@
                 alert("Errore fetch durante l'eliminazione: " + error.message);
             });
       
-            $("#deleteModal").modal("hide");
+            $('#deleteModal').modal('hide');
+          });
+
+          const searchInput = document.getElementById("searchInput");
+          let searchTimeout;
+          searchInput.addEventListener("input", function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                const searchValue = searchInput.value.trim();
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set("page", "1"); 
+                if (searchValue) {
+                    currentUrl.searchParams.set("search", searchValue);
+                } else {
+                    currentUrl.searchParams.delete("search");
+                }
+                window.location.href = currentUrl.toString();
+            }, 500); 
+          });
+
+          // Nuovo: Logica per la selezione del limite di entry
+          const limitSelect = document.getElementById("limitSelect");
+          limitSelect.addEventListener("change", function() {
+            const selectedLimit = this.value;
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set("limit", selectedLimit);
+            currentUrl.searchParams.set("page", "1"); // Resetta alla prima pagina quando si cambia il limite
+            window.location.href = currentUrl.toString();
           });
         });
       </script>
