@@ -1,6 +1,6 @@
-const Ferie = require('../../models/ferie');
-const User = require('../../models/user');
-const moment = require('moment');
+const Ferie = require("../../models/ferie");
+const User = require("../../models/user");
+const moment = require("moment");
 
 /**
  * Restituisce i dati di tutti i mesi per un anno specificato.
@@ -18,12 +18,12 @@ function getAllMonths(year) {
       const date = moment(firstDayOfMonth).date(i);
       daysInMonth.push({
         dayOfMonth: i,
-        dayOfWeek: date.format('dddd'),
+        dayOfWeek: date.format("dddd"),
       });
     }
 
     monthsData.push({
-      month: firstDayOfMonth.format('MMMM'),
+      month: firstDayOfMonth.format("MMMM"),
       year,
       daysInMonth,
     });
@@ -38,8 +38,16 @@ const ferieController = {
    * @param {Object} res - La risposta Express.
    */
   getEditFeriePage: async (req, res, next) => {
-    const ferie = await Ferie.findById(req.params.id);
-    res.render('editFerie', { ferie });
+    try {
+        const ferie = await Ferie.findById(req.params.id);
+        if (!ferie) {
+            return res.status(404).render("error", { message: "Richiesta ferie non trovata", error: {status: 404} });
+        }
+        res.render("editFerie", { ferie });
+    } catch (error) {
+        console.error("Errore nel caricamento della pagina di modifica ferie:", error);
+        res.status(500).render("error", { message: "Errore nel caricamento della pagina di modifica ferie", error });
+    }
   },
 
   /**
@@ -56,10 +64,14 @@ const ferieController = {
         { new: true, runValidators: true }
       );
       if (ferie) {
-        res.redirect('/showFerie');
+        // Reindirizza alla prima pagina della tabella ferie dopo l'aggiornamento
+        res.redirect("/showFerie?page=1");
+      } else {
+        res.status(404).render("error", { message: "Richiesta ferie non trovata per l'aggiornamento", error: {status: 404} });
       }
     } catch (error) {
-      console.error("Errore durante l'aggiornamento dell'elemento:", error);
+      console.error("Errore durante l'aggiornamento della richiesta ferie:", error);
+      res.status(500).render("error", { message: "Errore durante l'aggiornamento della richiesta ferie", error });
     }
   },
 
@@ -69,8 +81,13 @@ const ferieController = {
    * @param {Object} res - La risposta Express.
    */
   getAddFeriePage: async (req, res, next) => {
-    const options = await User.find({ deleted: 0 });
-    res.render('addFerie', { options });
+    try {
+        const options = await User.find({ deleted: 0 });
+        res.render("addFerie", { options });
+    } catch (error) {
+        console.error("Errore nel caricamento della pagina di aggiunta ferie:", error);
+        res.status(500).render("error", { message: "Errore nel caricamento della pagina di aggiunta ferie", error });
+    }
   },
 
   /**
@@ -83,7 +100,8 @@ const ferieController = {
     try {
       const user = await User.findOne({ user: opzione });
       if (!user) {
-        return res.status(400).send('Utente non trovato');
+        // È meglio renderizzare una pagina di errore o reindirizzare con un messaggio
+        return res.status(400).render("error", { message: "Utente non trovato per l'inserimento ferie", error: {status: 400} });
       }
       const ferie = new Ferie({
         nome: user.nome,
@@ -95,12 +113,15 @@ const ferieController = {
         deleted: 0,
       });
       await ferie.save();
-      res.redirect('/conferma');
+      // Non reindirizzare a /conferma se /conferma non gestisce la paginazione o non è una tabella
+      // Reindirizziamo alla tabella delle ferie, prima pagina
+      res.redirect("/showFerie?page=1"); 
     } catch (error) {
       console.error(
         "Errore durante l'inserimento della richiesta ferie:",
         error
       );
+      res.status(500).render("error", { message: "Errore durante l'inserimento della richiesta ferie", error });
     }
   },
 
@@ -111,17 +132,20 @@ const ferieController = {
    */
   deleteFerie: async (req, res, next) => {
     try {
+      const elementId = req.params.id;
+      if (!elementId || elementId === "null") {
+        return res.status(400).json({ message: "ID elemento non valido" });
+      }
       const ferie = await Ferie.findByIdAndUpdate(
         req.params.id,
         { deleted: 1 },
         { new: true }
       );
       if (ferie) {
-        res.json({ message: 'Elemento eliminato con successo' });
+        res.json({ message: "Elemento eliminato con successo" });
       } else {
-        res
-          .status(500)
-          .json({ message: "Errore durante l'eliminazione dell'elemento" });
+        // Se l'elemento non è trovato per l'aggiornamento, è un 404
+        res.status(404).json({ message: "Elemento non trovato per l'eliminazione" });
       }
     } catch (error) {
       console.error(
@@ -135,25 +159,47 @@ const ferieController = {
   },
 
   /**
-   * Mostra tutte le ferie in formato tabella.
+   * Mostra tutte le ferie paginate in formato tabella.
    * @param {Object} req - La richiesta Express.
    * @param {Object} res - La risposta Express.
    */
   showFerie: async (req, res, next) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 25; // Default 10 items per pagina
+    const skip = (page - 1) * limit;
+
     try {
-      const list = await Ferie.find({ deleted: 0 });
+      const query = { deleted: 0 };
+      const list = await Ferie.find(query)
+                            .sort({ dataInizio: -1 }) // Ordinamento per dataInizio decrescente
+                            .skip(skip)
+                            .limit(limit)
+                            .exec();
+      
+      const totalItems = await Ferie.countDocuments(query);
+      const totalPages = Math.ceil(totalItems / limit);
+
       const aheader = [
-        'nome',
-        'cognome',
-        'dataInizio',
-        'dataFine',
-        'tipologia',
-        'note',
+        "nome",
+        "cognome",
+        "dataInizio",
+        "dataFine",
+        "tipologia",
+        "note",
       ];
-      res.render('tableFerie', { title: 'Ferie', aheader, list, moment });
+      res.render("tableFerie", {
+         title: "Lista Ferie e Permessi",
+         aheader,
+         list,
+         moment,
+         currentPage: page,
+         totalPages,
+         limit,
+         totalItems
+        });
     } catch (error) {
-      console.error('Errore nel recupero delle richieste ferie:', error);
-      res.redirect('/');
+      console.error("Errore nel recupero delle richieste ferie:", error);
+      res.status(500).render("error", { message: "Errore nel recupero delle richieste ferie", error });
     }
   },
 
@@ -164,17 +210,20 @@ const ferieController = {
    */
   getCalendarPage: async (req, res, next) => {
     try {
-      const options = await Ferie.find({ deleted: 0 });
+      // Per il calendario, solitamente si vogliono vedere tutte le ferie dell'anno,
+      // la paginazione qui potrebbe non essere necessaria o gestita diversamente (es. per anno).
+      // Per ora, manteniamo il recupero di tutte le ferie non eliminate.
+      const options = await Ferie.find({ deleted: 0 }); 
       const monthsData = getAllMonths(moment().year());
-      res.render('calendar', {
+      res.render("calendar", {
         year: moment().year(),
         months: monthsData,
-        title: 'Calendario',
-        options,
+        title: "Calendario Ferie e Permessi",
+        options, // 'options' qui contiene tutte le ferie, da filtrare/usare nel template
       });
     } catch (error) {
-      console.error('Errore nel caricamento della pagina calendario:', error);
-      res.redirect('/');
+      console.error("Errore nel caricamento della pagina calendario:", error);
+      res.status(500).render("error", { message: "Errore nel caricamento della pagina calendario", error });
     }
   },
 
@@ -184,7 +233,11 @@ const ferieController = {
    * @param {Object} res - La risposta Express.
    */
   getConfirmaPage: async (req, res, next) => {
-    res.render('conferma');
+    // Questa pagina è una semplice conferma, non necessita di paginazione.
+    // Tuttavia, se provenisse da un'azione che poi reindirizza a una tabella, 
+    // quel reindirizzamento dovrebbe considerare la paginazione.
+    // Dato che addFerie ora reindirizza a /showFerie?page=1, questa pagina potrebbe essere meno usata.
+    res.render("conferma");
   },
 };
 

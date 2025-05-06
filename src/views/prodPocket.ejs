@@ -21,6 +21,7 @@
     <link href="/css/sb-admin-2.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
+    <%# DataTables CSS is still here, might need to be removed if not using its features %>
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
@@ -31,7 +32,7 @@
     <div id="wrapper">
 
         <!-- nav bar-->
-        <%- include('components/sidebar.ejs') %>
+        <%- include("components/sidebar.ejs") %>
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -40,7 +41,7 @@
             <div id="content">
 
                 <!-- top bar-->
-                <%- include('components/topbar.ejs') %>
+                <%- include("components/topbar.ejs") %>
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -49,12 +50,12 @@
                     <h1 class="h3 mb-2 text-gray-800 text-capitalize">
                         <%= title %>
                     </h1>
-                    <p class="mb-4">Pagina per la gestione del reparto <%= reparto %> <%= typeof tipo !== 'undefined' ? tipo : '' %></p>
+                    <p class="mb-4">Pagina per la gestione del reparto <%= reparto %> <%= typeof tipo !== "undefined" ? tipo : "" %></p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary"><%= typeof tipo !== 'undefined' ? tipo : '' %></h6>
+                            <h6 class="m-0 font-weight-bold text-primary text-capitalize"><%= typeof tipo !== "undefined" && tipo ? tipo : reparto %></h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -63,58 +64,78 @@
                                     <thead>
                                                                 
                                         <tr>
-                                            <% const keys = Object.keys(aheader).slice(1); %>
-                                            <% for (const key of keys) { %>
-                                            <th> <%= aheader[key] %> </th>
+                                            <% const keys = Object.keys(aheader); // aheader is an array of strings, not an object. Correcting this. %>
+                                            <%# Assuming aheader is an array of column names passed from controller %>
+                                            <% for (const headerName of aheader) { %>
+                                                <%# Do not display _id as a column header, but it might be used for data-id %>
+                                                <% if (headerName !== "_id") { %> 
+                                                    <th class="text-capitalize"><%= headerName.replace(/([A-Z])/g, " $1").trim() %></th>
+                                                <% } %>
                                             <% } %>
-                                            <th></th>
+                                            <th>Azioni</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <% for (const key of keys) { %>
-                                                <th> <%= aheader[key] %> </th>
+                                            <% for (const headerName of aheader) { %>
+                                                <% if (headerName !== "_id") { %>
+                                                    <th class="text-capitalize"><%= headerName.replace(/([A-Z])/g, " $1").trim() %></th>
                                                 <% } %>
-                                            <th></th>
+                                            <% } %>
+                                            <th>Azioni</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        
-                                        <%  
-                                            list.forEach(element => { 
-                                            const values = aheader.map(aheader => element[aheader]);
-                                        %>
-                                        <tr data-id="<%= values[0] %>">
-                                            <% for (let i = 1; i < values.length; i++) { %>
-                                                <% 
-                                                if (aheader[i] === 'data' && moment(values[i], moment.ISO_8601, true).isValid()) { %>
-                                                    <% const formattedDate = moment(values[i]).format("DD/MM/YYYY HH:mm"); %>
-                                                    <td><%= formattedDate %></td>
-                                                <% } else if (typeof values[i] === 'number') { %>
-                                                    <td><%= values[i].toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
-                                                <% } else { %>
-                                                    <td><%= values[i] %></td>
+                                        <% if (list && list.length > 0) { %>
+                                            <% list.forEach(element => { %>
+                                            <tr data-id="<%= element._id %>">
+                                                <% for (const headerName of aheader) { %>
+                                                    <% if (headerName !== "_id") { %>
+                                                        <% let value = element[headerName]; %>
+                                                        <% if (headerName === "data" && moment(value, moment.ISO_8601, true).isValid()) { %>
+                                                            <td><%= moment(value).format("DD/MM/YYYY HH:mm") %></td>
+                                                        <% } else if (typeof value === "number") { %>
+                                                            <td><%= value.toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) %></td>
+                                                        <% } else { %>
+                                                            <td><%= value %></td>
+                                                        <% } %>
+                                                    <% } %>
                                                 <% } %>
-                                            <% } %>
-                                            <td>
-                                                <button class="btn btn-danger btn-circle delete-btn" data-id="<%= values[0] %>">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                                <a class="btn btn-success btn-circle" href="/editMolleggio/<%= values[0] %>" data-id="<%= values[0] %>">
-                                                    <i class="fas fa-cogs"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <% }); %>
-                                        
-                                       
-                                        
+                                                <td>
+                                                    <button class="btn btn-danger btn-circle btn-sm delete-btn" data-id="<%= element._id %>" title="Elimina">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <a class="btn btn-success btn-circle btn-sm" href="/editMolleggio/<%= element._id %>" title="Modifica">
+                                                        <i class="fas fa-cogs"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="<%= aheader.length + 1 %>" class="text-center">Nessun dato disponibile per questa pagina.</td>
+                                            </tr>
+                                        <% } %>
                                     </tbody>
-                                    <!-- Pulsante "Scarica PDF" -->
-                                    <a href="/download-pdf/<%= reparto %>/<%= tipo %>" class="btn btn-outline-danger " data-id=""><i class="fa fa-download"></i> Scarica PDF</a>
-                                    <br><br>
                                 </table>
                             </div>
+                            <%# Includi il partial per la paginazione %>
+                            <%- include("components/pagination.ejs", {
+                                currentPage: currentPage,
+                                totalPages: totalPages,
+                                limit: limit,
+                                totalItems: totalItems,
+                                list: list, // Pass list to pagination to show count on current page
+                                // Passare i parametri di filtro specifici per questa tabella
+                                currentReparto: currentReparto, 
+                                currentTipo: currentTipo
+                            }) %>
+
+                            <!-- Pulsante "Scarica PDF" -->
+                            <% if (list && list.length > 0) { %>
+                                <a href="/download-pdf/<%= reparto %>/<%= tipo %>" class="btn btn-outline-danger mt-3" data-id=""><i class="fa fa-download"></i> Scarica PDF (Pagina Corrente)</a>
+                                <%# Nota: Il PDF scaricherà solo i dati della pagina corrente se non modificato il backend %>
+                            <% } %>
                         </div>
                     </div>
 
@@ -139,28 +160,26 @@
 
     </div>
     <!-- Delete Modal-->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo molleggio?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Clicca su "Annulla" per annullare l'operazione</div>
-                    <!-- Modifica il tuo modal con l'attributo data-id sul pulsante di conferma -->
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                        <button class="btn btn-danger delete-confirm-btn" type="button" data-id="">
-                            Elimina
-                        </button>
-                    </div>
-
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo elemento?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Clicca su "Elimina" per confermare.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
+                    <button class="btn btn-danger delete-confirm-btn" type="button" data-id="">
+                        Elimina
+                    </button>
                 </div>
             </div>
-            </div>
+        </div>
+    </div>
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
@@ -179,64 +198,70 @@
     <script src="/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
+    <%# DataTables JS - Considerare la rimozione o la configurazione per server-side se si usa la paginazione manuale %>
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo.js"></script>
-    <!-- Aggiorna lo script per gestire il clic sul pulsante di eliminazione -->
+    <%# Se DataTables viene inizializzato qui, potrebbe sovrascrivere o confliggere con la paginazione manuale %>
+    <%# Disabilitare l'inizializzazione di DataTables o configurarla per server-side processing %>
+    <%# <script src="/js/demo/datatables-demo.js"></script> %>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        const deleteButtons = document.querySelectorAll(".delete-btn");
-        const deleteModal = document.getElementById("deleteModal");
-        const deleteModalBody = deleteModal.querySelector(".modal-body");
-        const deleteConfirmButton = deleteModal.querySelector(".delete-confirm-btn");
-    
-        deleteButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            const elementId = button.getAttribute("data-id");
-            const elementRow = button.closest("tr"); // Trova la riga corrispondente all'elemento
-    
-            // Aggiungi l'ID dell'elemento al pulsante di conferma
-            deleteConfirmButton.setAttribute("data-id", elementId);
-    
-            // Mostra il modal
-            $('#deleteModal').modal('show');
-        });
-        });
-    
-        // Gestisci il clic sul pulsante di conferma dell'eliminazione
-        deleteConfirmButton.addEventListener("click", function () {
-        const elementId = deleteConfirmButton.getAttribute("data-id");
-    
-        // Eliminazione sul server
-        fetch(`/eliminaMisura/${elementId}`, {
-            method: "DELETE",
-        })
-            .then((response) => response.json())
-            .then((data) => {
-            if (data.message === "Elemento eliminato con successo") {
-                // Rimuovi la riga corrispondente dell'elemento dalla tabella
-                const elementRow = document.querySelector(`tr[data-id="${elementId}"]`);
-                if (elementRow) {
-                elementRow.remove();
-                console.log('Elemento eliminato dalla tabella.');
-                }
-            } else {
-                console.error('Errore durante l\'eliminazione:', data.message);
-            }
-            })
-            .catch((error) => {
-            console.error("Errore durante l'eliminazione:", error);
+            const deleteButtons = document.querySelectorAll(".delete-btn");
+            const deleteModal = document.getElementById("deleteModal");
+            // const deleteModalBody = deleteModal.querySelector(".modal-body"); // Non usato
+            const deleteConfirmButton = deleteModal.querySelector(".delete-confirm-btn");
+        
+            deleteButtons.forEach((button) => {
+                button.addEventListener("click", function () {
+                    const elementId = button.getAttribute("data-id");
+                    // const elementName = button.closest("tr").querySelector("td").textContent; // Esempio per prendere un nome
+                    // deleteModal.querySelector(".modal-title").textContent = `Vuoi eliminare l'elemento "${elementName}"?`;
+                    deleteConfirmButton.setAttribute("data-id", elementId);
+                    $("#deleteModal").modal("show");
+                });
             });
-    
-        // Nascondi il modal dopo aver completato l'eliminazione
-        $('#deleteModal').modal('hide');
-        });
-    
-    });
-    </script>
+        
+            deleteConfirmButton.addEventListener("click", function () {
+                const elementId = deleteConfirmButton.getAttribute("data-id");
+                // Determina l'URL di eliminazione in base al contesto, se necessario.
+                // Per prodPocket, l'URL è /eliminaMisura/:id
+                let deleteUrl = `/eliminaMisura/${elementId}`;
 
+                fetch(deleteUrl, {
+                    method: "DELETE",
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => { throw new Error(err.message || "Errore server") });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    if (data.message === "Elemento eliminato con successo") {
+                        // Rimuovi la riga o ricarica la pagina per vedere i cambiamenti e la paginazione corretta
+                        // Ricaricare è più semplice per riflettere la paginazione
+                        // window.location.reload(); 
+                        // Oppure, per mantenere la pagina corrente (se non è l'ultima pagina e diventa vuota):
+                        const params = new URLSearchParams(window.location.search);
+                        window.location.href = window.location.pathname + "?" + params.toString();
+
+                    } else {
+                        console.error("Errore durante l'eliminazione:", data.message);
+                        alert("Errore durante l'eliminazione: " + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Errore fetch durante l'eliminazione:", error);
+                    alert("Errore fetch durante l'eliminazione: " + error.message);
+                });
+        
+                $("#deleteModal").modal("hide");
+            });
+        });
+    </script>
 
 </body>
 
