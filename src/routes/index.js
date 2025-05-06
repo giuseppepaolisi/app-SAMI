@@ -13,7 +13,6 @@ const bodyparse = require('body-parser');
 
 const moment = require('moment');
 moment.locale('it');
-require('dotenv').config({ path: '../env/developement.env' });
 
 // Home page (Dashboard)
 /*router.get('/', isAdmin, (req, res, next) => {

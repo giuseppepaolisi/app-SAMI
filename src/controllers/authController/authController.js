@@ -28,13 +28,13 @@ const authController = {
    */
   login: async (req, res) => {
     const { username, password } = req.body;
-    console.log(req.body);
-    console.log('user: ' + username);
+    //console.log(req.body);
+    //console.log('user: ' + username);
 
     try {
       // Cerca l'utente nel database, assicurandosi che non sia stato eliminato
       const user = await User.findOne({ user: username, deleted: 0 });
-      console.log(user);
+      //console.log(user);
 
       // Verifica se l'utente esiste
       if (!user) {
@@ -46,11 +46,11 @@ const authController = {
         return res.render('login', { error: 'Username o password non validi' });
       }
 
-      console.log("\nE' admin: " + user.admin);
+      //console.log("\nE' admin: " + user.admin);
 
       // Autenticazione riuscita: impostiamo un token di sessione
       signToken(req, res, user, () => {
-        console.log('login effettuato');
+        //console.log('login effettuato');
         // Reindirizza alla pagina principale o alla pagina dipendente in base al ruolo
         if (user.admin) {
           res.redirect('/'); // Pagina per l'admin
