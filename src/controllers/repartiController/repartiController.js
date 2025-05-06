@@ -46,97 +46,90 @@ const createData = async (postData, token, isNew = true) => {
   return data;
 };
 
-/**
- * Genera le intestazioni della tabella in base al reparto e tipo.
- * @param {String} reparto - Il reparto di produzione.
- * @param {String} tipo - Il tipo di prodotto.
- * @returns {Array} - Lista delle intestazioni della tabella.
- */
 const generateHeaderKeys = async (reparto, tipo) => {
   let keys = [];
+  // Definizione delle chiavi come oggetti {name: "Visualizzato", field: "dbField", searchable: true/false, sortable: true/false}
   if (reparto == "produzione" && tipo == "pocket") {
     keys = [
-      "_id",
-      "macchina",
-      "prodFilo",
-      "cliente",
-      "diamFilo",
-      "portata",
-      "peso",
-      "quantita",
-      "oreLav",
-      "oreFermo",
-      "cambiMacchina",
-      "data",
-      "user",
-      "note",
+      // _id non è mostrato ma usato internamente
+      { name: "Macchina", field: "macchina", searchable: true, sortable: true },
+      { name: "Prod Filo", field: "prodFilo", searchable: true, sortable: true },
+      { name: "Cliente", field: "cliente", searchable: true, sortable: true },
+      { name: "Diam Filo", field: "diamFilo", searchable: false, sortable: true },
+      { name: "Portata", field: "portata", searchable: false, sortable: true },
+      { name: "Peso", field: "peso", searchable: false, sortable: true },
+      { name: "Quantita", field: "quantita", searchable: false, sortable: true },
+      { name: "Ore Lav", field: "oreLav", searchable: false, sortable: true },
+      { name: "Ore Fermo", field: "oreFermo", searchable: true, sortable: true }, // stringa, quindi searchable
+      { name: "Cambi Macchina", field: "cambiMacchina", searchable: false, sortable: true },
+      { name: "Data", field: "data", searchable: false, sortable: true },
+      { name: "User", field: "user", searchable: true, sortable: true },
+      { name: "Note", field: "note", searchable: true, sortable: true },
     ];
   } else if (reparto == "produzione" && tipo == "bonnel") {
     keys = [
-      "_id",
-      "macchina",
-      "prodFilo",
-      "diamMolla",
-      "diamFilo",
-      "peso",
-      "quantita",
-      "altezza",
-      "oreLav",
-      "data",
-      "user",
-      "note",
+      { name: "Macchina", field: "macchina", searchable: true, sortable: true },
+      { name: "Prod Filo", field: "prodFilo", searchable: true, sortable: true },
+      { name: "Diam Molla", field: "diamMolla", searchable: false, sortable: true },
+      { name: "Diam Filo", field: "diamFilo", searchable: false, sortable: true },
+      { name: "Peso", field: "peso", searchable: false, sortable: true },
+      { name: "Quantita", field: "quantita", searchable: false, sortable: true },
+      { name: "Altezza", field: "altezza", searchable: false, sortable: true },
+      { name: "Ore Lav", field: "oreLav", searchable: false, sortable: true },
+      { name: "Data", field: "data", searchable: false, sortable: true },
+      { name: "User", field: "user", searchable: true, sortable: true },
+      { name: "Note", field: "note", searchable: true, sortable: true },
     ];
   } else if (reparto == "assemblaggio" && tipo == "pocket") {
     keys = [
-      "_id",
-      "macchina",
-      "cliente",
-      "misuraFilo",
-      "fileMolle",
-      "quantita",
-      "cambioTelina",
-      "oreLav",
-      "data",
-      "user",
-      "note",
+      { name: "Macchina", field: "macchina", searchable: true, sortable: true },
+      { name: "Cliente", field: "cliente", searchable: true, sortable: true },
+      { name: "Misura Filo", field: "misuraFilo", searchable: true, sortable: true }, // Assumendo sia stringa
+      { name: "File Molle", field: "fileMolle", searchable: true, sortable: true },
+      { name: "Quantita", field: "quantita", searchable: false, sortable: true },
+      { name: "Cambio Telina", field: "cambioTelina", searchable: false, sortable: true },
+      { name: "Ore Lav", field: "oreLav", searchable: false, sortable: true },
+      { name: "Data", field: "data", searchable: false, sortable: true },
+      { name: "User", field: "user", searchable: true, sortable: true },
+      { name: "Note", field: "note", searchable: true, sortable: true },
     ];
   } else if (reparto == "assemblaggio" && tipo == "bonnel") {
     keys = [
-      "_id",
-      "macchina",
-      "cliente",
-      "misuraFilo",
-      "fileMolle",
-      "quantita",
-      "cambiMacchina",
-      "oreLav",
-      "data",
-      "user",
-      "note",
+      { name: "Macchina", field: "macchina", searchable: true, sortable: true },
+      { name: "Cliente", field: "cliente", searchable: true, sortable: true },
+      { name: "Misura Filo", field: "misuraFilo", searchable: true, sortable: true }, // Assumendo sia stringa
+      { name: "File Molle", field: "fileMolle", searchable: true, sortable: true },
+      { name: "Quantita", field: "quantita", searchable: false, sortable: true },
+      { name: "Cambi Macchina", field: "cambiMacchina", searchable: false, sortable: true },
+      { name: "Ore Lav", field: "oreLav", searchable: false, sortable: true },
+      { name: "Data", field: "data", searchable: false, sortable: true },
+      { name: "User", field: "user", searchable: true, sortable: true },
+      { name: "Note", field: "note", searchable: true, sortable: true },
     ];
   } else if (reparto == "imballaggio") {
-    keys = ["_id", "macchina", "quantita", "oreLav", "data", "user", "note"];
+    keys = [
+      { name: "Macchina", field: "macchina", searchable: true, sortable: true },
+      { name: "Quantita", field: "quantita", searchable: false, sortable: true },
+      { name: "Ore Lav", field: "oreLav", searchable: false, sortable: true },
+      { name: "Data", field: "data", searchable: false, sortable: true },
+      { name: "User", field: "user", searchable: true, sortable: true },
+      { name: "Note", field: "note", searchable: true, sortable: true },
+    ];
   }
+  // Aggiungiamo _id a tutte le configurazioni per l'uso interno, ma non sarà visualizzato come colonna se non specificato in `name`.
+  // Non è necessario aggiungerlo qui se `generateHeaderKeys` restituisce solo ciò che serve per la visualizzazione e l'interazione.
   return keys;
 };
 
-/**
- * Converte le ore decimali in formato "ore e minuti" in base al sistema sessagesimale.
- * @param {Number} decimalHours - Le ore in formato decimale.
- * @returns {String} - Il tempo formattato in ore e minuti.
- */
 const decimalToSexagesimal = (decimalHours) => {
   const hours = Math.floor(decimalHours);
   const minutes = Math.round((decimalHours - hours) * 60);
   return `${hours}h ${minutes}m`;
 };
 
+const ALLOWED_LIMITS = [10, 25, 50, 100];
+
 const repartiController = {
-  /**
-   * Inserisce nuovi dati nel database per un molleggio.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   */
   insertMolleggi: async (req, res) => {
     try {
       const creati = await createData(
@@ -149,42 +142,65 @@ const repartiController = {
       res.status(200).render("dipendente/postInsert.ejs");
     } catch (error) {
       console.error("Errore durante l'inserimento:", error);
-      res.redirect("/reparti");
+      res.redirect("/reparti"); // Considerare una pagina di errore più specifica
     }
   },
 
-  /**
-   * Recupera i dati di produzione paginati e li mostra.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   */
   getProductionData: async (req, res) => {
     const { reparto, tipo } = req.params;
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 25; // Default 10 items per pagina
+    
+    let limit = parseInt(req.query.limit);
+    if (!ALLOWED_LIMITS.includes(limit)) {
+      limit = 25;
+    }
     const skip = (page - 1) * limit;
+    const searchTerm = req.query.search || "";
+    // const sortField = req.query.sort || "data"; // Default sort field
+    // const sortOrder = req.query.order === "desc" ? -1 : 1;
 
-    let parametri = { reparto, tipo: tipo || "", deleted: 0 };
+    // Determina il campo di ordinamento predefinito in base al reparto/tipo se necessario
+    // o usa un campo generico come 'data'
+    let defaultSortField = "data";
+    // Esempio: if (reparto === "produzione" && tipo === "pocket") defaultSortField = "macchina";
+    const sortField = req.query.sort || defaultSortField; 
+    const sortOrder = req.query.order === "desc" ? -1 : 1;
+
+    let queryParams = { reparto, tipo: tipo || "", deleted: 0 };
     if (reparto === "imballaggio") {
-      delete parametri.tipo;
+      delete queryParams.tipo; // Rimuovi 'tipo' se non applicabile
+    }
+
+    const headers = await generateHeaderKeys(reparto, tipo || "");
+
+    if (searchTerm) {
+      const searchRegex = new RegExp(searchTerm, "i");
+      const searchableFields = headers.filter(h => h.searchable).map(h => h.field);
+      if (searchableFields.length > 0) {
+        queryParams.$or = searchableFields.map(field => ({ [field]: searchRegex }));
+      }
+    }
+
+    const sortOptions = {};
+    if (sortField) {
+        sortOptions[sortField] = sortOrder;
+    } else {
+        sortOptions["data"] = -1; // Fallback sort
     }
 
     try {
-      const list = await Reparti.find(parametri)
-        .sort({ data: -1 })
+      const list = await Reparti.find(queryParams)
+        .sort(sortOptions)
         .skip(skip)
         .limit(limit)
         .exec();
 
-      const totalItems = await Reparti.countDocuments(parametri);
+      const totalItems = await Reparti.countDocuments(queryParams);
       const totalPages = Math.ceil(totalItems / limit);
 
-      // Anche se la lista è vuota per la pagina corrente, vogliamo renderizzare la tabella
-      // e i controlli di paginazione, quindi non controlliamo list.length > 0 qui.
-      const keys = await generateHeaderKeys(reparto, tipo);
       res.render("prodPocket", {
-        title: `${reparto} ${tipo || ""}`,
-        aheader: keys,
+        title: `${reparto} ${tipo || ""}`.trim(),
+        aheader: headers, // Ora è un array di oggetti
         list,
         reparto,
         tipo: tipo || "",
@@ -193,25 +209,21 @@ const repartiController = {
         totalPages,
         limit,
         totalItems,
-        // Passiamo i parametri originali per mantenere i filtri nella paginazione
-        currentReparto: reparto,
+        currentSearch: searchTerm,
+        currentSort: sortField,
+        currentOrder: sortOrder === 1 ? "asc" : "desc",
+        allowedLimits: ALLOWED_LIMITS,
+        req: req, // Passa req per costruire URL nella paginazione e ordinamento
+         // Parametri specifici per mantenere i filtri nella paginazione
+        currentReparto: reparto, 
         currentTipo: tipo || ""
       });
     } catch (error) {
       console.error("Errore nel recupero dei dati:", error);
-      // In caso di errore, è meglio reindirizzare a una pagina di errore o mostrare un messaggio
-      // piuttosto che restituire JSON se la route è pensata per renderizzare HTML.
-      // Per ora, manteniamo il redirect alla home come fallback o una pagina di errore generica.
-      // res.status(500).json({ message: "Errore nel recupero dei dati" });
       res.status(500).render("error", { message: "Errore nel recupero dei dati di produzione", error });
     }
   },
 
-  /**
-   * Elimina una misura dal database in base all'ID.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   */
   deleteMeasure: async (req, res) => {
     const elementId = req.params.id;
     if (!elementId || elementId === "null")
@@ -234,14 +246,12 @@ const repartiController = {
     }
   },
 
-  /**
-   * Mostra la pagina di modifica per un molleggio specifico.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   */
   editMolleggioPage: async (req, res) => {
     try {
       const molleggio = await Reparti.findById(req.params.id).exec();
+      if (!molleggio) {
+        return res.status(404).render("error", { message: "Elemento non trovato", error: {status: 404} });
+      }
       const users = await User.find({ deleted: 0 }).exec();
       const options = await Cliente.find({ deleted: 0 })
         .sort({ ragioneSociale: 1 })
@@ -254,6 +264,7 @@ const repartiController = {
         users,
         moment,
         options,
+        title: `Modifica ${molleggio.reparto} ${molleggio.tipo || ""}`.trim()
       });
     } catch (error) {
       console.error("Errore nel caricamento della pagina di modifica:", error);
@@ -263,21 +274,21 @@ const repartiController = {
     }
   },
 
-  /**
-   * Modifica un molleggio esistente nel database in base all'ID.
-   * @param {Object} req - La richiesta Express.
-   * @param {Object} res - La risposta Express.
-   */
   modificaMolleggio: async (req, res) => {
     const { id } = req.params;
     try {
-      const dataProcessed = await createData(req.body, req.body, false);
+      // Assicurati che getData(req.cookies.token) sia disponibile o passato correttamente
+      // Se req.body contiene già l'utente o non è necessario aggiornarlo, modifica createData
+      const tokenData = getData(req.cookies.token); // Esempio, assicurati che sia corretto
+      const dataProcessed = await createData(req.body, tokenData, false);
       const result = await Reparti.findByIdAndUpdate(id, dataProcessed, {
         new: true,
         runValidators: true,
       });
-      // Dopo la modifica, reindirizza alla prima pagina della tabella pertinente
-      res.redirect(`/prodPocket/${result.reparto}/${result.tipo || ""}?page=1`);
+      if (!result) {
+        return res.status(404).render("error", { message: "Elemento non trovato per l'aggiornamento", error: {status: 404} });
+      }
+      res.redirect(`/prodPocket/${result.reparto}/${result.tipo || ""}?page=1&limit=${req.body.currentLimit || 25}`);
     } catch (error) {
       console.error("Errore durante l'aggiornamento:", error);
       res
@@ -286,13 +297,6 @@ const repartiController = {
     }
   },
 
-  /**
-   * Calcola il totale delle molle prodotte in base al reparto, tipo e intervallo di tempo.
-   * @param {String} reparto - Il reparto di produzione.
-   * @param {String} tipo - Il tipo di prodotto.
-   * @param {String} tempo - "g" per giorno o "m" per mese corrente.
-   * @returns {Number} - Il totale delle molle prodotte.
-   */
   getTotal: async (reparto, tipo, tempo) => {
     try {
       let dataInizio, dataFine;
@@ -331,16 +335,10 @@ const repartiController = {
       return result[0]?.totalMolle || 0;
     } catch (err) {
       console.error("Errore durante il calcolo del totale di molle:", err);
-      throw err;
+      throw err; // O gestisci diversamente
     }
   },
 
-  /**
-   * Calcola il totale delle molle prodotte in ogni mese dell'anno corrente.
-   * @param {String} reparto - Il reparto di produzione.
-   * @param {String} tipo - Il tipo di prodotto.
-   * @returns {Array} - Lista delle molle prodotte per ciascun mese (da gennaio a dicembre).
-   */
   getTotalByMonth: async (reparto, tipo) => {
     try {
       const annoCorrente = new Date().getFullYear();
@@ -376,13 +374,6 @@ const repartiController = {
     }
   },
 
-  /**
-   * Calcola il totale delle molle prodotte in un giorno specificato.
-   * @param {String} reparto - Il reparto di produzione.
-   * @param {String} tipo - Il tipo di prodotto.
-   * @param {Date} selectedData - La data selezionata.
-   * @returns {Number} - Il totale delle molle prodotte nel giorno specificato.
-   */
   getTotalForDay: async (reparto, tipo, selectedData) => {
     try {
       const dataInizio = new Date(selectedData);

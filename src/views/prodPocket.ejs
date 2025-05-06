@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,65 +10,97 @@
     <link rel="icon" type="image/png" href="/images/icons/favicon.ico"/>
     <title><%= title %></title>
 
-    <!-- Custom fonts for this template -->
     <link href="/vendor/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <%# DataTables CSS is still here, might need to be removed if not using its features %>
-    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+    <style>
+        .sortable-header {
+            cursor: pointer;
+        }
+        .sortable-header:hover {
+            background-color: #f8f9fc;
+        }
+        .sort-icon {
+            margin-left: 5px;
+            color: #858796;
+        }
+        .sort-icon.active {
+            color: #4e73df;
+        }
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .table-controls .form-group,
+        .table-controls .search-container {
+            margin-bottom: 0;
+        }
+        .search-container {
+            margin-left: auto; /* Pushes search to the right */
+        }
+    </style>
 </head>
 
 <body id="page-top">
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
-
-        <!-- nav bar-->
         <%- include("components/sidebar.ejs") %>
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
-
-                <!-- top bar-->
                 <%- include("components/topbar.ejs") %>
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <h1 class="h3 mb-2 text-gray-800 text-capitalize"><%= title %></h1>
+                    <p class="mb-4">Pagina per la gestione del reparto <%= reparto %> <%= typeof tipo !== "undefined" && tipo ? tipo : "" %></p>
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800 text-capitalize">
-                        <%= title %>
-                    </h1>
-                    <p class="mb-4">Pagina per la gestione del reparto <%= reparto %> <%= typeof tipo !== "undefined" ? tipo : "" %></p>
-
-                    <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary text-capitalize"><%= typeof tipo !== "undefined" && tipo ? tipo : reparto %></h6>
                         </div>
                         <div class="card-body">
+                            <div class="table-controls">
+                                <div class="form-group">
+                                    <label for="limitSelectProdPocket" class="mr-2">Mostra entry:</label>
+                                    <select id="limitSelectProdPocket" class="form-control form-control-sm d-inline-block" style="width: auto;">
+                                        <% allowedLimits.forEach(val => { %>
+                                            <option value="<%= val %>" <%= limit == val ? 'selected' : '' %>><%= val %></option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <div class="search-container">
+                                    <input type="text" id="searchInputProdPocket" class="form-control form-control-sm" placeholder="Cerca..." value="<%= typeof currentSearch !== 'undefined' ? currentSearch : '' %>" style="width: auto; display: inline-block;">
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    
+                                <table class="table table-bordered" id="prodPocketTable" width="100%" cellspacing="0">
                                     <thead>
-                                                                
                                         <tr>
-                                            <% const keys = Object.keys(aheader); // aheader is an array of strings, not an object. Correcting this. %>
-                                            <%# Assuming aheader is an array of column names passed from controller %>
-                                            <% for (const headerName of aheader) { %>
-                                                <%# Do not display _id as a column header, but it might be used for data-id %>
-                                                <% if (headerName !== "_id") { %> 
-                                                    <th class="text-capitalize"><%= headerName.replace(/([A-Z])/g, " $1").trim() %></th>
+                                            <% 
+                                            const basePathProdPocket = req.originalUrl.split('?')[0];
+                                            const currentParamsProdPocket = new URLSearchParams(req.url.split('?')[1] || '');
+                                            %>
+                                            <% for (const header of aheader) { %>
+                                                <% if (header.sortable) { %>
+                                                    <% 
+                                                    const isCurrentSortField = currentSort === header.field;
+                                                    const newOrder = isCurrentSortField && currentOrder === 'asc' ? 'desc' : 'asc';
+                                                    const sortLinkParams = new URLSearchParams(currentParamsProdPocket);
+                                                    sortLinkParams.set('sort', header.field);
+                                                    sortLinkParams.set('order', newOrder);
+                                                    sortLinkParams.set('page', '1');
+                                                    const sortLink = basePathProdPocket + '?' + sortLinkParams.toString();
+                                                    %>
+                                                    <th class="text-capitalize sortable-header" onclick="window.location.href='<%= sortLink %>'">
+                                                        <%= header.name %>
+                                                        <% if (isCurrentSortField) { %>
+                                                            <i class="fas fa-sort-<%= currentOrder === 'asc' ? 'up' : 'down' %> sort-icon active"></i>
+                                                        <% } else { %>
+                                                            <i class="fas fa-sort sort-icon"></i>
+                                                        <% } %>
+                                                    </th>
+                                                <% } else { %>
+                                                    <th class="text-capitalize"><%= header.name %></th>
                                                 <% } %>
                                             <% } %>
                                             <th>Azioni</th>
@@ -77,10 +108,8 @@
                                     </thead>
                                     <tfoot>
                                         <tr>
-                                            <% for (const headerName of aheader) { %>
-                                                <% if (headerName !== "_id") { %>
-                                                    <th class="text-capitalize"><%= headerName.replace(/([A-Z])/g, " $1").trim() %></th>
-                                                <% } %>
+                                            <% for (const header of aheader) { %>
+                                                <th class="text-capitalize"><%= header.name %></th>
                                             <% } %>
                                             <th>Azioni</th>
                                         </tr>
@@ -89,23 +118,21 @@
                                         <% if (list && list.length > 0) { %>
                                             <% list.forEach(element => { %>
                                             <tr data-id="<%= element._id %>">
-                                                <% for (const headerName of aheader) { %>
-                                                    <% if (headerName !== "_id") { %>
-                                                        <% let value = element[headerName]; %>
-                                                        <% if (headerName === "data" && moment(value, moment.ISO_8601, true).isValid()) { %>
-                                                            <td><%= moment(value).format("DD/MM/YYYY HH:mm") %></td>
-                                                        <% } else if (typeof value === "number") { %>
-                                                            <td><%= value.toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) %></td>
-                                                        <% } else { %>
-                                                            <td><%= value %></td>
-                                                        <% } %>
+                                                <% for (const header of aheader) { %>
+                                                    <% let value = element[header.field]; %>
+                                                    <% if (header.field === "data" && moment(value, moment.ISO_8601, true).isValid()) { %>
+                                                        <td><%= moment(value).format("DD/MM/YYYY HH:mm") %></td>
+                                                    <% } else if (typeof value === "number") { %>
+                                                        <td><%= value.toLocaleString("it-IT", { minimumFractionDigits: 0, maximumFractionDigits: 2 }) %></td>
+                                                    <% } else { %>
+                                                        <td><%= value %></td>
                                                     <% } %>
                                                 <% } %>
                                                 <td>
                                                     <button class="btn btn-danger btn-circle btn-sm delete-btn" data-id="<%= element._id %>" title="Elimina">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
-                                                    <a class="btn btn-success btn-circle btn-sm" href="/editMolleggio/<%= element._id %>" title="Modifica">
+                                                    <a class="btn btn-success btn-circle btn-sm" href="/editMolleggio/<%= element._id %>?reparto=<%= reparto %>&tipo=<%= tipo %>" title="Modifica">
                                                         <i class="fas fa-cogs"></i>
                                                     </a>
                                                 </td>
@@ -119,33 +146,28 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <%# Includi il partial per la paginazione %>
                             <%- include("components/pagination.ejs", {
                                 currentPage: currentPage,
                                 totalPages: totalPages,
                                 limit: limit,
                                 totalItems: totalItems,
-                                list: list, // Pass list to pagination to show count on current page
-                                // Passare i parametri di filtro specifici per questa tabella
+                                list: list,
+                                req: req,
                                 currentReparto: currentReparto, 
-                                currentTipo: currentTipo
+                                currentTipo: currentTipo,
+                                currentSearch: currentSearch,
+                                currentSort: currentSort,
+                                currentOrder: currentOrder
                             }) %>
-
-                            <!-- Pulsante "Scarica PDF" -->
-                            <% if (list && list.length > 0) { %>
-                                <a href="/download-pdf/<%= reparto %>/<%= tipo %>" class="btn btn-outline-danger mt-3" data-id=""><i class="fa fa-download"></i> Scarica PDF (Pagina Corrente)</a>
-                                <%# Nota: Il PDF scaricherà solo i dati della pagina corrente se non modificato il backend %>
+                            <% if (list && list.length > 0 && reparto && tipo) { %>
+                                <a href="/download-pdf/<%= reparto %>/<%= tipo %>?<%= new URLSearchParams(req.query).toString() %>" class="btn btn-outline-danger mt-3"><i class="fa fa-download"></i> Scarica PDF (Pagina Corrente)</a>
+                            <% } else if (list && list.length > 0 && reparto && !tipo) { %>
+                                <a href="/download-pdf/<%= reparto %>?<%= new URLSearchParams(req.query).toString() %>" class="btn btn-outline-danger mt-3"><i class="fa fa-download"></i> Scarica PDF (Pagina Corrente)</a>
                             <% } %>
                         </div>
                     </div>
-
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -153,116 +175,81 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
-
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- Delete Modal-->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo elemento?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalLabel">Vuoi eliminare questo elemento?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">Clicca su "Elimina" per confermare.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annulla</button>
-                    <button class="btn btn-danger delete-confirm-btn" type="button" data-id="">
-                        Elimina
-                    </button>
+                    <button class="btn btn-danger delete-confirm-btn" type="button" data-id="">Elimina</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Bootstrap core JavaScript-->
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <%# DataTables JS - Considerare la rimozione o la configurazione per server-side se si usa la paginazione manuale %>
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <%# Se DataTables viene inizializzato qui, potrebbe sovrascrivere o confliggere con la paginazione manuale %>
-    <%# Disabilitare l'inizializzazione di DataTables o configurarla per server-side processing %>
-    <%# <script src="/js/demo/datatables-demo.js"></script> %>
-    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const deleteButtons = document.querySelectorAll(".delete-btn");
             const deleteModal = document.getElementById("deleteModal");
-            // const deleteModalBody = deleteModal.querySelector(".modal-body"); // Non usato
             const deleteConfirmButton = deleteModal.querySelector(".delete-confirm-btn");
-        
             deleteButtons.forEach((button) => {
                 button.addEventListener("click", function () {
                     const elementId = button.getAttribute("data-id");
-                    // const elementName = button.closest("tr").querySelector("td").textContent; // Esempio per prendere un nome
-                    // deleteModal.querySelector(".modal-title").textContent = `Vuoi eliminare l'elemento "${elementName}"?`;
                     deleteConfirmButton.setAttribute("data-id", elementId);
-                    $("#deleteModal").modal("show");
+                    $('#deleteModal').modal("show");
                 });
             });
-        
             deleteConfirmButton.addEventListener("click", function () {
                 const elementId = deleteConfirmButton.getAttribute("data-id");
-                // Determina l'URL di eliminazione in base al contesto, se necessario.
-                // Per prodPocket, l'URL è /eliminaMisura/:id
-                let deleteUrl = `/eliminaMisura/${elementId}`;
-
-                fetch(deleteUrl, {
-                    method: "DELETE",
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(err => { throw new Error(err.message || "Errore server") });
-                    }
-                    return response.json();
-                })
+                fetch(`/eliminaMisura/${elementId}`, { method: "DELETE" })
+                .then(response => response.json())
                 .then((data) => {
                     if (data.message === "Elemento eliminato con successo") {
-                        // Rimuovi la riga o ricarica la pagina per vedere i cambiamenti e la paginazione corretta
-                        // Ricaricare è più semplice per riflettere la paginazione
-                        // window.location.reload(); 
-                        // Oppure, per mantenere la pagina corrente (se non è l'ultima pagina e diventa vuota):
                         const params = new URLSearchParams(window.location.search);
                         window.location.href = window.location.pathname + "?" + params.toString();
-
                     } else {
-                        console.error("Errore durante l'eliminazione:", data.message);
                         alert("Errore durante l'eliminazione: " + data.message);
                     }
-                })
-                .catch((error) => {
-                    console.error("Errore fetch durante l'eliminazione:", error);
-                    alert("Errore fetch durante l'eliminazione: " + error.message);
-                });
-        
-                $("#deleteModal").modal("hide");
+                }).catch(error => alert("Errore fetch: " + error));
+                $('#deleteModal').modal("hide");
+            });
+
+            const searchInputProdPocket = document.getElementById("searchInputProdPocket");
+            let searchTimeoutProdPocket;
+            searchInputProdPocket.addEventListener("input", function () {
+                clearTimeout(searchTimeoutProdPocket);
+                searchTimeoutProdPocket = setTimeout(() => {
+                    const searchValue = searchInputProdPocket.value.trim();
+                    const currentUrl = new URL(window.location.href);
+                    currentUrl.searchParams.set("page", "1");
+                    if (searchValue) {
+                        currentUrl.searchParams.set("search", searchValue);
+                    } else {
+                        currentUrl.searchParams.delete("search");
+                    }
+                    window.location.href = currentUrl.toString();
+                }, 500);
+            });
+
+            const limitSelectProdPocket = document.getElementById("limitSelectProdPocket");
+            limitSelectProdPocket.addEventListener("change", function() {
+                const selectedLimit = this.value;
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set("limit", selectedLimit);
+                currentUrl.searchParams.set("page", "1");
+                window.location.href = currentUrl.toString();
             });
         });
     </script>
-
 </body>
-
 </html>
